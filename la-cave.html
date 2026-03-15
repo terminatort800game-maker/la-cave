@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#6AB023">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>La Cave – Mon Matériel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#6AB023;--gd:#4E8018;--gl:#8FCC3E;--gg:rgba(106,176,35,0.22);
+  --blk:#0F0F0F;--d1:#1A1A1A;--d2:#222;--d3:#2C2C2C;--d4:#383838;
+  --tx:#F0F0F0;--tm:#888;--tdim:#555;--yel:#FFD600;--red:#E03030;
+  --sh:rgba(0,0,0,0.7);--card:rgba(255,255,255,0.03);--bdr:rgba(106,176,35,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;overflow-x:hidden;overflow-y:auto;}body{overflow:visible;min-height:100%;}
+body{font-family:'Barlow',sans-serif;background:var(--blk);color:var(--tx);}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 30% at 50% 0%,rgba(106,176,35,0.1) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+.hdr{position:sticky;top:0;z-index:200;background:var(--d1);border-bottom:3px solid var(--g);box-shadow:0 3px 20px var(--sh);}
+.hdr-top{display:flex;align-items:center;gap:12px;padding:12px 14px 8px;}
+.hdr-logo{width:46px;height:46px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 18px var(--gg);flex-shrink:0;}
+.hdr-tx{flex:1;}
+.hdr-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--gl);line-height:1;}
+.hdr-sub{font-size:11px;color:var(--tm);letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+.hdr-totals{display:flex;gap:14px;}
+.htot .n{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;color:var(--g);}
+.htot .l{font-size:10px;color:var(--tm);letter-spacing:.5px;}
+.hdr-search{padding:0 12px 10px;}
+.srch{width:100%;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;padding:10px 14px;color:var(--tx);font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.srch:focus{border-color:var(--g);}
+.srch::placeholder{color:var(--tdim);}
+
+.main{padding:10px 10px 100px;position:relative;z-index:1;}
+
+.sec-block{margin-bottom:10px;border-radius:14px;overflow:hidden;border:1.5px solid var(--bdr);box-shadow:0 4px 18px rgba(0,0,0,.5);}
+.sec-hdr{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(135deg,var(--d2) 0%,var(--d1) 100%);user-select:none;border-left:4px solid var(--g);}
+.sec-hdr-tap{display:flex;align-items:center;gap:12px;flex:1;cursor:pointer;min-width:0;}
+.sec-hdr-tap:active{opacity:.8;}
+.sec-ico{width:40px;height:40px;background:var(--gd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 0 10px var(--gg);}
+.sec-info{flex:1;min-width:0;}
+.sec-name{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sec-meta{font-size:11px;color:var(--tm);margin-top:2px;}
+.sec-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.sbadge{background:var(--gd);color:var(--gl);font-family:'Bebas Neue',sans-serif;font-size:15px;padding:3px 10px;border-radius:20px;border:1px solid var(--g);letter-spacing:1px;}
+.chev{color:var(--g);font-size:17px;transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.chev.open{transform:rotate(180deg);}
+.sec-edit-btn{background:none;border:none;color:var(--tm);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:all .18s;flex-shrink:0;}
+.sec-edit-btn:active{color:var(--g);}
+
+.sec-body{max-height:0;overflow:hidden;background:var(--d1);transition:max-height .38s cubic-bezier(.4,0,.2,1);}
+.sec-body.open{max-height:5000px;}
+.sec-body-in{padding:10px 10px 12px;}
+
+.cat-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px;}
+.cat-row::-webkit-scrollbar{display:none;}
+.cat-pill{flex-shrink:0;padding:6px 16px;border-radius:20px;border:1.5px solid var(--d4);background:none;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .18s;}
+.cat-pill.active{background:var(--g);border-color:var(--g);color:var(--blk);}
+
+.add-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;margin-bottom:10px;box-shadow:0 3px 14px var(--gg);transition:all .18s;}
+.add-btn:active{transform:scale(.97);opacity:.88;}
+
+.empty{text-align:center;padding:28px 20px;color:var(--tdim);}
+.empty .eico{font-size:44px;margin-bottom:8px;}
+.empty p{font-size:13px;line-height:1.6;}
+
+.item-card{background:var(--card);border:1px solid var(--d4);border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.item-card.low-stock{border-color:rgba(224,48,48,.4);}
+.item-top{display:flex;align-items:center;padding:10px 12px;gap:10px;}
+.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;}
+.item-photo img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
+.item-photo .povl{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;font-size:16px;}
+.item-photo:active .povl{opacity:1;}
+.item-info{flex:1;min-width:0;}
+.item-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ib{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;margin-top:3px;letter-spacing:.5px;text-transform:uppercase;}
+.ib-out{background:rgba(106,176,35,.18);color:var(--gl);border:1px solid rgba(106,176,35,.3);}
+.ib-mat{background:rgba(255,214,0,.12);color:var(--yel);border:1px solid rgba(255,214,0,.25);}
+.item-desc{font-size:11px;color:var(--tm);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.ctr-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
+.ctr-row{display:flex;align-items:center;gap:6px;}
+.cbtn{width:34px;height:34px;border-radius:8px;border:none;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;}
+.cbtn.m{background:var(--d3);color:var(--red);border:1.5px solid rgba(224,48,48,.3);}
+.cbtn.m:active{background:var(--red);color:#fff;transform:scale(.88);}
+.cbtn.p{background:var(--d3);color:var(--gl);border:1.5px solid rgba(106,176,35,.3);}
+.cbtn.p:active{background:var(--g);color:var(--blk);transform:scale(.88);}
+.cval{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;min-width:34px;text-align:center;}
+.c-ok{color:var(--gl);}.c-low{color:var(--yel);}.c-zero{color:var(--red);}
+.clbl{font-size:9px;color:var(--tdim);letter-spacing:.5px;}
+
+.item-bar{display:flex;border-top:1px solid var(--d3);}
+.ibar-btn{flex:1;padding:8px 4px;background:none;border:none;color:var(--tm);font-size:11px;font-family:'Barlow',sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid var(--d3);transition:all .18s;}
+.ibar-btn:last-child{border-right:none;}
+.ibar-btn:active{background:var(--d3);color:var(--g);}
+.ibar-ico{font-size:15px;}
+
+/* ACCESSOIRES */
+.acc-section{border-top:1px solid var(--d3);padding:8px 12px 10px;}
+.acc-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.acc-add-btn{background:rgba(106,176,35,.15);border:1px solid rgba(106,176,35,.3);color:var(--gl);font-size:11px;padding:3px 10px;border-radius:20px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.5px;}
+.acc-add-btn:active{background:var(--g);color:var(--blk);}
+.acc-list{display:flex;flex-direction:column;gap:6px;}
+.acc-item{display:flex;align-items:center;gap:8px;background:var(--d3);border-radius:8px;padding:8px 10px;border:1px solid var(--d4);}
+.acc-name{flex:1;font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:600;color:var(--tx);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acc-type{font-size:10px;color:var(--tm);margin-top:1px;}
+.acc-ctr{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.acc-btn{width:26px;height:26px;border-radius:6px;border:none;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;}
+.acc-btn.m{background:var(--d2);color:var(--red);border:1px solid rgba(224,48,48,.3);}
+.acc-btn.m:active{background:var(--red);color:#fff;}
+.acc-btn.p{background:var(--d2);color:var(--gl);border:1px solid rgba(106,176,35,.3);}
+.acc-btn.p:active{background:var(--g);color:var(--blk);}
+.acc-val{font-family:'Bebas Neue',sans-serif;font-size:20px;min-width:24px;text-align:center;}
+.acc-del{background:none;border:none;color:rgba(224,48,48,.5);font-size:14px;cursor:pointer;padding:2px 4px;flex-shrink:0;}
+.acc-del:active{color:var(--red);}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--d1);border-top:2px solid var(--g);display:flex;box-shadow:0 -4px 20px var(--sh);}
+.nbtn{flex:1;padding:10px 0 8px;background:none;border:none;color:var(--tm);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;letter-spacing:.5px;font-family:'Barlow',sans-serif;cursor:pointer;transition:color .18s;}
+.nbtn.active{color:var(--g);}
+.nbtn .nico{font-size:22px;line-height:1;}
+
+.movl{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.84);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;}
+.movl.open{display:flex;}
+.modal{width:100%;max-width:480px;background:var(--d2);border-radius:20px 20px 0 0;border-top:3px solid var(--g);padding:20px 18px 36px;animation:slideUp .3s cubic-bezier(.4,0,.2,1);max-height:92vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.m-handle{width:40px;height:4px;background:var(--d4);border-radius:2px;margin:-6px auto 18px;}
+.m-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--gl);margin-bottom:16px;}
+.fg{margin-bottom:14px;}
+.flbl{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:6px;}
+.finput,.fsel,.ftxt{width:100%;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;padding:11px 14px;color:var(--tx);font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+.finput:focus,.fsel:focus,.ftxt:focus{border-color:var(--g);}
+.fsel option{background:var(--d2);color:var(--tx);}
+.ftxt{min-height:70px;resize:vertical;}
+.stock-row{display:flex;align-items:center;gap:10px;}
+.stock-row .finput{flex:1;}
+.stock-lbl{font-size:11px;color:var(--tm);flex-shrink:0;white-space:nowrap;}
+
+.cat-sel{display:flex;gap:8px;}
+.csbtn{flex:1;padding:10px 8px;border-radius:10px;border:2px solid var(--d4);background:none;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s;text-align:center;}
+.csbtn.cs-out.active{background:rgba(106,176,35,.18);border-color:var(--g);color:var(--gl);}
+.csbtn.cs-mat.active{background:rgba(255,214,0,.12);border-color:var(--yel);color:var(--yel);}
+
+.photo-zone{display:flex;flex-direction:column;gap:10px;}
+.photo-tap{width:100%;min-height:80px;background:var(--d3);border:2px dashed var(--d4);border-radius:12px;display:flex;align-items:center;gap:14px;padding:14px;cursor:pointer;transition:border-color .2s;}
+.photo-tap:active{border-color:var(--g);}
+.photo-tap-thumb{width:52px;height:52px;border-radius:8px;flex-shrink:0;background:var(--d4);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;}
+.photo-tap-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.pt-main{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--tx);}
+.pt-hint{font-size:11px;color:var(--tdim);margin-top:3px;}
+.photo-clear{width:100%;padding:10px;background:none;border:1.5px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;}
+
+/* ACCESSOIRES MODAL */
+.acc-modal-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.acc-modal-item{display:flex;align-items:center;gap:8px;background:var(--d3);border-radius:8px;padding:8px 10px;}
+.acc-modal-name{flex:1;font-size:13px;color:var(--tx);}
+.acc-modal-del{background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;}
+.acc-add-row{display:flex;gap:8px;}
+.acc-add-row .finput{flex:2;}
+.acc-type-sel{flex:1;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;padding:11px 8px;color:var(--tx);font-family:'Barlow',sans-serif;font-size:13px;outline:none;}
+.acc-add-sub{width:100%;padding:10px;background:rgba(106,176,35,.15);border:1.5px solid rgba(106,176,35,.3);border-radius:8px;color:var(--gl);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;margin-top:6px;}
+.acc-add-sub:active{background:var(--g);color:var(--blk);}
+
+.mbtns{display:flex;gap:10px;margin-top:20px;}
+.btn-cancel{flex:1;padding:13px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;}
+.btn-save{flex:2;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;box-shadow:0 3px 14px var(--gg);}
+.btn-save:active{opacity:.85;transform:scale(.98);}
+
+/* CONTENEURS */
+.icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px;}
+.ico-btn{background:var(--d3);border:2px solid var(--d4);border-radius:10px;font-size:22px;padding:8px 0;cursor:pointer;text-align:center;transition:all .18s;}
+.ico-btn.active{border-color:var(--g);background:rgba(106,176,35,.18);}
+.type-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.type-btn{flex:1;min-width:70px;padding:10px;border-radius:10px;border:2px solid var(--d4);background:none;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .18s;text-align:center;}
+.type-btn.active{border-color:var(--g);color:var(--gl);background:rgba(106,176,35,.18);}
+.ctr-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.ctr-item{display:flex;align-items:center;gap:10px;background:var(--d3);border:1px solid var(--d4);border-radius:10px;padding:10px 12px;}
+.ctr-item-name{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--tx);}
+.ctr-item-cnt{font-size:11px;color:var(--tm);}
+.ctr-del-btn{background:none;border:none;color:rgba(224,48,48,.6);font-size:18px;cursor:pointer;padding:4px;}
+.btn-add-ctr{width:100%;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:4px;}
+.manage-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:8px;transition:all .18s;}
+.manage-btn:active{border-color:var(--g);color:var(--gl);}
+
+/* SAUVEGARDE */
+.backup-section{margin-top:8px;display:flex;gap:8px;}
+.backup-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border:none;transition:all .18s;}
+.backup-btn.export{background:rgba(106,176,35,.15);border:1.5px solid rgba(106,176,35,.3);color:var(--gl);}
+.backup-btn.export:active{background:var(--g);color:var(--blk);}
+.backup-btn.import{background:rgba(255,214,0,.1);border:1.5px solid rgba(255,214,0,.3);color:var(--yel);}
+.backup-btn.import:active{background:var(--yel);color:var(--blk);}
+
+/* BANDEAU SAUVEGARDE AUTO */
+.save-indicator{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--g);color:var(--blk);text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:6px;transform:translateY(-100%);transition:transform .3s;}
+.save-indicator.show{transform:translateY(0);}
+
+.imovl{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.95);align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.imovl.open{display:flex;}
+.imovl img{max-width:90vw;max-height:68vh;border-radius:14px;border:2px solid var(--g);}
+.im-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--gl);}
+.im-close{padding:10px 32px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;}
+
+.stats-view{display:none;padding:10px 10px 100px;position:relative;z-index:1;}
+.stats-view.open{display:block;}
+.stat-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:10px;}
+.stat-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:12px;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--d3);}
+.stat-row:last-child{border-bottom:none;}
+.stat-label{font-size:14px;color:var(--tx);}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--g);}
+.stat-val.red{color:var(--red);}.stat-val.yel{color:var(--yel);}
+.progress-bar{height:6px;background:var(--d3);border-radius:3px;margin-top:6px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gd),var(--g));border-radius:3px;}
+
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:700;background:var(--gd);color:var(--gl);padding:10px 22px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:.5px;border:1px solid var(--g);box-shadow:0 4px 16px rgba(0,0,0,.5);opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--d4);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<div class="save-indicator" id="save-ind">💾 Sauvegarde automatique...</div>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-logo">🔧</div>
+    <div class="hdr-tx">
+      <div class="hdr-title">La Cave</div>
+      <div class="hdr-sub">Mon Matériel</div>
+    </div>
+    <div class="hdr-totals">
+      <div class="htot"><div class="n" id="total-items">0</div><div class="l">Articles</div></div>
+      <div class="htot"><div class="n" id="total-stock">0</div><div class="l">En stock</div></div>
+    </div>
+  </div>
+  <div class="hdr-search">
+    <input class="srch" id="srch" type="text" placeholder="🔍  Rechercher..." oninput="render()">
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+<div class="stats-view" id="stats-view"><div id="stats-content"></div></div>
+
+<div class="bnav">
+  <button class="nbtn active" onclick="setNav(this,'all')"><span class="nico">🏠</span>Accueil</button>
+  <button class="nbtn" onclick="setNav(this,'Outillage')"><span class="nico">🔨</span>Outillage</button>
+  <button class="nbtn" onclick="setNav(this,'Matériel')"><span class="nico">📦</span>Matériel</button>
+  <button class="nbtn" onclick="setNav(this,'stats')"><span class="nico">📊</span>Stats</button>
+</div>
+
+<!-- MODAL ARTICLE -->
+<div class="movl" id="add-modal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title" id="m-title">Ajouter un article</div>
+    <div class="fg">
+      <label class="flbl">Caisse / Meuble</label>
+      <select class="fsel" id="f-ctr"></select>
+    </div>
+    <div class="fg">
+      <label class="flbl">Catégorie</label>
+      <div class="cat-sel">
+        <button class="csbtn cs-out active" id="btn-out" onclick="selCat('Outillage')">🔨 Outillage</button>
+        <button class="csbtn cs-mat" id="btn-mat" onclick="selCat('Matériel')">📦 Matériel</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Nom *</label>
+      <input class="finput" id="f-name" type="text" placeholder="Scie circulaire, Perceuse, Câble...">
+    </div>
+    <div class="fg">
+      <label class="flbl">Description</label>
+      <textarea class="ftxt" id="f-desc" placeholder="Marque, référence, état..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="flbl">Quantité · Seuil d'alerte</label>
+      <div class="stock-row">
+        <input class="finput" id="f-stock" type="number" min="0" value="1">
+        <span class="stock-lbl">Alerte si ≤</span>
+        <input class="finput" id="f-min" type="number" min="0" value="1">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Photo</label>
+      <div class="photo-zone">
+        <div class="photo-tap" onclick="triggerPhoto()">
+          <div class="photo-tap-thumb" id="photo-thumb">📷</div>
+          <div><div class="pt-main">📁 Parcourir les photos</div><div class="pt-hint">Appuyez ici pour choisir</div></div>
+        </div>
+        <button class="photo-clear" id="photo-clear-btn" onclick="clearPhoto()" style="display:none">🗑 Supprimer la photo</button>
+      </div>
+    </div>
+    <div class="fg" id="acc-section-modal">
+      <label class="flbl">🔩 Accessoires / Lames</label>
+      <div class="acc-modal-list" id="acc-modal-list"></div>
+      <div class="acc-add-row">
+        <input class="finput" id="acc-new-name" type="text" placeholder="Lame 24 dents, Foret 8mm...">
+        <select class="acc-type-sel" id="acc-new-type">
+          <option>Lame</option><option>Foret</option><option>Disque</option>
+          <option>Embout</option><option>Accessoire</option><option>Autre</option>
+        </select>
+      </div>
+      <button class="acc-add-sub" onclick="addAccToModal()">＋ Ajouter cet accessoire</button>
+    </div>
+    <div class="mbtns">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save" onclick="saveItem()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONTENEURS -->
+<div class="movl" id="ctr-modal">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title">Mes Caisses & Meubles</div>
+    <div class="ctr-list" id="ctr-list"></div>
+    <div style="border-top:1px solid var(--d3);padding-top:14px;margin-top:4px;">
+      <div class="m-title" id="ctr-form-title" style="font-size:18px;margin-bottom:12px;">Ajouter</div>
+      <div class="fg">
+        <label class="flbl">Type</label>
+        <div class="type-row" id="type-row">
+          <button class="type-btn active" onclick="selType(this,'caisse')">🧰 Caisse</button>
+          <button class="type-btn" onclick="selType(this,'meuble')">🗄️ Meuble</button>
+          <button class="type-btn" onclick="selType(this,'etagere')">📚 Étagère</button>
+          <button class="type-btn" onclick="selType(this,'autre')">📦 Autre</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="flbl">Nom *</label>
+        <input class="finput" id="ctr-name" type="text" placeholder="Caisse orange, Meuble brun...">
+      </div>
+      <div class="fg">
+        <label class="flbl">Icône</label>
+        <div class="icon-grid" id="icon-grid"></div>
+      </div>
+      <button class="btn-add-ctr" id="ctr-save-btn" onclick="saveCtr()">＋ Ajouter</button>
+    </div>
+    <div class="mbtns" style="margin-top:14px;">
+      <button class="btn-cancel" style="flex:1" onclick="closeCtrModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="imovl" id="img-modal" onclick="closeImgModal()">
+  <img id="im-img" src="" alt="">
+  <div class="im-name" id="im-name"></div>
+  <button class="im-close">Fermer</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="import-input" accept=".json" style="display:none">
+
+<script>
+// ══════════════════════════════════════════════
+// STOCKAGE INDEXEDDB — fiable, ne s'efface pas
+// ══════════════════════════════════════════════
+const DB_NAME = 'LaCaveDB';
+const DB_VER  = 1;
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('data')) {
+        d.createObjectStore('data', { keyPath: 'key' });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror   = e => reject(e);
+  });
+}
+
+function dbSet(key, value) {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction('data', 'readwrite');
+    const st  = tx.objectStore('data');
+    const req = st.put({ key, value: JSON.stringify(value) });
+    req.onsuccess = () => resolve();
+    req.onerror   = e => reject(e);
+  });
+}
+
+function dbGet(key) {
+  return new Promise((resolve, reject) => {
+    const tx  = db.transaction('data', 'readonly');
+    const st  = tx.objectStore('data');
+    const req = st.get(key);
+    req.onsuccess = e => {
+      const r = e.target.result;
+      resolve(r ? JSON.parse(r.value) : null);
+    };
+    req.onerror = e => reject(e);
+  });
+}
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const ICONS = {
+  caisse:  ['🧰','📦','🟠','🟡','🟤','⬛','🔴','🟢','🔵','🟣','🪣','🗃️'],
+  meuble:  ['🗄️','🪑','🛋️','🗂️','📁','🪞','🚪','🛏️','🪜','🧲','🔲','🗳️'],
+  etagere: ['📚','📋','🪤','📐','📏','🔩','🪛','🔧','⚙️','🛠️','🗜️','📌'],
+  autre:   ['📦','🪣','🧺','🗑️','♻️','🎁','💼','🧳','🪝','🔑','🏷️','📎'],
+};
+
+let S = { containers:[], items:[], open:{}, navFilter:'all' };
+let editId=null, currentPhoto=null, ctrEditId=null, selIcon='🧰', selTypeKey='caisse';
+let modalAccs=[];
+let saveTimer=null;
+
+async function loadState() {
+  await openDB();
+  // Essaie IndexedDB d'abord
+  const saved = await dbGet('state');
+  if (saved) {
+    S = Object.assign(S, saved);
+  } else {
+    // Essaie l'ancien localStorage comme migration
+    try {
+      const old = localStorage.getItem('cave-v4') || localStorage.getItem('cave-v3');
+      if (old) { S = Object.assign(S, JSON.parse(old)); await dbSet('state', S); }
+    } catch(e){}
+  }
+  if (!S.containers||!S.containers.length) {
+    S.containers=[{id:'c1',name:'Caisse 1',icon:'🧰'},{id:'c2',name:'Caisse 2',icon:'📦'},{id:'m1',name:'Meuble 1',icon:'🗄️'}];
+    S.open={c1:true,c2:true,m1:true};
+  }
+  if (!S.items) S.items=[];
+  if (!S.open)  S.open={};
+  render();
+}
+
+function persist() {
+  // Sauvegarde immédiate dans IndexedDB
+  dbSet('state', S).catch(()=>{
+    // Fallback localStorage
+    try { localStorage.setItem('cave-v5', JSON.stringify(S)); } catch(e){}
+  });
+  // Aussi dans localStorage comme double sauvegarde
+  try { localStorage.setItem('cave-v5', JSON.stringify(S)); } catch(e){}
+  // Indicateur visuel
+  showSaveIndicator();
+}
+
+function showSaveIndicator() {
+  const el = document.getElementById('save-ind');
+  el.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+// ══════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════
+function render() {
+  if (S.navFilter==='stats') { renderStats(); return; }
+  document.getElementById('main').style.display='';
+  document.getElementById('stats-view').classList.remove('open');
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  let html='';
+
+  S.containers.forEach(c => {
+    const allInC=S.items.filter(i=>i.cid===c.id);
+    const visible=allInC.filter(i=>{
+      if (S.navFilter!=='all'&&i.cat!==S.navFilter) return false;
+      if (q&&!i.name.toLowerCase().includes(q)&&!(i.desc||'').toLowerCase().includes(q)) return false;
+      return true;
+    });
+    const isOpen=S.open[c.id]!==false;
+    const tot=allInC.length;
+    const stk=allInC.reduce((a,i)=>a+(i.stock||0),0);
+
+    html+=`<div class="sec-block">
+      <div class="sec-hdr">
+        <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
+          <div class="sec-ico">${c.icon}</div>
+          <div class="sec-info">
+            <div class="sec-name">${c.name}</div>
+            <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
+          </div>
+          <div class="sec-right">
+            <span class="sbadge">${tot}</span>
+            <span class="chev ${isOpen?'open':''}">▼</span>
+          </div>
+        </div>
+        <button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button>
+      </div>
+      <div class="sec-body ${isOpen?'open':''}">
+        <div class="sec-body-in">
+          <div class="cat-row">
+            <button class="cat-pill active" onclick="localFilter(event,'all','${c.id}')">Tout</button>
+            <button class="cat-pill" onclick="localFilter(event,'Outillage','${c.id}')">🔨 Outillage</button>
+            <button class="cat-pill" onclick="localFilter(event,'Matériel','${c.id}')">📦 Matériel</button>
+          </div>
+          <button class="add-btn" onclick="openModal('${c.id}')">＋ &nbsp;Ajouter dans ${c.name}</button>
+          <div id="list-${c.id}">`;
+
+    if (visible.length===0) {
+      html+=`<div class="empty"><div class="eico">🛠️</div><p>Aucun article ici.<br>Appuyez sur <b>Ajouter</b>.</p></div>`;
+    } else {
+      visible.forEach(it=>{ html+=cardHTML(it); });
+    }
+    html+=`</div></div></div></div>`;
+  });
+
+  html+=`<button class="manage-btn" onclick="openCtrModal(null)">🗂️ &nbsp;Gérer les caisses &amp; meubles</button>`;
+  html+=`<div class="backup-section">
+    <button class="backup-btn export" onclick="exportData()">💾 Sauvegarder</button>
+    <button class="backup-btn import" onclick="document.getElementById('import-input').click()">📂 Restaurer</button>
+  </div>`;
+
+  document.getElementById('main').innerHTML=html;
+  document.getElementById('total-items').textContent=S.items.length;
+  document.getElementById('total-stock').textContent=S.items.reduce((a,i)=>a+(i.stock||0),0);
+}
+
+function cardHTML(it) {
+  const sc=it.stock===0?'c-zero':(it.stock<=(it.minS||1)?'c-low':'c-ok');
+  const cc=it.stock<=(it.minS||1)?'low-stock':'';
+  const cls=it.cat==='Outillage'?'ib-out':'ib-mat';
+  const ph=it.photo?`<img src="${it.photo}" alt=""><div class="povl">🔍</div>`:(it.cat==='Outillage'?'🔨':'📦');
+  const accs=it.accessories||[];
+
+  // Accessoires uniquement pour Outillage
+  const accHtml = it.cat!=='Outillage' ? '' : `
+    <div class="acc-section">
+      <div class="acc-title">
+        <span>🔩 Accessoires${accs.length>0?' ('+accs.length+')':''}</span>
+        <button class="acc-add-btn" onclick="quickAddAcc('${it.id}')">＋ Ajouter</button>
+      </div>
+      ${accs.length>0?`<div class="acc-list">${accs.map((a,i)=>`
+        <div class="acc-item">
+          <div style="flex:1;min-width:0;">
+            <div class="acc-name">${a.name}</div>
+            <div class="acc-type">${a.type}</div>
+          </div>
+          <div class="acc-ctr">
+            <button class="acc-btn m" onclick="chgAcc('${it.id}',${i},-1)">−</button>
+            <span class="acc-val ${a.stock===0?'c-zero':a.stock<=1?'c-low':'c-ok'}" id="av-${it.id}-${i}">${a.stock||0}</span>
+            <button class="acc-btn p" onclick="chgAcc('${it.id}',${i},1)">+</button>
+          </div>
+          <button class="acc-del" onclick="delAcc('${it.id}',${i})">🗑</button>
+        </div>`).join('')}</div>`:''}
+    </div>`;
+
+  return `<div class="item-card ${cc}" id="card-${it.id}">
+    <div class="item-top">
+      <div class="item-photo" onclick="viewPhoto('${it.id}')">${ph}</div>
+      <div class="item-info">
+        <div class="item-name">${it.name}</div>
+        <span class="ib ${cls}">${it.cat}</span>
+        ${it.desc?`<div class="item-desc">${it.desc}</div>`:''}
+      </div>
+      <div class="ctr-wrap">
+        <div class="ctr-row">
+          <button class="cbtn m" onclick="chgStock('${it.id}',-1)">−</button>
+          <span class="cval ${sc}" id="cv-${it.id}">${it.stock}</span>
+          <button class="cbtn p" onclick="chgStock('${it.id}',1)">+</button>
+        </div>
+        <div class="clbl">en stock</div>
+      </div>
+    </div>
+    ${accHtml}
+    <div class="item-bar">
+      <button class="ibar-btn" onclick="useIt('${it.id}')"><span class="ibar-ico">✅</span>Utiliser</button>
+      <button class="ibar-btn" onclick="editItem('${it.id}')"><span class="ibar-ico">✏️</span>Modifier</button>
+      <button class="ibar-btn" onclick="delItem('${it.id}')"><span class="ibar-ico">🗑️</span>Supprimer</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// ACCESSOIRES
+// ══════════════════════════════════════════════
+function chgAcc(itemId,idx,d) {
+  const it=S.items.find(i=>i.id===itemId); if(!it||!it.accessories) return;
+  it.accessories[idx].stock=Math.max(0,(it.accessories[idx].stock||0)+d);
+  persist();
+  const el=document.getElementById(`av-${itemId}-${idx}`);
+  if(el){ const s=it.accessories[idx].stock; el.className='acc-val '+(s===0?'c-zero':s<=1?'c-low':'c-ok'); el.textContent=s; }
+  if(it.accessories[idx].stock===0) toast(`⚠️ ${it.accessories[idx].name} — épuisé !`);
+}
+
+function delAcc(itemId,idx) {
+  const it=S.items.find(i=>i.id===itemId); if(!it) return;
+  it.accessories.splice(idx,1); persist(); render();
+}
+
+function quickAddAcc(itemId) {
+  const name=prompt('Nom de l\'accessoire/lame :'); if(!name||!name.trim()) return;
+  const it=S.items.find(i=>i.id===itemId); if(!it) return;
+  if(!it.accessories) it.accessories=[];
+  it.accessories.push({name:name.trim(),type:'Accessoire',stock:1});
+  persist(); render(); toast('✅ Accessoire ajouté');
+}
+
+function addAccToModal() {
+  const name=document.getElementById('acc-new-name').value.trim();
+  const type=document.getElementById('acc-new-type').value;
+  if(!name){ toast('⚠️ Saisissez un nom'); return; }
+  modalAccs.push({name,type,stock:1});
+  document.getElementById('acc-new-name').value='';
+  renderModalAccs();
+}
+
+function renderModalAccs() {
+  const el=document.getElementById('acc-modal-list'); if(!el) return;
+  el.innerHTML=modalAccs.map((a,i)=>`
+    <div class="acc-modal-item">
+      <span>🔩</span>
+      <span class="acc-modal-name">${a.name} <span style="color:var(--tm);font-size:11px">(${a.type})</span></span>
+      <button class="acc-modal-del" onclick="removeModalAcc(${i})">🗑</button>
+    </div>`).join('');
+}
+
+function removeModalAcc(i) { modalAccs.splice(i,1); renderModalAccs(); }
+
+// ══════════════════════════════════════════════
+// STOCK
+// ══════════════════════════════════════════════
+function chgStock(id,d) {
+  const it=S.items.find(i=>i.id===id); if(!it) return;
+  it.stock=Math.max(0,(it.stock||0)+d); persist();
+  const el=document.getElementById(`cv-${id}`);
+  if(el){ el.className='cval '+(it.stock===0?'c-zero':it.stock<=(it.minS||1)?'c-low':'c-ok'); el.textContent=it.stock; }
+  const card=document.getElementById(`card-${id}`);
+  if(card) card.classList.toggle('low-stock',it.stock<=(it.minS||1));
+  document.getElementById('total-stock').textContent=S.items.reduce((a,i)=>a+(i.stock||0),0);
+  if(it.stock===0) toast(`⚠️ ${it.name} — Stock épuisé !`);
+  else if(it.stock<=(it.minS||1)) toast(`🟡 ${it.name} — Stock bas`);
+}
+
+function useIt(id){ chgStock(id,-1); toast('✅ Article utilisé'); }
+
+// ══════════════════════════════════════════════
+// MODAL ARTICLE
+// ══════════════════════════════════════════════
+function openModal(cid) {
+  editId=null; currentPhoto=null; modalAccs=[];
+  document.getElementById('m-title').textContent='Ajouter un article';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-stock').value='1';
+  document.getElementById('f-min').value='1';
+  resetPhotoUI(); selCat('Outillage'); fillCtrSelect(cid); renderModalAccs();
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function editItem(id) {
+  const it=S.items.find(i=>i.id===id); if(!it) return;
+  editId=id; currentPhoto=it.photo||null; modalAccs=[...(it.accessories||[])];
+  document.getElementById('m-title').textContent='Modifier';
+  document.getElementById('f-name').value=it.name;
+  document.getElementById('f-desc').value=it.desc||'';
+  document.getElementById('f-stock').value=it.stock;
+  document.getElementById('f-min').value=it.minS||1;
+  selCat(it.cat); fillCtrSelect(it.cid); setPhotoUI(it.photo); renderModalAccs();
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('add-modal').classList.remove('open'); }
+
+function fillCtrSelect(sel) {
+  const s=document.getElementById('f-ctr');
+  s.innerHTML='<option value="">-- Choisir --</option>';
+  S.containers.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=`${c.icon} ${c.name}`; if(c.id===sel) o.selected=true; s.appendChild(o); });
+}
+
+function selCat(cat) {
+  document.getElementById('btn-out').classList.toggle('active',cat==='Outillage');
+  document.getElementById('btn-mat').classList.toggle('active',cat==='Matériel');
+  const acc=document.getElementById('acc-section-modal');
+  if(acc) acc.style.display=cat==='Outillage'?'':'none';
+}
+function getCat(){ return document.getElementById('btn-out').classList.contains('active')?'Outillage':'Matériel'; }
+
+function saveItem() {
+  const name=document.getElementById('f-name').value.trim();
+  const cid=document.getElementById('f-ctr').value;
+  if(!name){ toast('⚠️ Veuillez saisir un nom'); return; }
+  if(!cid){ toast('⚠️ Choisissez un conteneur'); return; }
+  const item={
+    id: editId||'i'+Date.now(), name, cid,
+    desc:  document.getElementById('f-desc').value.trim(),
+    stock: parseInt(document.getElementById('f-stock').value)||0,
+    minS:  parseInt(document.getElementById('f-min').value)||1,
+    cat:   getCat(), photo: currentPhoto||null,
+    accessories: getCat()==='Outillage'?[...modalAccs]:[]
+  };
+  if(editId){ const i=S.items.findIndex(x=>x.id===editId); if(i>=0) S.items[i]=item; }
+  else { S.items.push(item); }
+  persist(); render(); closeModal();
+  toast(editId?'✅ Article modifié':'✅ Article ajouté');
+}
+
+function delItem(id) {
+  if(!confirm('Supprimer cet article ?')) return;
+  S.items=S.items.filter(i=>i.id!==id); persist(); render(); toast('🗑️ Supprimé');
+}
+
+// ══════════════════════════════════════════════
+// PHOTO
+// ══════════════════════════════════════════════
+function triggerPhoto() {
+  const old=document.getElementById('file-input-ph'); if(old) old.remove();
+  const inp=document.createElement('input');
+  inp.type='file'; inp.id='file-input-ph'; inp.accept='image/*';
+  inp.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+  inp.addEventListener('change',handlePhoto); document.body.appendChild(inp); inp.click();
+}
+function handlePhoto(e) {
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ currentPhoto=ev.target.result; setPhotoUI(currentPhoto); };
+  r.readAsDataURL(f);
+}
+function setPhotoUI(src) {
+  const t=document.getElementById('photo-thumb'); const b=document.getElementById('photo-clear-btn');
+  if(src){ t.innerHTML=`<img src="${src}">`; if(b) b.style.display=''; }
+  else { resetPhotoUI(); }
+}
+function resetPhotoUI() {
+  const t=document.getElementById('photo-thumb'); const b=document.getElementById('photo-clear-btn');
+  if(t) t.innerHTML='📷'; if(b) b.style.display='none';
+}
+function clearPhoto(){ currentPhoto=null; resetPhotoUI(); }
+function viewPhoto(id) {
+  const it=S.items.find(i=>i.id===id); if(!it||!it.photo){ toast('Aucune photo'); return; }
+  document.getElementById('im-img').src=it.photo;
+  document.getElementById('im-name').textContent=it.name;
+  document.getElementById('img-modal').classList.add('open');
+}
+function closeImgModal(){ document.getElementById('img-modal').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+// SAUVEGARDE / RESTAURATION
+// ══════════════════════════════════════════════
+function exportData() {
+  const data=JSON.stringify(S,null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const date=new Date().toISOString().slice(0,10);
+  a.href=url; a.download=`la-cave-${date}.json`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('💾 Sauvegarde téléchargée !');
+}
+
+document.getElementById('import-input').addEventListener('change',function(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try {
+      const data=JSON.parse(ev.target.result);
+      if(!data.containers||!data.items){ toast('❌ Fichier invalide'); return; }
+      if(confirm('Restaurer ? Les données actuelles seront remplacées.')){
+        S=data; persist(); render(); toast('✅ Données restaurées !');
+      }
+    } catch(e){ toast('❌ Erreur lecture fichier'); }
+  };
+  r.readAsText(f); e.target.value='';
+});
+
+// ══════════════════════════════════════════════
+// CONTENEURS
+// ══════════════════════════════════════════════
+function openCtrModal(editCid) {
+  ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰';
+  if(editCid){ const c=S.containers.find(x=>x.id===editCid); if(c){ document.getElementById('ctr-name').value=c.name; selIcon=c.icon; document.getElementById('ctr-form-title').textContent='Modifier'; document.getElementById('ctr-save-btn').textContent='💾 Enregistrer'; } }
+  else { document.getElementById('ctr-name').value=''; document.getElementById('ctr-form-title').textContent='Ajouter'; document.getElementById('ctr-save-btn').textContent='＋ Ajouter'; }
+  renderCtrList(); renderIconGrid(); document.getElementById('ctr-modal').classList.add('open');
+}
+function closeCtrModal(){ document.getElementById('ctr-modal').classList.remove('open'); }
+function renderCtrList() {
+  document.getElementById('ctr-list').innerHTML=S.containers.map(c=>{
+    const cnt=S.items.filter(i=>i.cid===c.id).length;
+    return `<div class="ctr-item"><span style="font-size:22px">${c.icon}</span><div style="flex:1"><div class="ctr-item-name">${c.name}</div><div class="ctr-item-cnt">${cnt} article${cnt!==1?'s':''}</div></div><button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button><button class="ctr-del-btn" onclick="delCtr('${c.id}')">🗑</button></div>`;
+  }).join('');
+}
+function renderIconGrid() {
+  const icons=ICONS[selTypeKey]||ICONS.autre;
+  document.getElementById('icon-grid').innerHTML=icons.map(ic=>`<button class="ico-btn ${ic===selIcon?'active':''}" onclick="pickIcon('${ic}')">${ic}</button>`).join('');
+}
+function selType(btn,type) {
+  document.querySelectorAll('#type-row .type-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); selTypeKey=type; selIcon=ICONS[type][0]; renderIconGrid();
+}
+function pickIcon(ic){ selIcon=ic; document.querySelectorAll('.ico-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===ic)); }
+function saveCtr() {
+  const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
+  if(ctrEditId){ const c=S.containers.find(x=>x.id===ctrEditId); if(c){c.name=name;c.icon=selIcon;} toast(`✅ ${name} modifié`); }
+  else { const id='c'+Date.now(); S.containers.push({id,name,icon:selIcon}); S.open[id]=true; toast(`✅ ${name} ajouté`); }
+  persist(); ctrEditId=null; document.getElementById('ctr-name').value=''; document.getElementById('ctr-form-title').textContent='Ajouter'; document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
+  renderCtrList(); render();
+}
+function delCtr(id) {
+  const c=S.containers.find(x=>x.id===id); const cnt=S.items.filter(i=>i.cid===id).length;
+  if(!confirm(`Supprimer "${c?.name}"${cnt>0?` et ses ${cnt} articles`:''}?`)) return;
+  S.containers=S.containers.filter(x=>x.id!==id); S.items=S.items.filter(i=>i.cid!==id);
+  persist(); renderCtrList(); render(); toast('🗑️ Supprimé');
+}
+
+// ══════════════════════════════════════════════
+// NAV / FILTRES
+// ══════════════════════════════════════════════
+function setNav(btn,filter) {
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); S.navFilter=filter;
+  if(filter==='stats') renderStats();
+  else { document.getElementById('main').style.display=''; document.getElementById('stats-view').classList.remove('open'); render(); }
+}
+function localFilter(e,cat,cid) {
+  e.target.closest('.cat-row').querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active')); e.target.classList.add('active');
+  S.items.filter(i=>i.cid===cid).forEach(it=>{ const el=document.getElementById(`card-${it.id}`); if(el) el.style.display=(cat==='all'||it.cat===cat)?'':'none'; });
+}
+function toggleSec(id){ S.open[id]=!(S.open[id]!==false); persist(); render(); }
+
+// ══════════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════════
+function renderStats() {
+  document.getElementById('main').style.display='none'; document.getElementById('stats-view').classList.add('open');
+  const total=S.items.length, tStk=S.items.reduce((a,i)=>a+(i.stock||0),0);
+  const out=S.items.filter(i=>i.cat==='Outillage').length, mat=S.items.filter(i=>i.cat==='Matériel').length;
+  const low=S.items.filter(i=>i.stock<=(i.minS||1)&&i.stock>0).length, empty=S.items.filter(i=>i.stock===0).length;
+  const totalAccs=S.items.reduce((a,i)=>a+(i.accessories||[]).length,0);
+  let h=`<div class="stat-card"><div class="stat-title">Vue d'ensemble</div>
+    <div class="stat-row"><span class="stat-label">Total articles</span><span class="stat-val">${total}</span></div>
+    <div class="stat-row"><span class="stat-label">Total accessoires</span><span class="stat-val">${totalAccs}</span></div>
+    <div class="stat-row"><span class="stat-label">Stock total</span><span class="stat-val">${tStk}</span></div>
+    <div class="stat-row"><span class="stat-label">Stock bas</span><span class="stat-val yel">${low}</span></div>
+    <div class="stat-row"><span class="stat-label">Stock épuisé</span><span class="stat-val red">${empty}</span></div>
+  </div>
+  <div class="stat-card"><div class="stat-title">Par catégorie</div>
+    <div class="stat-row"><span class="stat-label">🔨 Outillage</span><span class="stat-val">${out}</span></div>
+    <div style="padding:4px 0 8px"><div class="progress-bar"><div class="progress-fill" style="width:${total?Math.round(out/total*100):0}%"></div></div></div>
+    <div class="stat-row"><span class="stat-label">📦 Matériel</span><span class="stat-val">${mat}</span></div>
+    <div style="padding:4px 0 8px"><div class="progress-bar"><div class="progress-fill" style="width:${total?Math.round(mat/total*100):0}%"></div></div></div>
+  </div>`;
+  S.containers.forEach(c=>{ const inC=S.items.filter(i=>i.cid===c.id); const stk=inC.reduce((a,i)=>a+(i.stock||0),0); h+=`<div class="stat-card"><div class="stat-title">${c.icon} ${c.name}</div><div class="stat-row"><span class="stat-label">Articles</span><span class="stat-val">${inC.length}</span></div><div class="stat-row"><span class="stat-label">Stock total</span><span class="stat-val">${stk}</span></div></div>`; });
+  document.getElementById('stats-content').innerHTML=h;
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+let _tt;
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2500); }
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+loadState();
+</script>
+</body>
+</html>
