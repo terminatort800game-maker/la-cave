@@ -898,5 +898,9 @@ function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg
 // ══════════════════════════════════════════════
 loadState();
 </script>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('
+}  </script>
 </body>
 </html>
