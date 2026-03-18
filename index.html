@@ -146,8 +146,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .stock-row .finput{flex:1;}
 .stock-lbl{font-size:11px;color:var(--tm);flex-shrink:0;white-space:nowrap;}
 
-.cat-sel{display:flex;gap:8px;}
-.csbtn{flex:1;padding:10px 8px;border-radius:10px;border:2px solid var(--d4);background:none;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s;text-align:center;}
+.cat-sel{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+.csbtn{padding:10px 4px;border-radius:10px;border:2px solid var(--d4);background:none;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .18s;text-align:center;}
 .csbtn.cs-out.active{background:rgba(106,176,35,.18);border-color:var(--g);color:var(--gl);}
 .csbtn.cs-mat.active{background:rgba(255,214,0,.12);border-color:var(--yel);color:var(--yel);}
 .csbtn.cs-paint.active{background:rgba(255,100,100,.12);border-color:#FF6464;color:#FF9090;}
@@ -161,7 +161,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ib-menu{background:rgba(180,120,60,.15);color:#D4A060;border:1px solid rgba(180,120,60,.3);}
 .ib-voiture{background:rgba(150,150,255,.12);color:#AAAAFF;border:1px solid rgba(150,150,255,.3);}
 .csbtn.cs-voiture.active{background:rgba(150,150,255,.15);border-color:#AAAAFF;color:#CCCCFF;}
-.cat-sel .csbtn{min-width:calc(33% - 6px);}
+.csbtn.cs-jardin.active{background:rgba(50,200,100,.15);border-color:#32C864;color:#64E896;}
+.ib-jardin{background:rgba(50,200,100,.12);color:#64E896;border:1px solid rgba(50,200,100,.3);}
+/* cat-sel utilise grid - pas besoin de flex sur csbtn */
 .nav-sub-btn{padding:10px 14px;background:none;border:none;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border-radius:8px;text-align:left;white-space:nowrap;transition:all .18s;}
 .nav-sub-btn:active{background:var(--g);color:var(--blk);}
 .nav-sub-btn.active{color:var(--g);background:rgba(106,176,35,.1);}
@@ -304,6 +306,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <button class="nav-sub-btn" id="sub-plomb" onclick="setNavSub('Plomberie')">🔧 Plomberie</button>
     <button class="nav-sub-btn" id="sub-menu" onclick="setNavSub('Menuiserie')">🪵 Menuiserie</button>
     <button class="nav-sub-btn" id="sub-voiture" onclick="setNavSub('Voiture')">🚗 Voiture</button>
+    <button class="nav-sub-btn" id="sub-jardin" onclick="setNavSub('Jardin')">🪴 Jardin</button>
   </div>
 </div>
 
@@ -326,14 +329,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
     <div class="fg">
       <label class="flbl">Catégorie</label>
-      <div class="cat-sel" style="flex-wrap:wrap;gap:6px;">
+      <div class="cat-sel">
         <button class="csbtn cs-out active" id="btn-out" onclick="selCat('Outillage')">🔨 Outillage</button>
         <button class="csbtn cs-mat" id="btn-mat" onclick="selCat('Matériel')">📦 Matériel</button>
         <button class="csbtn cs-paint" id="btn-paint" onclick="selCat('Peinture')">🎨 Peinture</button>
         <button class="csbtn cs-elec" id="btn-elec" onclick="selCat('Électricité')">⚡ Électricité</button>
         <button class="csbtn cs-plomb" id="btn-plomb" onclick="selCat('Plomberie')">🔧 Plomberie</button>
         <button class="csbtn cs-menu" id="btn-menu" onclick="selCat('Menuiserie')">🪵 Menuiserie</button>
-        <button class="csbtn cs-voiture" id="btn-voiture" onclick="selCat('Voiture')" style="min-width:120px;">🚗 Voiture</button>
+        <button class="csbtn cs-voiture" id="btn-voiture" onclick="selCat('Voiture')">🚗 Voiture</button>
+        <button class="csbtn cs-jardin" id="btn-jardin" onclick="selCat('Jardin')">🪴 Jardin</button>
       </div>
     </div>
     <div class="fg">
@@ -647,6 +651,7 @@ function render() {
             <button class="cat-pill" onclick="localFilter(event,'Plomberie','${c.id}')">🔧 Plomberie</button>
             <button class="cat-pill" onclick="localFilter(event,'Menuiserie','${c.id}')">🪵 Menuiserie</button>
             <button class="cat-pill" onclick="localFilter(event,'Voiture','${c.id}')">🚗 Voiture</button>
+            <button class="cat-pill" onclick="localFilter(event,'Jardin','${c.id}')">🪴 Jardin</button>
           </div>
           <button class="add-btn" onclick="openModal('${c.id}')">＋ &nbsp;Ajouter dans ${c.name}</button>
           <div id="list-${c.id}">`;
@@ -673,7 +678,7 @@ function render() {
 function cardHTML(it) {
   const sc=it.stock===0?'c-zero':(it.stock<=(it.minS||1)?'c-low':'c-ok');
   const cc=it.stock<=(it.minS||1)?'low-stock':'';
-  const catClsMap={'Outillage':'ib-out','Matériel':'ib-mat','Peinture':'ib-paint','Électricité':'ib-elec','Plomberie':'ib-plomb','Menuiserie':'ib-menu','Voiture':'ib-voiture'};
+  const catClsMap={'Outillage':'ib-out','Matériel':'ib-mat','Peinture':'ib-paint','Électricité':'ib-elec','Plomberie':'ib-plomb','Menuiserie':'ib-menu','Voiture':'ib-voiture','Jardin':'ib-jardin'};
   const cls=catClsMap[it.cat]||'ib-mat';
   const photos=(it.photos&&it.photos.length)?it.photos:(it.photo?[it.photo]:[]);
   const ph=photos.length?`<img src="${photos[0]}" alt=""><div class="povl">🔍</div>`:(it.cat==='Outillage'?'🔨':'📦');
@@ -841,13 +846,13 @@ function selCat(cat) {
   ['btn-out','btn-mat','btn-paint','btn-elec','btn-plomb','btn-menu'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
-  const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture'};
+  const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin'};
   const btn=document.getElementById(map[cat]); if(btn) btn.classList.add('active');
   const acc=document.getElementById('acc-section-modal');
   if(acc) acc.style.display=cat==='Outillage'?'':'none';
 }
 function getCat(){
-  const map={'btn-out':'Outillage','btn-mat':'Matériel','btn-paint':'Peinture','btn-elec':'Électricité','btn-plomb':'Plomberie','btn-menu':'Menuiserie','btn-voiture':'Voiture'};
+  const map={'btn-out':'Outillage','btn-mat':'Matériel','btn-paint':'Peinture','btn-elec':'Électricité','btn-plomb':'Plomberie','btn-menu':'Menuiserie','btn-voiture':'Voiture','btn-jardin':'Jardin'};
   for(const [id,cat] of Object.entries(map)){
     const el=document.getElementById(id);
     if(el&&el.classList.contains('active')) return cat;
@@ -1187,7 +1192,7 @@ function setNavSub(filter){
   document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.nav-sub-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-materiel').classList.add('active');
-  const subMap={'Matériel':'sub-materiel','Peinture':'sub-peinture','Électricité':'sub-elec','Plomberie':'sub-plomb','Menuiserie':'sub-menu','Voiture':'sub-voiture'};
+  const subMap={'Matériel':'sub-materiel','Peinture':'sub-peinture','Électricité':'sub-elec','Plomberie':'sub-plomb','Menuiserie':'sub-menu','Voiture':'sub-voiture','Jardin':'sub-jardin'};
   const subBtn=document.getElementById(subMap[filter]);
   if(subBtn) subBtn.classList.add('active');
   S.navFilter=filter;
@@ -1263,6 +1268,7 @@ const NOMS_MATERIEL = ['Planche','Panneau','Tasseau','Poutre','Chevron','Parpain
 const NOMS_PEINTURE = ['Peinture blanche','Peinture grise','Peinture beige','Peinture bleue','Peinture verte','Apprêt','Sous-couche','Vernis','Lasure','Peinture extérieure','Peinture sol','Rouleau','Pinceau','Plateau de peinture','Bâche de protection','Scotch de masquage','Dégraissant','Décapant'];
 const NOMS_ELECTRIQUE = ['Câble 1.5mm','Câble 2.5mm','Câble 4mm','Câble 6mm','Gaine','Boîte de dérivation','Disjoncteur','Interrupteur','Prise','Prise extérieure','Tableau électrique','Domino','Connecteur','Ampoule LED','Spot','Réglette','Minuterie','Détecteur de mouvement'];
 const NOMS_PLOMBERIE = ['Tuyau PVC','Tuyau cuivre','Tuyau multicouche','Raccord coudé','Raccord T','Vanne','Robinet','Mitigeur','Siphon','Joint plomberie','Colle PVC','Ruban téflon','Bonde','Flexible','Robinet équerre'];
+const NOMS_JARDIN = ['Tondeuse','Taille-haie','Tronçonneuse','Débroussailleuse','Souffleur','Arrosoir','Tuyau arrosage','Asperseur','Pelle','Râteau','Bêche','Fourche','Sécateur','Scie égoïne','Brouette','Composteur','Pot','Terreau','Engrais','Produit anti-insectes','Produit anti-limaces','Désherbant','Graines','Bulbes','Tuteur','Bâche','Filet anti-oiseaux','Serre'];
 const NOMS_VOITURE = ['Huile moteur','Filtre à huile','Filtre à air','Filtre à carburant','Filtre habitacle','Bougie','Plaquette de frein','Disque de frein','Amortisseur','Courroie','Batterie','Ampoule','Essuie-glace','Liquide de frein','Liquide refroidissement','Liquide direction','Pneu','Jante','Enjoliveur','Câble batterie','Fusible','Courroie accessoire','Pompe à eau','Alternateur','Démarreur','Thermostat'];
 const NOMS_MENUISERIE = ['Planche pin','Planche chêne','Planche MDF','Planche OSB','Contre-plaqué','Tasseau','Moulure','Parquet','Lame de terrasse','Porte','Fenêtre','Plinthe','Quart de rond','Charnière','Poignée','Serrure','Verrou'];
 
@@ -1275,6 +1281,7 @@ function getNomsByCategory() {
   if(cat==='Plomberie') return NOMS_PLOMBERIE;
   if(cat==='Menuiserie') return NOMS_MENUISERIE;
   if(cat==='Voiture') return NOMS_VOITURE;
+  if(cat==='Jardin') return NOMS_JARDIN;
   return [];
 }
 
@@ -1322,7 +1329,7 @@ document.addEventListener('click',function(e){
 // ══════════════════════════════════════════════
 // ACHATS
 // ══════════════════════════════════════════════
-const ACHATS_CATS = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture'];
+const ACHATS_CATS = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture','Jardin'];
 const ACHATS_NOMS = {
   'Outillage': NOMS_OUTILLAGE,
   'Matériel': NOMS_MATERIEL,
@@ -1331,6 +1338,7 @@ const ACHATS_NOMS = {
   'Plomberie': NOMS_PLOMBERIE,
   'Menuiserie': NOMS_MENUISERIE,
   'Voiture': NOMS_VOITURE,
+  'Jardin': NOMS_JARDIN,
 };
 let achatFilter = 'all';
 
