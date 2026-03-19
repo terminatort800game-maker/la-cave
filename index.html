@@ -438,8 +438,26 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <input class="finput" id="ctr-name" type="text" placeholder="Caisse orange, Meuble brun...">
       </div>
       <div class="fg">
-        <label class="flbl">Icône</label>
-        <div class="icon-grid" id="icon-grid"></div>
+        <label class="flbl">Icône ou Photo</label>
+        <!-- Tabs icône/photo -->
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <button id="tab-icon" onclick="switchCtrTab('icon')" style="flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">🎨 Icône</button>
+          <button id="tab-photo" onclick="switchCtrTab('photo')" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">📷 Photo</button>
+        </div>
+        <div id="ctr-icon-section">
+          <div class="icon-grid" id="icon-grid"></div>
+        </div>
+        <div id="ctr-photo-section" style="display:none;">
+          <input type="file" id="ctr-photo-input" accept="image/*" style="display:none" onchange="handleCtrPhoto(event)">
+          <label for="ctr-photo-input" style="display:flex;align-items:center;gap:12px;background:var(--d3);border:2px dashed var(--d4);border-radius:10px;padding:14px;cursor:pointer;">
+            <div id="ctr-photo-preview" style="width:52px;height:52px;border-radius:8px;background:var(--d4);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;flex-shrink:0;">📷</div>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--tx);">📁 Choisir une photo</div>
+              <div style="font-size:11px;color:var(--tdim);margin-top:3px;">Photo pour ce conteneur</div>
+            </div>
+          </label>
+          <button onclick="clearCtrPhoto()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer la photo</button>
+        </div>
       </div>
       <button class="btn-add-ctr" id="ctr-save-btn" onclick="saveCtr()">＋ Ajouter</button>
     </div>
@@ -456,27 +474,29 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 
 <!-- MODAL ROGNER -->
-<div id="crop-modal" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.96);flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+<div id="crop-modal" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.96);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gl);">✂️ Ajuster la photo</div>
-  <div id="crop-container" style="position:relative;width:90vw;height:60vw;max-width:400px;max-height:280px;overflow:hidden;border:2px solid var(--g);border-radius:12px;background:#000;touch-action:none;">
-    <img id="crop-img" style="position:absolute;transform-origin:top left;cursor:move;" draggable="false">
+  <div id="crop-container" style="position:relative;width:88vw;height:66vw;max-width:380px;max-height:285px;overflow:hidden;border:2px solid var(--g);border-radius:12px;background:#111;touch-action:none;cursor:move;">
+    <canvas id="crop-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
   </div>
-  <!-- Contrôles -->
-  <div style="display:flex;flex-direction:column;gap:8px;width:90vw;max-width:400px;">
+  <div style="display:flex;flex-direction:column;gap:10px;width:88vw;max-width:380px;">
     <div style="display:flex;align-items:center;gap:10px;">
-      <span style="color:var(--tm);font-size:12px;width:60px;">Zoom</span>
-      <input type="range" id="crop-zoom" min="50" max="300" value="100" style="flex:1;accent-color:var(--g);" oninput="applyCropTransform()">
-      <span id="crop-zoom-val" style="color:var(--gl);font-size:12px;width:40px;">100%</span>
+      <span style="color:var(--tm);font-size:12px;width:50px;">🔍 Zoom</span>
+      <input type="range" id="crop-zoom" min="10" max="400" value="100" style="flex:1;accent-color:var(--g);" oninput="drawCrop()">
+      <span id="crop-zoom-val" style="color:var(--gl);font-size:12px;width:40px;text-align:right;">100%</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
-      <span style="color:var(--tm);font-size:12px;width:60px;">Rotation</span>
-      <input type="range" id="crop-rot" min="-180" max="180" value="0" style="flex:1;accent-color:var(--g);" oninput="applyCropTransform()">
-      <span id="crop-rot-val" style="color:var(--gl);font-size:12px;width:40px;">0°</span>
+      <span style="color:var(--tm);font-size:12px;width:50px;">↻ Rotation</span>
+      <input type="range" id="crop-rot" min="-180" max="180" value="0" style="flex:1;accent-color:var(--g);" oninput="drawCrop()">
+      <span id="crop-rot-val" style="color:var(--gl);font-size:12px;width:40px;text-align:right;">0°</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="cropReset()" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">↺ Réinitialiser</button>
     </div>
   </div>
-  <div style="display:flex;gap:10px;width:90vw;max-width:400px;">
-    <button onclick="closeCropModal()" style="flex:1;padding:12px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;cursor:pointer;">Annuler</button>
-    <button onclick="confirmCrop()" style="flex:2;padding:12px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;cursor:pointer;">✅ Valider</button>
+  <div style="display:flex;gap:10px;width:88vw;max-width:380px;">
+    <button onclick="closeCropModal()" style="flex:1;padding:13px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;cursor:pointer;">Annuler</button>
+    <button onclick="confirmCrop()" style="flex:2;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;cursor:pointer;">✅ Valider</button>
   </div>
 </div>
 
@@ -628,7 +648,7 @@ function render() {
     html+=`<div class="sec-block">
       <div class="sec-hdr">
         <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
-          <div class="sec-ico">${c.icon}</div>
+          <div class="sec-ico" style="overflow:hidden;">${c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}</div>
           <div class="sec-info">
             <div class="sec-name">${c.name}</div>
             <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
@@ -934,9 +954,13 @@ function handlePhotoCamera(e){
   handlePhotoSlot(e, slot);
 }
 
+// ══════════════════════════════════════════════
+// CROP — système canvas fiable
+// ══════════════════════════════════════════════
 let cropSlot = null;
-let cropDrag = {active:false, startX:0, startY:0, imgX:0, imgY:0};
-let cropImgPos = {x:0, y:0};
+let cropImg = new Image();
+let cropState = { x:0, y:0, zoom:100, rot:0 };
+let cropDrag = { active:false, lastX:0, lastY:0 };
 
 function handlePhotoSlot(e, slot) {
   const f=e.target.files&&e.target.files[0]; if(!f) return;
@@ -948,58 +972,100 @@ function handlePhotoSlot(e, slot) {
 
 function openCropModal(src, slot) {
   cropSlot = slot;
-  cropImgPos = {x:0, y:0};
-  const modal = document.getElementById('crop-modal');
-  const img = document.getElementById('crop-img');
-  modal.style.display='flex';
-  document.getElementById('crop-zoom').value=100;
-  document.getElementById('crop-rot').value=0;
-  document.getElementById('crop-zoom-val').textContent='100%';
-  document.getElementById('crop-rot-val').textContent='0°';
-  img.onload = () => { applyCropTransform(); };
-  img.src = src;
+  cropState = { x:0, y:0, zoom:100, rot:0 };
+  document.getElementById('crop-zoom').value = 100;
+  document.getElementById('crop-rot').value = 0;
+  document.getElementById('crop-zoom-val').textContent = '100%';
+  document.getElementById('crop-rot-val').textContent = '0°';
+  document.getElementById('crop-modal').style.display = 'flex';
 
-  // Touch drag
+  cropImg = new Image();
+  cropImg.onload = () => {
+    // Zoom initial pour remplir le container
+    const container = document.getElementById('crop-container');
+    const cW = container.offsetWidth;
+    const cH = container.offsetHeight;
+    const scaleW = cW / cropImg.width;
+    const scaleH = cH / cropImg.height;
+    const initZoom = Math.max(scaleW, scaleH) * 100;
+    cropState.zoom = Math.round(initZoom);
+    document.getElementById('crop-zoom').value = cropState.zoom;
+    document.getElementById('crop-zoom-val').textContent = cropState.zoom + '%';
+    drawCrop();
+  };
+  cropImg.src = src;
+
+  // Events tactiles
   const container = document.getElementById('crop-container');
   container.ontouchstart = e2 => {
     if(e2.touches.length===1){
+      e2.preventDefault();
       cropDrag.active=true;
-      cropDrag.startX=e2.touches[0].clientX - cropImgPos.x;
-      cropDrag.startY=e2.touches[0].clientY - cropImgPos.y;
+      cropDrag.lastX=e2.touches[0].clientX;
+      cropDrag.lastY=e2.touches[0].clientY;
     }
   };
   container.ontouchmove = e2 => {
-    if(cropDrag.active&&e2.touches.length===1){
-      e2.preventDefault();
-      cropImgPos.x = e2.touches[0].clientX - cropDrag.startX;
-      cropImgPos.y = e2.touches[0].clientY - cropDrag.startY;
-      applyCropTransform();
-    }
+    if(!cropDrag.active||e2.touches.length!==1) return;
+    e2.preventDefault();
+    const dx = e2.touches[0].clientX - cropDrag.lastX;
+    const dy = e2.touches[0].clientY - cropDrag.lastY;
+    cropDrag.lastX = e2.touches[0].clientX;
+    cropDrag.lastY = e2.touches[0].clientY;
+    cropState.x += dx;
+    cropState.y += dy;
+    drawCrop();
   };
   container.ontouchend = () => { cropDrag.active=false; };
-  // Mouse drag
+  // Events souris
   container.onmousedown = e2 => {
     cropDrag.active=true;
-    cropDrag.startX=e2.clientX - cropImgPos.x;
-    cropDrag.startY=e2.clientY - cropImgPos.y;
+    cropDrag.lastX=e2.clientX;
+    cropDrag.lastY=e2.clientY;
   };
   container.onmousemove = e2 => {
-    if(cropDrag.active){
-      cropImgPos.x = e2.clientX - cropDrag.startX;
-      cropImgPos.y = e2.clientY - cropDrag.startY;
-      applyCropTransform();
-    }
+    if(!cropDrag.active) return;
+    cropState.x += e2.clientX - cropDrag.lastX;
+    cropState.y += e2.clientY - cropDrag.lastY;
+    cropDrag.lastX = e2.clientX;
+    cropDrag.lastY = e2.clientY;
+    drawCrop();
   };
   container.onmouseup = () => { cropDrag.active=false; };
 }
 
-function applyCropTransform() {
-  const zoom = document.getElementById('crop-zoom').value;
-  const rot  = document.getElementById('crop-rot').value;
-  document.getElementById('crop-zoom-val').textContent = zoom+'%';
-  document.getElementById('crop-rot-val').textContent  = rot+'°';
-  const img = document.getElementById('crop-img');
-  img.style.transform = `translate(${cropImgPos.x}px,${cropImgPos.y}px) scale(${zoom/100}) rotate(${rot}deg)`;
+function drawCrop() {
+  const container = document.getElementById('crop-container');
+  const canvas = document.getElementById('crop-canvas');
+  const cW = container.offsetWidth;
+  const cH = container.offsetHeight;
+  canvas.width = cW;
+  canvas.height = cH;
+  const ctx = canvas.getContext('2d');
+  cropState.zoom = parseInt(document.getElementById('crop-zoom').value);
+  cropState.rot  = parseInt(document.getElementById('crop-rot').value);
+  document.getElementById('crop-zoom-val').textContent = cropState.zoom + '%';
+  document.getElementById('crop-rot-val').textContent  = cropState.rot + '°';
+  ctx.clearRect(0,0,cW,cH);
+  ctx.save();
+  ctx.translate(cW/2 + cropState.x, cH/2 + cropState.y);
+  ctx.rotate(cropState.rot * Math.PI/180);
+  ctx.scale(cropState.zoom/100, cropState.zoom/100);
+  ctx.drawImage(cropImg, -cropImg.width/2, -cropImg.height/2);
+  ctx.restore();
+}
+
+function cropReset() {
+  cropState = { x:0, y:0, zoom:100, rot:0 };
+  const container = document.getElementById('crop-container');
+  const cW = container.offsetWidth;
+  const cH = container.offsetHeight;
+  const scaleW = cW / cropImg.width;
+  const scaleH = cH / cropImg.height;
+  cropState.zoom = Math.round(Math.max(scaleW, scaleH) * 100);
+  document.getElementById('crop-zoom').value = cropState.zoom;
+  document.getElementById('crop-rot').value = 0;
+  drawCrop();
 }
 
 function closeCropModal() {
@@ -1008,25 +1074,20 @@ function closeCropModal() {
 
 function confirmCrop() {
   const container = document.getElementById('crop-container');
-  const img       = document.getElementById('crop-img');
   const cW = container.offsetWidth;
   const cH = container.offsetHeight;
   const canvas = document.createElement('canvas');
-  canvas.width  = cW;
-  canvas.height = cH;
+  canvas.width  = cW * 2; // 2x pour meilleure qualité
+  canvas.height = cH * 2;
   const ctx = canvas.getContext('2d');
-  // Dessiner ce qui est visible dans le container
-  const zoom = document.getElementById('crop-zoom').value / 100;
-  const rot  = document.getElementById('crop-rot').value * Math.PI / 180;
+  ctx.scale(2,2);
   ctx.save();
-  ctx.translate(cW/2, cH/2);
-  ctx.rotate(rot);
-  ctx.scale(zoom, zoom);
-  const iW = img.naturalWidth;
-  const iH = img.naturalHeight;
-  ctx.drawImage(img, cropImgPos.x/zoom - iW/2, cropImgPos.y/zoom - iH/2, iW, iH);
+  ctx.translate(cW/2 + cropState.x, cH/2 + cropState.y);
+  ctx.rotate(cropState.rot * Math.PI/180);
+  ctx.scale(cropState.zoom/100, cropState.zoom/100);
+  ctx.drawImage(cropImg, -cropImg.width/2, -cropImg.height/2);
   ctx.restore();
-  const result = canvas.toDataURL('image/jpeg', 0.85);
+  const result = canvas.toDataURL('image/jpeg', 0.88);
   compressPhoto(result, compressed => {
     currentPhotos[cropSlot] = compressed;
     updateSlotUI(cropSlot, compressed);
@@ -1138,9 +1199,27 @@ document.getElementById('import-input').addEventListener('change',function(e){
 // CONTENEURS
 // ══════════════════════════════════════════════
 function openCtrModal(editCid) {
-  ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰';
-  if(editCid){ const c=S.containers.find(x=>x.id===editCid); if(c){ document.getElementById('ctr-name').value=c.name; selIcon=c.icon; document.getElementById('ctr-form-title').textContent='Modifier'; document.getElementById('ctr-save-btn').textContent='💾 Enregistrer'; } }
-  else { document.getElementById('ctr-name').value=''; document.getElementById('ctr-form-title').textContent='Ajouter'; document.getElementById('ctr-save-btn').textContent='＋ Ajouter'; }
+  ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰'; ctrCurrentPhoto=null;
+  switchCtrTab('icon');
+  if(editCid){
+    const ct=S.containers.find(x=>x.id===editCid);
+    if(ct){
+      document.getElementById('ctr-name').value=ct.name;
+      selIcon=ct.icon;
+      document.getElementById('ctr-form-title').textContent='Modifier';
+      document.getElementById('ctr-save-btn').textContent='💾 Enregistrer';
+      if(ct.photo){
+        ctrCurrentPhoto=ct.photo;
+        switchCtrTab('photo');
+        const prev=document.getElementById('ctr-photo-preview');
+        if(prev) prev.innerHTML=`<img src="${ct.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+      }
+    }
+  } else {
+    document.getElementById('ctr-name').value='';
+    document.getElementById('ctr-form-title').textContent='Ajouter';
+    document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
+  }
   renderCtrList(); renderIconGrid(); document.getElementById('ctr-modal').classList.add('open');
 }
 function closeCtrModal(){ document.getElementById('ctr-modal').classList.remove('open'); }
@@ -1159,11 +1238,63 @@ function selType(btn,type) {
   btn.classList.add('active'); selTypeKey=type; selIcon=ICONS[type][0]; renderIconGrid();
 }
 function pickIcon(ic){ selIcon=ic; document.querySelectorAll('.ico-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===ic)); }
+let ctrCurrentPhoto = null;
+
+function switchCtrTab(tab) {
+  const iconSec  = document.getElementById('ctr-icon-section');
+  const photoSec = document.getElementById('ctr-photo-section');
+  const tabIcon  = document.getElementById('tab-icon');
+  const tabPhoto = document.getElementById('tab-photo');
+  if(tab==='icon'){
+    iconSec.style.display=''; photoSec.style.display='none';
+    tabIcon.style.background='var(--g)'; tabIcon.style.color='var(--blk)'; tabIcon.style.border='none';
+    tabPhoto.style.background='var(--d3)'; tabPhoto.style.color='var(--tm)'; tabPhoto.style.border='1px solid var(--d4)';
+  } else {
+    iconSec.style.display='none'; photoSec.style.display='';
+    tabPhoto.style.background='var(--g)'; tabPhoto.style.color='var(--blk)'; tabPhoto.style.border='none';
+    tabIcon.style.background='var(--d3)'; tabIcon.style.color='var(--tm)'; tabIcon.style.border='1px solid var(--d4)';
+  }
+}
+
+function handleCtrPhoto(e) {
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    compressPhoto(ev.target.result, compressed => {
+      ctrCurrentPhoto=compressed;
+      const prev=document.getElementById('ctr-photo-preview');
+      if(prev) prev.innerHTML=`<img src="${compressed}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+    });
+  };
+  r.readAsDataURL(f);
+  e.target.value='';
+}
+
+function clearCtrPhoto() {
+  ctrCurrentPhoto=null;
+  const prev=document.getElementById('ctr-photo-preview');
+  if(prev) prev.innerHTML='📷';
+}
+
 function saveCtr() {
   const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
-  if(ctrEditId){ const c=S.containers.find(x=>x.id===ctrEditId); if(c){c.name=name;c.icon=selIcon;} toast(`✅ ${name} modifié`); }
-  else { const id='c'+Date.now(); S.containers.push({id,name,icon:selIcon}); S.open[id]=true; toast(`✅ ${name} ajouté`); }
-  persist(); ctrEditId=null; document.getElementById('ctr-name').value=''; document.getElementById('ctr-form-title').textContent='Ajouter'; document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
+  const photoTab = document.getElementById('ctr-photo-section').style.display!=='none';
+  const finalPhoto = photoTab ? ctrCurrentPhoto : null;
+  if(ctrEditId){
+    const ct=S.containers.find(x=>x.id===ctrEditId);
+    if(ct){ ct.name=name; ct.icon=selIcon; if(finalPhoto) ct.photo=finalPhoto; else if(!photoTab) ct.photo=null; }
+    toast(`✅ ${name} modifié`);
+  } else {
+    const id='c'+Date.now();
+    S.containers.push({id,name,icon:selIcon,photo:finalPhoto});
+    S.open[id]=true;
+    toast(`✅ ${name} ajouté`);
+  }
+  persist(); ctrEditId=null; ctrCurrentPhoto=null;
+  document.getElementById('ctr-name').value='';
+  document.getElementById('ctr-form-title').textContent='Ajouter';
+  document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
+  switchCtrTab('icon');
   renderCtrList(); render();
 }
 function delCtr(id) {
