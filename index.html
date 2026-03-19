@@ -570,10 +570,17 @@ async function loadState() {
   if (saved) {
     S = Object.assign(S, saved);
   } else {
-    // Essaie l'ancien localStorage comme migration
+    // Essaie TOUS les localStorage comme fallback
     try {
-      const old = localStorage.getItem('cave-v4') || localStorage.getItem('cave-v3');
-      if (old) { S = Object.assign(S, JSON.parse(old)); await dbSet('state', S); }
+      const old = localStorage.getItem('cave-v5') ||
+                  localStorage.getItem('cave-backup') ||
+                  localStorage.getItem('cave-v4') ||
+                  localStorage.getItem('cave-v3');
+      if (old) {
+        S = Object.assign(S, JSON.parse(old));
+        await dbSet('state', S); // Migre vers IndexedDB
+        toast('✅ Données récupérées depuis la sauvegarde locale !');
+      }
     } catch(e){}
   }
   // Compresse les photos existantes si pas encore fait
@@ -602,13 +609,12 @@ async function loadState() {
 }
 
 function persist() {
-  // Sauvegarde immédiate dans IndexedDB
-  dbSet('state', S).catch(()=>{
-    // Fallback localStorage
-    try { localStorage.setItem('cave-v5', JSON.stringify(S)); } catch(e){}
-  });
-  // Aussi dans localStorage comme double sauvegarde
-  try { localStorage.setItem('cave-v5', JSON.stringify(S)); } catch(e){}
+  const data = JSON.stringify(S);
+  // Sauvegarde dans IndexedDB
+  dbSet('state', S).catch(()=>{});
+  // Double sauvegarde dans localStorage - plusieurs clés pour fiabilité
+  try { localStorage.setItem('cave-v5', data); } catch(e){}
+  try { localStorage.setItem('cave-backup', data); } catch(e){}
   // Indicateur visuel
   showSaveIndicator();
 }
