@@ -1175,16 +1175,62 @@ function closeImgModal(){ document.getElementById('img-modal').classList.remove(
 // ══════════════════════════════════════════════
 // SAUVEGARDE / RESTAURATION
 // ══════════════════════════════════════════════
-function exportData() {
-  const data=JSON.stringify(S,null,2);
-  const blob=new Blob([data],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  const date=new Date().toISOString().slice(0,10);
-  a.href=url; a.download=`la-cave-${date}.json`;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-  toast('💾 Sauvegarde téléchargée !');
+async function exportData() {
+  const data = JSON.stringify(S, null, 2);
+  const date = new Date().toISOString().slice(0,10);
+  const fileName = `la-cave-${date}.json`;
+
+  // Essaie Capacitor Filesystem (APK natif)
+  try {
+    if(window.Capacitor && window.Capacitor.isNativePlatform()) {
+      const { Filesystem, Directory } = await import('./node_modules/@capacitor/filesystem/dist/esm/index.js').catch(()=>({Filesystem:null}));
+      if(Filesystem) {
+        await Filesystem.writeFile({
+          path: fileName,
+          data: data,
+          directory: Directory.Downloads,
+          encoding: 'utf8'
+        });
+        toast('💾 Sauvegarde dans Téléchargements : ' + fileName);
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fallback navigateur standard
+  try {
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = fileName;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast('💾 Sauvegarde téléchargée !');
+  } catch(e) {
+    // Dernier recours - afficher le JSON pour copier
+    showExportModal(data, fileName);
+  }
+}
+
+function showExportModal(data, fileName) {
+  const existing = document.getElementById('export-modal');
+  if(existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'export-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;';
+  modal.innerHTML = `
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gl);letter-spacing:2px;">💾 Sauvegarder</div>
+    <div style="font-size:12px;color:var(--tm);text-align:center;">Copiez ce texte et sauvegardez-le dans un fichier .json</div>
+    <textarea style="width:100%;max-width:400px;height:200px;background:var(--d3);border:1px solid var(--g);border-radius:10px;padding:10px;color:var(--tx);font-size:10px;font-family:monospace;" readonly>${data}</textarea>
+    <button onclick="copyExport()" style="width:100%;max-width:400px;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">📋 Copier tout</button>
+    <button onclick="document.getElementById('export-modal').remove()" style="width:100%;max-width:400px;padding:13px;background:var(--d3);border:1px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">Fermer</button>
+  `;
+  document.body.appendChild(modal);
+}
+
+function copyExport() {
+  const ta = document.querySelector('#export-modal textarea');
+  if(ta) { ta.select(); document.execCommand('copy'); toast('📋 Copié !'); }
 }
 
 document.getElementById('import-input').addEventListener('change',function(e){
