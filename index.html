@@ -43,8 +43,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .sec-hdr-tap:active{opacity:.8;}
 .sec-ico{width:40px;height:40px;background:var(--gd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 0 10px var(--gg);}
 .sec-info{flex:1;min-width:0;}
-.sec-name{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sec-meta{font-size:11px;color:var(--tm);margin-top:2px;}
+.sec-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sec-meta{font-size:14px;color:var(--tm);margin-top:2px;}
 .sec-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .sbadge{background:var(--gd);color:var(--gl);font-family:'Bebas Neue',sans-serif;font-size:15px;padding:3px 10px;border-radius:20px;border:1px solid var(--g);letter-spacing:1px;}
 .chev{color:var(--g);font-size:17px;transition:transform .3s cubic-bezier(.4,0,.2,1);}
@@ -637,11 +637,12 @@ function render() {
       if (q&&!i.name.toLowerCase().includes(q)&&!(i.desc||'').toLowerCase().includes(q)) return false;
       return true;
     });
-    // Si filtre actif: ouvrir auto, cacher sections vides
+    // Si filtre actif OU recherche: ouvrir auto, cacher sections vides
     const filterActive = S.navFilter!=='all';
-    const isOpen = filterActive ? true : S.open[c.id]!==false;
-    // Cacher section si filtre actif et aucun article visible
-    if(filterActive && visible.length===0) return;
+    const searchActive = q.length > 0;
+    const isOpen = (filterActive||searchActive) ? true : S.open[c.id]!==false;
+    // Cacher section si filtre/recherche actif et aucun article visible
+    if((filterActive||searchActive) && visible.length===0) return;
     const tot=allInC.length;
     const stk=allInC.reduce((a,i)=>a+(i.stock||0),0);
 
