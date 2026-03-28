@@ -1,0 +1,15 @@
+{
+  "name": "La Cave – Mon Matériel",
+  "short_name": "La Cave",
+  "start_url": "/la-cave/",
+  "display": "standalone",
+  "background_color": "#0F0F0F",
+  "theme_color": "#6AB023",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
