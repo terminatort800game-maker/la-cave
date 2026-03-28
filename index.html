@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --g:#6AB023;--gd:#4E8018;--gl:#8FCC3E;--gg:rgba(106,176,35,0.22);
+  --g:#AB023;--gd:#4E8018;--gl:#8FCC3E;--gg:rgba(106,176,35,0.22);
   --blk:#0F0F0F;--d1:#1A1A1A;--d2:#222;--d3:#2C2C2C;--d4:#383838;
   --tx:#F0F0F0;--tm:#888;--tdim:#555;--yel:#FFD600;--red:#E03030;
   --sh:rgba(0,0,0,0.7);--card:rgba(255,255,255,0.03);--bdr:rgba(106,176,35,0.18);
@@ -278,7 +278,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="hdr-top">
     <div class="hdr-logo">🔧</div>
     <div class="hdr-tx">
-      <div class="hdr-title">La Cave</div>
+      <div class="hdr-title">La Cave </div>
       <div class="hdr-sub">Mon Matériel</div>
     </div>
     <div class="hdr-totals">
@@ -624,7 +624,7 @@ function persist() {
   try { localStorage.setItem('cave-backup', data); } catch(e){}
   // Indicateur visuel
   showSaveIndicator();
-  // Auto-sauvegarde JSON toutes les 5 minutes si modifié
+  // Auto-sauvegarde 30 secondes après la dernière modification
   clearTimeout(autoSaveTimer);
   autoSaveTimer = setTimeout(() => autoSaveJSON(), 30 * 1000);
 }
@@ -634,6 +634,7 @@ function autoSaveJSON() {
     const data = JSON.stringify(S, null, 2);
     const base64 = btoa(unescape(encodeURIComponent(data)));
     const dataUrl = 'data:application/json;base64,' + base64;
+    const date = new Date().toISOString().slice(0,10);
     const a = document.createElement('a');
     a.href = dataUrl;
     a.download = `la-cave-auto.json`;
