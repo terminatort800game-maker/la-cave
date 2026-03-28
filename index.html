@@ -99,7 +99,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ibar-btn:active{background:var(--d3);color:var(--g);}
 .ibar-ico{font-size:15px;}
 
-/* ACCESSOIRES */
 .acc-section{border-top:1px solid var(--d3);padding:8px 12px 10px;}
 .acc-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--tm);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
 .acc-add-btn{background:rgba(106,176,35,.15);border:1px solid rgba(106,176,35,.3);color:var(--gl);font-size:11px;padding:3px 10px;border-radius:20px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.5px;}
@@ -122,13 +121,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .nbtn{flex:1;padding:10px 0 8px;background:none;border:none;color:var(--tm);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;letter-spacing:.5px;font-family:'Barlow',sans-serif;cursor:pointer;transition:color .18s;position:relative;}
 .nbtn.active{color:var(--g);}
 .nbtn .nico{font-size:22px;line-height:1;}
-/* SOUS-MENU MATÉRIEL */
-.nav-submenu{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--d2);border:1.5px solid var(--g);border-radius:12px;padding:6px;min-width:140px;box-shadow:0 -4px 20px var(--sh);display:none;flex-direction:column;gap:4px;z-index:300;}
-.nav-submenu.open{display:flex;}
-.nav-sub-btn{padding:10px 14px;background:none;border:none;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border-radius:8px;text-align:left;white-space:nowrap;transition:all .18s;}
-.nav-sub-btn:active{background:var(--g);color:var(--blk);}
-.nav-sub-btn.active{color:var(--g);}
-.nav-arrow{font-size:8px;margin-top:1px;}
 
 .movl{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.84);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;}
 .movl.open{display:flex;}
@@ -154,20 +146,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .csbtn.cs-elec.active{background:rgba(100,180,255,.12);border-color:#64B4FF;color:#90CCFF;}
 .csbtn.cs-plomb.active{background:rgba(100,200,255,.12);border-color:#64C8FF;color:#90D8FF;}
 .csbtn.cs-menu.active{background:rgba(180,120,60,.15);border-color:#B4783C;color:#D4A060;}
-/* IB badges nouvelles catégories */
+.csbtn.cs-voiture.active{background:rgba(150,150,255,.15);border-color:#AAAAFF;color:#CCCCFF;}
+.csbtn.cs-jardin.active{background:rgba(50,200,100,.15);border-color:#32C864;color:#64E896;}
 .ib-paint{background:rgba(255,100,100,.12);color:#FF9090;border:1px solid rgba(255,100,100,.3);}
 .ib-elec{background:rgba(100,180,255,.12);color:#90CCFF;border:1px solid rgba(100,180,255,.3);}
 .ib-plomb{background:rgba(100,200,255,.12);color:#90D8FF;border:1px solid rgba(100,200,255,.3);}
 .ib-menu{background:rgba(180,120,60,.15);color:#D4A060;border:1px solid rgba(180,120,60,.3);}
 .ib-voiture{background:rgba(150,150,255,.12);color:#AAAAFF;border:1px solid rgba(150,150,255,.3);}
-.csbtn.cs-voiture.active{background:rgba(150,150,255,.15);border-color:#AAAAFF;color:#CCCCFF;}
-.csbtn.cs-jardin.active{background:rgba(50,200,100,.15);border-color:#32C864;color:#64E896;}
 .ib-jardin{background:rgba(50,200,100,.12);color:#64E896;border:1px solid rgba(50,200,100,.3);}
-/* cat-sel utilise grid - pas besoin de flex sur csbtn */
-.nav-sub-btn{padding:10px 14px;background:none;border:none;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border-radius:8px;text-align:left;white-space:nowrap;transition:all .18s;}
-.nav-sub-btn:active{background:var(--g);color:var(--blk);}
-.nav-sub-btn.active{color:var(--g);background:rgba(106,176,35,.1);}
-/* ACHATS VIEW */
+
 .achats-view{display:none;padding:10px 10px 100px;position:relative;z-index:1;}
 .achats-view.open{display:block;}
 .achat-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
@@ -184,7 +171,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .achat-add-btn2{padding:11px 16px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;}
 .achat-filter-row{display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;}
 .achat-filter-row::-webkit-scrollbar{display:none;}
-/* MESURES */
+
 .mesures-row{display:flex;gap:8px;}
 .mesures-row .finput{flex:1;}
 
@@ -193,15 +180,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .photo-slot:active{border-color:var(--g);}
 .photo-slot-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:28px;width:100%;height:100%;}
 .photo-slot img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
-.photo-slot-del{position:absolute;top:4px;right:4px;background:rgba(224,48,48,.85);border:none;border-radius:6px;color:#fff;font-size:14px;cursor:pointer;padding:2px 6px;z-index:10;}
 .photo-slot-del-ext{width:100%;padding:5px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:6px;color:var(--red);font-size:11px;cursor:pointer;margin-top:3px;font-family:'Barlow Condensed',sans-serif;font-weight:600;}
 .photo-btn-action{flex:1;padding:10px;background:var(--d3);border:1.5px solid var(--d4);border-radius:8px;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .18s;}
 .photo-btn-action:active{border-color:var(--g);color:var(--gl);}
-/* Vue photo dans card */
 .card-photos{display:flex;gap:4px;padding:6px 12px;}
 .card-photo-mini{width:52px;height:52px;border-radius:7px;object-fit:cover;cursor:pointer;border:1px solid var(--d4);}
 
-/* ACCESSOIRES MODAL */
 .acc-modal-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
 .acc-modal-item{display:flex;align-items:center;gap:8px;background:var(--d3);border-radius:8px;padding:8px 10px;}
 .acc-modal-name{flex:1;font-size:13px;color:var(--tx);}
@@ -217,7 +201,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-save{flex:2;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;box-shadow:0 3px 14px var(--gg);}
 .btn-save:active{opacity:.85;transform:scale(.98);}
 
-/* CONTENEURS */
 .icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px;}
 .ico-btn{background:var(--d3);border:2px solid var(--d4);border-radius:10px;font-size:22px;padding:8px 0;cursor:pointer;text-align:center;transition:all .18s;}
 .ico-btn.active{border-color:var(--g);background:rgba(106,176,35,.18);}
@@ -233,7 +216,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .manage-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:8px;transition:all .18s;}
 .manage-btn:active{border-color:var(--g);color:var(--gl);}
 
-/* SAUVEGARDE */
 .backup-section{margin-top:8px;display:flex;gap:8px;}
 .backup-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border:none;transition:all .18s;}
 .backup-btn.export{background:rgba(106,176,35,.15);border:1.5px solid rgba(106,176,35,.3);color:var(--gl);}
@@ -241,7 +223,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .backup-btn.import{background:rgba(255,214,0,.1);border:1.5px solid rgba(255,214,0,.3);color:var(--yel);}
 .backup-btn.import:active{background:var(--yel);color:var(--blk);}
 
-/* BANDEAU SAUVEGARDE AUTO */
 .save-indicator{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--g);color:var(--blk);text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:6px;transform:translateY(-100%);transition:transform .3s;}
 .save-indicator.show{transform:translateY(0);}
 
@@ -268,11 +249,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--d4);border-radius:2px;}
+
+#crop-modal{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.96);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;}
 </style>
 </head>
 <body>
 
-<div class="save-indicator" id="save-ind">💾 Sauvegarde automatique...</div>
+<div class="save-indicator" id="save-ind">💾 Sauvegarde...</div>
 
 <div class="hdr">
   <div class="hdr-top">
@@ -293,11 +276,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="main" id="main"></div>
 <div class="stats-view" id="stats-view"><div id="stats-content"></div></div>
-<div class="achats-view" id="achats-view">
-  <div id="achats-content"></div>
-</div>
+<div class="achats-view" id="achats-view"><div id="achats-content"></div></div>
 
-<!-- SOUS-MENU MATÉRIEL (hors barre nav) -->
+<!-- SOUS-MENU MATÉRIEL -->
 <div id="mat-submenu" style="display:none;position:fixed;bottom:62px;left:0;right:0;z-index:300;padding:0 8px;">
   <div style="background:var(--d2);border:1.5px solid var(--g);border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:4px;box-shadow:0 -4px 20px var(--sh);">
     <button class="nav-sub-btn" id="sub-materiel" onclick="setNavSub('Matériel')">📦 Tout Matériel</button>
@@ -345,7 +326,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <div id="name-dropdown" style="display:none;background:var(--d3);border:1.5px solid var(--g);border-radius:10px;margin-bottom:4px;max-height:150px;overflow-y:auto;"></div>
       <input class="finput" id="f-name" type="text" placeholder="Tapez pour chercher ou saisissez..." oninput="filterNameDropdown(this.value)" onfocus="showNameDropdownAndScroll()" autocomplete="off">
     </div>
-    <!-- MESURES : apparaît uniquement si planche/panneau/tasseau sélectionné -->
     <div class="fg" id="mesures-section" style="display:none;">
       <label class="flbl">📏 Mesures</label>
       <div class="mesures-row">
@@ -369,31 +349,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="fg">
       <label class="flbl">Photos (max 4)</label>
       <div class="photo-zone">
-        <!-- Inputs fichiers cachés - méthode native Android -->
         <input type="file" id="ph-input-0" accept="image/*" style="display:none" onchange="handlePhotoSlot(event,0)">
         <input type="file" id="ph-input-1" accept="image/*" style="display:none" onchange="handlePhotoSlot(event,1)">
         <input type="file" id="ph-input-2" accept="image/*" style="display:none" onchange="handlePhotoSlot(event,2)">
         <input type="file" id="ph-input-3" accept="image/*" style="display:none" onchange="handlePhotoSlot(event,3)">
         <input type="file" id="ph-camera" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoCamera(event)">
-        <!-- Grille 4 photos -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <label for="ph-input-0" class="photo-slot" id="slot-0">
-            <div class="photo-slot-inner" id="slot-inner-0">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 1</div></div>
-          </label>
-          <label for="ph-input-1" class="photo-slot" id="slot-1">
-            <div class="photo-slot-inner" id="slot-inner-1">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 2</div></div>
-          </label>
-          <label for="ph-input-2" class="photo-slot" id="slot-2">
-            <div class="photo-slot-inner" id="slot-inner-2">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 3</div></div>
-          </label>
-          <label for="ph-input-3" class="photo-slot" id="slot-3">
-            <div class="photo-slot-inner" id="slot-inner-3">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 4</div></div>
-          </label>
+          <label for="ph-input-0" class="photo-slot" id="slot-0"><div class="photo-slot-inner" id="slot-inner-0">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 1</div></div></label>
+          <label for="ph-input-1" class="photo-slot" id="slot-1"><div class="photo-slot-inner" id="slot-inner-1">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 2</div></div></label>
+          <label for="ph-input-2" class="photo-slot" id="slot-2"><div class="photo-slot-inner" id="slot-inner-2">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 3</div></div></label>
+          <label for="ph-input-3" class="photo-slot" id="slot-3"><div class="photo-slot-inner" id="slot-inner-3">📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo 4</div></div></label>
         </div>
-        <!-- Boutons galerie + caméra -->
         <div style="display:flex;gap:8px;margin-top:4px;">
-          <label for="ph-input-0" class="photo-btn-action" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">📁 Parcourir les photos</label>
-          <label for="ph-camera" class="photo-btn-action" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">📸 Appareil photo</label>
+          <label for="ph-input-0" class="photo-btn-action" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">📁 Parcourir</label>
+          <label for="ph-camera" class="photo-btn-action" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;">📸 Photo</label>
         </div>
       </div>
     </div>
@@ -439,22 +408,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
       <div class="fg">
         <label class="flbl">Icône ou Photo</label>
-        <!-- Tabs icône/photo -->
         <div style="display:flex;gap:8px;margin-bottom:10px;">
           <button id="tab-icon" onclick="switchCtrTab('icon')" style="flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">🎨 Icône</button>
           <button id="tab-photo" onclick="switchCtrTab('photo')" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">📷 Photo</button>
         </div>
-        <div id="ctr-icon-section">
-          <div class="icon-grid" id="icon-grid"></div>
-        </div>
+        <div id="ctr-icon-section"><div class="icon-grid" id="icon-grid"></div></div>
         <div id="ctr-photo-section" style="display:none;">
           <input type="file" id="ctr-photo-input" accept="image/*" style="display:none" onchange="handleCtrPhoto(event)">
           <label for="ctr-photo-input" style="display:flex;align-items:center;gap:12px;background:var(--d3);border:2px dashed var(--d4);border-radius:10px;padding:14px;cursor:pointer;">
             <div id="ctr-photo-preview" style="width:52px;height:52px;border-radius:8px;background:var(--d4);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;flex-shrink:0;">📷</div>
-            <div>
-              <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--tx);">📁 Choisir une photo</div>
-              <div style="font-size:11px;color:var(--tdim);margin-top:3px;">Photo pour ce conteneur</div>
-            </div>
+            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--tx);">📁 Choisir une photo</div></div>
           </label>
           <button onclick="clearCtrPhoto()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer la photo</button>
         </div>
@@ -474,7 +437,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </div>
 
 <!-- MODAL ROGNER -->
-<div id="crop-modal" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.96);flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;">
+<div id="crop-modal">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gl);">✂️ Ajuster la photo</div>
   <div id="crop-container" style="position:relative;width:88vw;height:66vw;max-width:380px;max-height:285px;overflow:hidden;border:2px solid var(--g);border-radius:12px;background:#111;touch-action:none;cursor:move;">
     <canvas id="crop-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
@@ -490,9 +453,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <input type="range" id="crop-rot" min="-180" max="180" value="0" style="flex:1;accent-color:var(--g);" oninput="drawCrop()">
       <span id="crop-rot-val" style="color:var(--gl);font-size:12px;width:40px;text-align:right;">0°</span>
     </div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="cropReset()" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">↺ Réinitialiser</button>
-    </div>
+    <button onclick="cropReset()" style="padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">↺ Réinitialiser</button>
   </div>
   <div style="display:flex;gap:10px;width:88vw;max-width:380px;">
     <button onclick="closeCropModal()" style="flex:1;padding:13px;background:var(--d3);border:1.5px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;cursor:pointer;">Annuler</button>
@@ -503,9 +464,30 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="toast" id="toast"></div>
 <input type="file" id="import-input" accept=".json" style="display:none">
 
+<!-- ENREGISTREMENT SW -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/la-cave/sw.js')
+      .then(reg => {
+        // Force la mise à jour du SW si une nouvelle version est disponible
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        });
+      })
+      .catch(err => console.log('SW error:', err));
+  });
+}
+</script>
+
 <script>
 // ══════════════════════════════════════════════
-// STOCKAGE INDEXEDDB — fiable, ne s'efface pas
+// INDEXEDDB — stockage principal fiable
 // ══════════════════════════════════════════════
 const DB_NAME = 'LaCaveDB';
 const DB_VER  = 1;
@@ -527,6 +509,7 @@ function openDB() {
 
 function dbSet(key, value) {
   return new Promise((resolve, reject) => {
+    if (!db) { resolve(); return; }
     const tx  = db.transaction('data', 'readwrite');
     const st  = tx.objectStore('data');
     const req = st.put({ key, value: JSON.stringify(value) });
@@ -537,6 +520,7 @@ function dbSet(key, value) {
 
 function dbGet(key) {
   return new Promise((resolve, reject) => {
+    if (!db) { resolve(null); return; }
     const tx  = db.transaction('data', 'readonly');
     const st  = tx.objectStore('data');
     const req = st.get(key);
@@ -558,107 +542,84 @@ const ICONS = {
   autre:   ['📦','🪣','🧺','🗑️','♻️','🎁','💼','🧳','🪝','🔑','🏷️','📎'],
 };
 
-let S = { containers:[], items:[], open:{}, navFilter:'all' };
+let S = { containers:[], items:[], open:{}, navFilter:'all', achats:[] };
 let editId=null, currentPhoto=null, ctrEditId=null, selIcon='🧰', selTypeKey='caisse';
 let modalAccs=[];
 let saveTimer=null;
 
+// ══════════════════════════════════════════════
+// CHARGEMENT — avec récupération depuis localStorage si IndexedDB vide
+// ══════════════════════════════════════════════
 async function loadState() {
-  // Forcer la persistance du stockage sur Android
-  if(navigator.storage && navigator.storage.persist) {
-    const persistent = await navigator.storage.persist();
-    console.log('Storage persistent:', persistent);
+  // Demande stockage persistant (évite que le navigateur efface les données)
+  if (navigator.storage && navigator.storage.persist) {
+    navigator.storage.persist().catch(() => {});
   }
+
   await openDB();
-  // Essaie IndexedDB d'abord
-  const saved = await dbGet('state');
-  if (saved) {
+
+  // 1. Essaie IndexedDB en premier
+  let saved = null;
+  try { saved = await dbGet('state'); } catch(e) {}
+
+  if (saved && saved.items && saved.items.length > 0) {
     S = Object.assign(S, saved);
   } else {
-    // Essaie TOUS les localStorage comme fallback
-    try {
-      const old = localStorage.getItem('cave-v5') ||
-                  localStorage.getItem('cave-backup') ||
-                  localStorage.getItem('cave-v4') ||
-                  localStorage.getItem('cave-v3');
-      if (old) {
-        S = Object.assign(S, JSON.parse(old));
-        await dbSet('state', S); // Migre vers IndexedDB
-        toast('✅ Données récupérées depuis la sauvegarde locale !');
-      }
-    } catch(e){}
-  }
-  // Compresse les photos existantes si pas encore fait
-  if (S.items && !S.photosCompressed) {
-    let pending = S.items.filter(i => i.photo && i.photo.length > 50000).length;
-    if (pending > 0) {
-      let done = 0;
-      S.items.forEach(it => {
-        if (it.photo && it.photo.length > 50000) {
-          compressPhoto(it.photo, compressed => {
-            it.photo = compressed;
-            done++;
-            if (done === pending) { S.photosCompressed = true; persist(); render(); }
-          });
+    // 2. Fallback : essaie localStorage (migration depuis ancienne version)
+    const keys = ['cave-v5','cave-backup','cave-v4','cave-v3'];
+    for (const k of keys) {
+      try {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.items) {
+            S = Object.assign(S, parsed);
+            // Migre immédiatement vers IndexedDB
+            await dbSet('state', S);
+            toast('✅ Données migrées vers le stockage permanent !');
+            break;
+          }
         }
-      });
+      } catch(e) {}
     }
   }
-  if (!S.containers||!S.containers.length) {
-    S.containers=[{id:'c1',name:'Caisse 1',icon:'🧰'},{id:'c2',name:'Caisse 2',icon:'📦'},{id:'m1',name:'Meuble 1',icon:'🗄️'}];
-    S.open={c1:true,c2:true,m1:true};
+
+  // Valeurs par défaut si toujours vide
+  if (!S.containers || !S.containers.length) {
+    S.containers = [
+      {id:'c1',name:'Caisse 1',icon:'🧰'},
+      {id:'c2',name:'Caisse 2',icon:'📦'},
+      {id:'m1',name:'Meuble 1',icon:'🗄️'}
+    ];
+    S.open = {c1:true, c2:true, m1:true};
   }
-  if (!S.items) S.items=[];
-  if (!S.open)  S.open={};
+  if (!S.items)  S.items  = [];
+  if (!S.open)   S.open   = {};
+  if (!S.achats) S.achats = [];
+
   render();
 }
 
-let autoSaveTimer = null;
-
+// ══════════════════════════════════════════════
+// PERSISTANCE — sauvegarde SYNCHRONE à chaque modification
+// ══════════════════════════════════════════════
 function persist() {
-  const data = JSON.stringify(S);
-  // Sauvegarde dans IndexedDB
-  dbSet('state', S).catch(()=>{});
-  // Double sauvegarde dans localStorage
-  try { localStorage.setItem('cave-v5', data); } catch(e){}
-  try { localStorage.setItem('cave-backup', data); } catch(e){}
-  // Indicateur visuel
-  showSaveIndicator();
-  // Auto-sauvegarde JSON toutes les 5 minutes si modifié
-  clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(() => autoSaveJSON(), 30 * 1000);
-}
+  // 1. IndexedDB (principal, async)
+  dbSet('state', S).catch(() => {});
 
-function autoSaveJSON() {
+  // 2. localStorage (backup secondaire)
   try {
-    const data = JSON.stringify(S, null, 2);
-    const base64 = btoa(unescape(encodeURIComponent(data)));
-    const dataUrl = 'data:application/json;base64,' + base64;
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = `la-cave-auto.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const data = JSON.stringify(S);
+    localStorage.setItem('cave-v5', data);
+    localStorage.setItem('cave-backup', data);
   } catch(e) {}
+
+  showSaveIndicator();
 }
-
-// Sauvegarder quand l app se ferme ou passe en arrière-plan
-document.addEventListener('visibilitychange', () => {
-  if(document.hidden) { autoSaveJSON(); }
-});
-
-// Utiliser le plugin App de Capacitor pour détecter la fermeture
-window.addEventListener('DOMContentLoaded', () => {
-  if(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-    window.Capacitor.Plugins.App.addListener('appStateChange', (state) => {
-      if(!state.isActive) { autoSaveJSON(); }
-    });
-  }
-});
 
 function showSaveIndicator() {
   const el = document.getElementById('save-ind');
+  if (!el) return;
   el.classList.add('show');
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => el.classList.remove('show'), 1500);
@@ -669,8 +630,10 @@ function showSaveIndicator() {
 // ══════════════════════════════════════════════
 function render() {
   if (S.navFilter==='stats') { renderStats(); return; }
+  if (S.navFilter==='achats') { renderAchats(); return; }
   document.getElementById('main').style.display='';
   document.getElementById('stats-view').classList.remove('open');
+  document.getElementById('achats-view').classList.remove('open');
   const q=(document.getElementById('srch').value||'').toLowerCase();
   let html='';
 
@@ -681,12 +644,10 @@ function render() {
       if (q&&!i.name.toLowerCase().includes(q)&&!(i.desc||'').toLowerCase().includes(q)) return false;
       return true;
     });
-    // Si filtre actif OU recherche: ouvrir auto, cacher sections vides
     const filterActive = S.navFilter!=='all';
     const searchActive = q.length > 0;
     const isOpen = (filterActive||searchActive) ? true : S.open[c.id]!==false;
-    // Cacher section si filtre/recherche actif et aucun article visible
-    if((filterActive||searchActive) && visible.length===0) return;
+    if ((filterActive||searchActive) && visible.length===0) return;
     const tot=allInC.length;
     const stk=allInC.reduce((a,i)=>a+(i.stock||0),0);
 
@@ -749,7 +710,6 @@ function cardHTML(it) {
   const ph=photos.length?`<img src="${photos[0]}" alt=""><div class="povl">🔍</div>`:(it.cat==='Outillage'?'🔨':'📦');
   const accs=it.accessories||[];
 
-  // Accessoires uniquement pour Outillage
   const accHtml = it.cat!=='Outillage' ? '' : `
     <div class="acc-section">
       <div class="acc-title">
@@ -873,9 +833,9 @@ function openModal(cid) {
   document.getElementById('f-desc').value='';
   document.getElementById('f-stock').value='1';
   document.getElementById('f-min').value='1';
-  if(document.getElementById('f-longueur')) document.getElementById('f-longueur').value='';
-  if(document.getElementById('f-largeur')) document.getElementById('f-largeur').value='';
-  if(document.getElementById('f-epaisseur')) document.getElementById('f-epaisseur').value='';
+  const fl=document.getElementById('f-longueur'); if(fl) fl.value='';
+  const fw=document.getElementById('f-largeur');  if(fw) fw.value='';
+  const fe=document.getElementById('f-epaisseur'); if(fe) fe.value='';
   document.getElementById('mesures-section').style.display='none';
   resetPhotoUI(); selCat('Outillage'); fillCtrSelect(cid); renderModalAccs();
   document.getElementById('add-modal').classList.add('open');
@@ -890,9 +850,9 @@ function editItem(id) {
   document.getElementById('f-desc').value=it.desc||'';
   document.getElementById('f-stock').value=it.stock;
   document.getElementById('f-min').value=it.minS||1;
-  if(document.getElementById('f-longueur')) document.getElementById('f-longueur').value=it.longueur||'';
-  if(document.getElementById('f-largeur')) document.getElementById('f-largeur').value=it.largeur||'';
-  if(document.getElementById('f-epaisseur')) document.getElementById('f-epaisseur').value=it.epaisseur||'';
+  const fl=document.getElementById('f-longueur'); if(fl) fl.value=it.longueur||'';
+  const fw=document.getElementById('f-largeur');  if(fw) fw.value=it.largeur||'';
+  const fe=document.getElementById('f-epaisseur'); if(fe) fe.value=it.epaisseur||'';
   const showMes=/planche|panneau|tasseau|poutre/i.test(it.name);
   document.getElementById('mesures-section').style.display=showMes?'':'none';
   selCat(it.cat); fillCtrSelect(it.cid); setPhotoUI(it.photos||it.photo||null); renderModalAccs();
@@ -908,7 +868,7 @@ function fillCtrSelect(sel) {
 }
 
 function selCat(cat) {
-  ['btn-out','btn-mat','btn-paint','btn-elec','btn-plomb','btn-menu'].forEach(id=>{
+  ['btn-out','btn-mat','btn-paint','btn-elec','btn-plomb','btn-menu','btn-voiture','btn-jardin'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
   const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin'};
@@ -916,6 +876,7 @@ function selCat(cat) {
   const acc=document.getElementById('acc-section-modal');
   if(acc) acc.style.display=cat==='Outillage'?'':'none';
 }
+
 function getCat(){
   const map={'btn-out':'Outillage','btn-mat':'Matériel','btn-paint':'Peinture','btn-elec':'Électricité','btn-plomb':'Plomberie','btn-menu':'Menuiserie','btn-voiture':'Voiture','btn-jardin':'Jardin'};
   for(const [id,cat] of Object.entries(map)){
@@ -960,9 +921,7 @@ function delItem(id) {
 // ══════════════════════════════════════════════
 let currentPhotos = [null,null,null,null];
 
-function nextEmptySlot(){
-  return currentPhotos.findIndex(p=>p===null);
-}
+function nextEmptySlot(){ return currentPhotos.findIndex(p=>p===null); }
 
 function compressPhoto(dataUrl, callback) {
   const img = new Image();
@@ -982,25 +941,14 @@ function compressPhoto(dataUrl, callback) {
   img.src = dataUrl;
 }
 
-function triggerPhotoSlot(slot, mode) {
-  // Utilise les vrais inputs HTML via labels - plus fiable sur Android
-  if(mode==='camera'){
-    document.getElementById('ph-camera').click();
-    return;
-  }
-  const inp = document.getElementById('ph-input-'+slot);
-  if(inp) inp.click();
-}
-
 function handlePhotoCamera(e){
-  // Trouve le premier slot vide
   const slot = nextEmptySlot();
   if(slot<0){ toast('⚠️ 4 photos maximum !'); return; }
   handlePhotoSlot(e, slot);
 }
 
 // ══════════════════════════════════════════════
-// CROP — système canvas fiable
+// CROP
 // ══════════════════════════════════════════════
 let cropSlot = null;
 let cropImg = new Image();
@@ -1026,7 +974,6 @@ function openCropModal(src, slot) {
 
   cropImg = new Image();
   cropImg.onload = () => {
-    // Zoom initial pour remplir le container
     const container = document.getElementById('crop-container');
     const cW = container.offsetWidth;
     const cH = container.offsetHeight;
@@ -1040,40 +987,26 @@ function openCropModal(src, slot) {
   };
   cropImg.src = src;
 
-  // Events tactiles
   const container = document.getElementById('crop-container');
   container.ontouchstart = e2 => {
-    if(e2.touches.length===1){
-      e2.preventDefault();
-      cropDrag.active=true;
-      cropDrag.lastX=e2.touches[0].clientX;
-      cropDrag.lastY=e2.touches[0].clientY;
-    }
+    if(e2.touches.length===1){ e2.preventDefault(); cropDrag.active=true; cropDrag.lastX=e2.touches[0].clientX; cropDrag.lastY=e2.touches[0].clientY; }
   };
   container.ontouchmove = e2 => {
     if(!cropDrag.active||e2.touches.length!==1) return;
     e2.preventDefault();
-    const dx = e2.touches[0].clientX - cropDrag.lastX;
-    const dy = e2.touches[0].clientY - cropDrag.lastY;
+    cropState.x += e2.touches[0].clientX - cropDrag.lastX;
+    cropState.y += e2.touches[0].clientY - cropDrag.lastY;
     cropDrag.lastX = e2.touches[0].clientX;
     cropDrag.lastY = e2.touches[0].clientY;
-    cropState.x += dx;
-    cropState.y += dy;
     drawCrop();
   };
   container.ontouchend = () => { cropDrag.active=false; };
-  // Events souris
-  container.onmousedown = e2 => {
-    cropDrag.active=true;
-    cropDrag.lastX=e2.clientX;
-    cropDrag.lastY=e2.clientY;
-  };
+  container.onmousedown = e2 => { cropDrag.active=true; cropDrag.lastX=e2.clientX; cropDrag.lastY=e2.clientY; };
   container.onmousemove = e2 => {
     if(!cropDrag.active) return;
     cropState.x += e2.clientX - cropDrag.lastX;
     cropState.y += e2.clientY - cropDrag.lastY;
-    cropDrag.lastX = e2.clientX;
-    cropDrag.lastY = e2.clientY;
+    cropDrag.lastX = e2.clientX; cropDrag.lastY = e2.clientY;
     drawCrop();
   };
   container.onmouseup = () => { cropDrag.active=false; };
@@ -1084,8 +1017,7 @@ function drawCrop() {
   const canvas = document.getElementById('crop-canvas');
   const cW = container.offsetWidth;
   const cH = container.offsetHeight;
-  canvas.width = cW;
-  canvas.height = cH;
+  canvas.width = cW; canvas.height = cH;
   const ctx = canvas.getContext('2d');
   cropState.zoom = parseInt(document.getElementById('crop-zoom').value);
   cropState.rot  = parseInt(document.getElementById('crop-rot').value);
@@ -1101,29 +1033,22 @@ function drawCrop() {
 }
 
 function cropReset() {
-  cropState = { x:0, y:0, zoom:100, rot:0 };
   const container = document.getElementById('crop-container');
-  const cW = container.offsetWidth;
-  const cH = container.offsetHeight;
-  const scaleW = cW / cropImg.width;
-  const scaleH = cH / cropImg.height;
-  cropState.zoom = Math.round(Math.max(scaleW, scaleH) * 100);
+  const cW = container.offsetWidth; const cH = container.offsetHeight;
+  const scaleW = cW / cropImg.width; const scaleH = cH / cropImg.height;
+  cropState = { x:0, y:0, zoom:Math.round(Math.max(scaleW, scaleH)*100), rot:0 };
   document.getElementById('crop-zoom').value = cropState.zoom;
   document.getElementById('crop-rot').value = 0;
   drawCrop();
 }
 
-function closeCropModal() {
-  document.getElementById('crop-modal').style.display='none';
-}
+function closeCropModal() { document.getElementById('crop-modal').style.display='none'; }
 
 function confirmCrop() {
   const container = document.getElementById('crop-container');
-  const cW = container.offsetWidth;
-  const cH = container.offsetHeight;
+  const cW = container.offsetWidth; const cH = container.offsetHeight;
   const canvas = document.createElement('canvas');
-  canvas.width  = cW * 2; // 2x pour meilleure qualité
-  canvas.height = cH * 2;
+  canvas.width = cW*2; canvas.height = cH*2;
   const ctx = canvas.getContext('2d');
   ctx.scale(2,2);
   ctx.save();
@@ -1141,58 +1066,28 @@ function confirmCrop() {
 }
 
 function updateSlotUI(slot, src) {
-  const inner=document.getElementById(`slot-inner-${slot}`);
-  if(!inner) return;
+  const inner=document.getElementById(`slot-inner-${slot}`); if(!inner) return;
   if(src){
     inner.innerHTML=`<img src="${src}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
     const slotEl=document.getElementById(`slot-${slot}`);
-    if(slotEl){
-      slotEl.style.borderColor='var(--g)';
-      // Bouton supprimer à côté du slot
-      let delBtn=document.getElementById(`slot-del-${slot}`);
-      if(!delBtn){
-        delBtn=document.createElement('button');
-        delBtn.id=`slot-del-${slot}`;
-        delBtn.className='photo-slot-del-ext';
-        delBtn.textContent='✕ Supprimer';
-        delBtn.onclick=()=>clearSlot(slot);
-        slotEl.parentNode.insertBefore(delBtn, slotEl.nextSibling);
-      }
-    }
+    if(slotEl){ slotEl.style.borderColor='var(--g)'; let db=document.getElementById(`slot-del-${slot}`); if(!db){ db=document.createElement('button'); db.id=`slot-del-${slot}`; db.className='photo-slot-del-ext'; db.textContent='✕ Supprimer'; db.onclick=()=>clearSlot(slot); slotEl.parentNode.insertBefore(db, slotEl.nextSibling); } }
   } else {
     inner.innerHTML=`📷<div style="font-size:10px;color:var(--tdim);margin-top:4px;">Photo ${slot+1}</div>`;
-    const slotEl=document.getElementById(`slot-${slot}`);
-    if(slotEl) slotEl.style.borderColor='';
-    const delBtn=document.getElementById(`slot-del-${slot}`);
-    if(delBtn) delBtn.remove();
+    const slotEl=document.getElementById(`slot-${slot}`); if(slotEl) slotEl.style.borderColor='';
+    const db=document.getElementById(`slot-del-${slot}`); if(db) db.remove();
   }
 }
 
-function clearSlot(slot){
-  currentPhotos[slot]=null;
-  updateSlotUI(slot,null);
-}
-
-function resetPhotoUI(){
-  currentPhotos=[null,null,null,null];
-  for(let i=0;i<4;i++) updateSlotUI(i,null);
-}
+function clearSlot(slot){ currentPhotos[slot]=null; updateSlotUI(slot,null); }
+function resetPhotoUI(){ currentPhotos=[null,null,null,null]; for(let i=0;i<4;i++) updateSlotUI(i,null); }
 
 function setPhotoUI(photos){
   currentPhotos=[null,null,null,null];
   if(!photos) return;
-  if(typeof photos==='string'){
-    currentPhotos[0]=photos;
-    updateSlotUI(0,photos);
-    return;
-  }
-  if(Array.isArray(photos)){
-    photos.forEach((p,i)=>{ if(p&&i<4){ currentPhotos[i]=p; updateSlotUI(i,p); } });
-  }
+  if(typeof photos==='string'){ currentPhotos[0]=photos; updateSlotUI(0,photos); return; }
+  if(Array.isArray(photos)){ photos.forEach((p,i)=>{ if(p&&i<4){ currentPhotos[i]=p; updateSlotUI(i,p); } }); }
 }
 
-function triggerPhoto(){ triggerPhotoSlot(nextEmptySlot(),'gallery'); }
-function clearPhoto(){ resetPhotoUI(); }
 function viewPhoto(id) {
   const it=S.items.find(i=>i.id===id);
   const photos=(it?.photos&&it.photos.length)?it.photos:(it?.photo?[it.photo]:[]);
@@ -1211,74 +1106,42 @@ function viewPhotoFull(id,idx){
 function closeImgModal(){ document.getElementById('img-modal').classList.remove('open'); }
 
 // ══════════════════════════════════════════════
-// SAUVEGARDE / RESTAURATION
+// SAUVEGARDE / RESTAURATION MANUELLE
 // ══════════════════════════════════════════════
 function exportData() {
-  const data = JSON.stringify(S, null, 2);
-  const date = new Date().toISOString().slice(0,10);
-  const fileName = `la-cave-${date}.json`;
-
-  // Crée une URL data: base64 — interceptée par le DownloadListener Java sur APK
-  // et fonctionne aussi dans Chrome directement
-  const base64 = btoa(unescape(encodeURIComponent(data)));
-  const dataUrl = 'data:application/json;base64,' + base64;
-  const a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  toast('💾 Sauvegarde en cours...');
+  try {
+    const data = JSON.stringify(S, null, 2);
+    const date = new Date().toISOString().slice(0,10);
+    const blob = new Blob([data], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `la-cave-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast('💾 Fichier de sauvegarde téléchargé !');
+  } catch(e) {
+    toast('❌ Erreur export : ' + e.message);
+  }
 }
 
-function showExportModal(data, fileName) {
-  const existing = document.getElementById('export-modal');
-  if(existing) existing.remove();
-  const modal = document.createElement('div');
-  modal.id = 'export-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;';
-  modal.innerHTML = `
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gl);letter-spacing:2px;">💾 Sauvegarder</div>
-    <div style="font-size:12px;color:var(--tm);text-align:center;">Copiez ce texte et sauvegardez-le dans un fichier .json</div>
-    <textarea style="width:100%;max-width:400px;height:200px;background:var(--d3);border:1px solid var(--g);border-radius:10px;padding:10px;color:var(--tx);font-size:10px;font-family:monospace;" readonly>${data}</textarea>
-    <button onclick="copyExport()" style="width:100%;max-width:400px;padding:13px;background:linear-gradient(135deg,var(--gd),var(--g));border:none;border-radius:10px;color:var(--blk);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">📋 Copier tout</button>
-    <button onclick="document.getElementById('export-modal').remove()" style="width:100%;max-width:400px;padding:13px;background:var(--d3);border:1px solid var(--d4);border-radius:10px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">Fermer</button>
-  `;
-  document.body.appendChild(modal);
-}
-
-function copyExport() {
-  const ta = document.querySelector('#export-modal textarea');
-  if(ta) { ta.select(); document.execCommand('copy'); toast('📋 Copié !'); }
-}
-
-document.getElementById('import-input').addEventListener('change',function(e){
+document.getElementById('import-input').addEventListener('change', function(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=ev=>{
     try {
-      let text = ev.target.result;
-      // Si c'est un ArrayBuffer, convertir en texte
-      if(text instanceof ArrayBuffer) {
-        text = new TextDecoder('utf-8').decode(text);
-      }
-      const data=JSON.parse(text);
+      const data=JSON.parse(ev.target.result);
       if(!data.containers||!data.items){ toast('❌ Fichier invalide'); return; }
       if(confirm('Restaurer ? Les données actuelles seront remplacées.')){
-        S=data; persist(); render(); toast('✅ Données restaurées !');
+        S=data;
+        if(!S.achats) S.achats=[];
+        persist(); render(); toast('✅ Données restaurées !');
       }
-    } catch(err){ 
-      console.log('Restore error:', err);
-      toast('❌ Erreur lecture fichier'); 
-    }
+    } catch(err){ toast('❌ Erreur lecture fichier'); }
   };
-  r.onerror = () => toast('❌ Impossible de lire le fichier');
-  // Essayer les deux méthodes
-  try {
-    r.readAsText(f, 'UTF-8');
-  } catch(err) {
-    r.readAsArrayBuffer(f);
-  }
+  r.readAsText(f, 'UTF-8');
   e.target.value='';
 });
 
@@ -1295,12 +1158,7 @@ function openCtrModal(editCid) {
       selIcon=ct.icon;
       document.getElementById('ctr-form-title').textContent='Modifier';
       document.getElementById('ctr-save-btn').textContent='💾 Enregistrer';
-      if(ct.photo){
-        ctrCurrentPhoto=ct.photo;
-        switchCtrTab('photo');
-        const prev=document.getElementById('ctr-photo-preview');
-        if(prev) prev.innerHTML=`<img src="${ct.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
-      }
+      if(ct.photo){ ctrCurrentPhoto=ct.photo; switchCtrTab('photo'); const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML=`<img src="${ct.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`; }
     }
   } else {
     document.getElementById('ctr-name').value='';
@@ -1328,45 +1186,35 @@ function pickIcon(ic){ selIcon=ic; document.querySelectorAll('.ico-btn').forEach
 let ctrCurrentPhoto = null;
 
 function switchCtrTab(tab) {
-  const iconSec  = document.getElementById('ctr-icon-section');
-  const photoSec = document.getElementById('ctr-photo-section');
-  const tabIcon  = document.getElementById('tab-icon');
-  const tabPhoto = document.getElementById('tab-photo');
+  const iconSec=document.getElementById('ctr-icon-section');
+  const photoSec=document.getElementById('ctr-photo-section');
+  const tabIcon=document.getElementById('tab-icon');
+  const tabPhoto=document.getElementById('tab-photo');
   if(tab==='icon'){
     iconSec.style.display=''; photoSec.style.display='none';
-    tabIcon.style.background='var(--g)'; tabIcon.style.color='var(--blk)'; tabIcon.style.border='none';
-    tabPhoto.style.background='var(--d3)'; tabPhoto.style.color='var(--tm)'; tabPhoto.style.border='1px solid var(--d4)';
+    tabIcon.style.cssText='flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
+    tabPhoto.style.cssText='flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
   } else {
     iconSec.style.display='none'; photoSec.style.display='';
-    tabPhoto.style.background='var(--g)'; tabPhoto.style.color='var(--blk)'; tabPhoto.style.border='none';
-    tabIcon.style.background='var(--d3)'; tabIcon.style.color='var(--tm)'; tabIcon.style.border='1px solid var(--d4)';
+    tabPhoto.style.cssText='flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
+    tabIcon.style.cssText='flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
   }
 }
 
 function handleCtrPhoto(e) {
   const f=e.target.files&&e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=ev=>{
-    compressPhoto(ev.target.result, compressed => {
-      ctrCurrentPhoto=compressed;
-      const prev=document.getElementById('ctr-photo-preview');
-      if(prev) prev.innerHTML=`<img src="${compressed}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
-    });
-  };
+  r.onload=ev=>{ compressPhoto(ev.target.result, compressed => { ctrCurrentPhoto=compressed; const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML=`<img src="${compressed}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`; }); };
   r.readAsDataURL(f);
   e.target.value='';
 }
 
-function clearCtrPhoto() {
-  ctrCurrentPhoto=null;
-  const prev=document.getElementById('ctr-photo-preview');
-  if(prev) prev.innerHTML='📷';
-}
+function clearCtrPhoto() { ctrCurrentPhoto=null; const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML='📷'; }
 
 function saveCtr() {
   const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
-  const photoTab = document.getElementById('ctr-photo-section').style.display!=='none';
-  const finalPhoto = photoTab ? ctrCurrentPhoto : null;
+  const photoTab=document.getElementById('ctr-photo-section').style.display!=='none';
+  const finalPhoto=photoTab?ctrCurrentPhoto:null;
   if(ctrEditId){
     const ct=S.containers.find(x=>x.id===ctrEditId);
     if(ct){ ct.name=name; ct.icon=selIcon; if(finalPhoto) ct.photo=finalPhoto; else if(!photoTab) ct.photo=null; }
@@ -1381,9 +1229,9 @@ function saveCtr() {
   document.getElementById('ctr-name').value='';
   document.getElementById('ctr-form-title').textContent='Ajouter';
   document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
-  switchCtrTab('icon');
-  renderCtrList(); render();
+  switchCtrTab('icon'); renderCtrList(); render();
 }
+
 function delCtr(id) {
   const c=S.containers.find(x=>x.id===id); const cnt=S.items.filter(i=>i.cid===id).length;
   if(!confirm(`Supprimer "${c?.name}"${cnt>0?` et ses ${cnt} articles`:''}?`)) return;
@@ -1394,25 +1242,17 @@ function delCtr(id) {
 // ══════════════════════════════════════════════
 // NAV / FILTRES
 // ══════════════════════════════════════════════
-function closeSubMenus(){
-  const sub=document.getElementById('mat-submenu');
-  if(sub) sub.style.display='none';
-}
+function closeSubMenus(){ document.getElementById('mat-submenu').style.display='none'; }
 
 function toggleMatSubMenu(){
   const sub=document.getElementById('mat-submenu');
-  const isOpen=sub.style.display==='block';
-  sub.style.display=isOpen?'none':'block';
+  sub.style.display=sub.style.display==='block'?'none':'block';
 }
 
 function setNavSub(filter){
   document.getElementById('mat-submenu').style.display='none';
   document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nav-sub-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-materiel').classList.add('active');
-  const subMap={'Matériel':'sub-materiel','Peinture':'sub-peinture','Électricité':'sub-elec','Plomberie':'sub-plomb','Menuiserie':'sub-menu','Voiture':'sub-voiture','Jardin':'sub-jardin'};
-  const subBtn=document.getElementById(subMap[filter]);
-  if(subBtn) subBtn.classList.add('active');
   S.navFilter=filter;
   document.getElementById('main').style.display='';
   document.getElementById('stats-view').classList.remove('open');
@@ -1423,23 +1263,22 @@ function setNavSub(filter){
 function setNav(btn,filter) {
   closeSubMenus();
   document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.nav-sub-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   S.navFilter=filter;
   document.getElementById('main').style.display='none';
   document.getElementById('stats-view').classList.remove('open');
   document.getElementById('achats-view').classList.remove('open');
-  if(filter==='stats') { renderStats(); }
-  else if(filter==='achats') { renderAchats(); }
+  if(filter==='stats'){ renderStats(); }
+  else if(filter==='achats'){ renderAchats(); }
   else { document.getElementById('main').style.display=''; render(); }
 }
 
-// Fermer sous-menu si clic ailleurs
 document.addEventListener('click',function(e){
   if(!e.target.closest('#nav-materiel')&&!e.target.closest('#mat-submenu')){
     document.getElementById('mat-submenu').style.display='none';
   }
 });
+
 function localFilter(e,cat,cid) {
   e.target.closest('.cat-row').querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active')); e.target.classList.add('active');
   S.items.filter(i=>i.cid===cid).forEach(it=>{ const el=document.getElementById(`card-${it.id}`); if(el) el.style.display=(cat==='all'||it.cat===cat)?'':'none'; });
@@ -1450,7 +1289,9 @@ function toggleSec(id){ S.open[id]=!(S.open[id]!==false); persist(); render(); }
 // STATS
 // ══════════════════════════════════════════════
 function renderStats() {
-  document.getElementById('main').style.display='none'; document.getElementById('stats-view').classList.add('open');
+  document.getElementById('main').style.display='none';
+  document.getElementById('stats-view').classList.add('open');
+  document.getElementById('achats-view').classList.remove('open');
   const total=S.items.length, tStk=S.items.reduce((a,i)=>a+(i.stock||0),0);
   const out=S.items.filter(i=>i.cat==='Outillage').length, mat=S.items.filter(i=>i.cat==='Matériel').length;
   const low=S.items.filter(i=>i.stock<=(i.minS||1)&&i.stock>0).length, empty=S.items.filter(i=>i.stock===0).length;
@@ -1473,97 +1314,67 @@ function renderStats() {
 }
 
 // ══════════════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════════════
-let _tt;
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2500); }
-
-// ══════════════════════════════════════════════
-// MENU DÉROULANT NOMS
+// ACHATS
 // ══════════════════════════════════════════════
 const NOMS_OUTILLAGE = ['Perceuse','Perceuse visseuse','Marteau','Marteau perforateur','Scie circulaire','Scie sauteuse','Scie à onglets','Scie à main','Meuleuse','Ponceuse orbitale','Ponceuse à bande','Rabot','Ciseau à bois','Tournevis','Tournevis électrique','Pince','Pince multiprise','Clé à molette','Clé plate','Clé à pipe','Niveau à bulle','Niveau laser','Mètre ruban','Cutter','Pied de biche','Chalumeau','Pistolet à colle','Pistolet à peinture','Compresseur','Soufflette','Cloueuse','Agrafeuse','Disqueuse','Tronçonneuse','Visseuse','Boulonneuse','Lampe de chantier','Établi','Serre-joint','Étau'];
-const NOMS_MATERIEL = ['Planche','Panneau','Tasseau','Poutre','Chevron','Parpaing','Brique','Dalle','Carrelage','Vis','Boulon','Écrou','Rondelle','Clou','Cheville','Colle','Mastic','Joint','Câble','Fil électrique','Tuyau','Raccord','Robinet','Prise','Interrupteur','Ampoule','Sablier','Seau','Bache','Bande de protection','Ruban adhésif','Placo','Isolant','Mousse expansive','Enduit','Mortier','Ciment','Gravier','Sable'];
-const NOMS_PEINTURE = ['Peinture blanche','Peinture grise','Peinture beige','Peinture bleue','Peinture verte','Apprêt','Sous-couche','Vernis','Lasure','Peinture extérieure','Peinture sol','Rouleau','Pinceau','Plateau de peinture','Bâche de protection','Scotch de masquage','Dégraissant','Décapant'];
-const NOMS_ELECTRIQUE = ['Câble 1.5mm','Câble 2.5mm','Câble 4mm','Câble 6mm','Gaine','Boîte de dérivation','Disjoncteur','Interrupteur','Prise','Prise extérieure','Tableau électrique','Domino','Connecteur','Ampoule LED','Spot','Réglette','Minuterie','Détecteur de mouvement'];
+const NOMS_MATERIEL  = ['Planche','Panneau','Tasseau','Poutre','Chevron','Parpaing','Brique','Dalle','Carrelage','Vis','Boulon','Écrou','Rondelle','Clou','Cheville','Colle','Mastic','Joint','Câble','Fil électrique','Tuyau','Raccord','Robinet','Prise','Interrupteur','Ampoule','Sablier','Seau','Bache','Ruban adhésif','Placo','Isolant','Mousse expansive','Enduit','Mortier','Ciment','Gravier','Sable'];
+const NOMS_PEINTURE  = ['Peinture blanche','Peinture grise','Peinture beige','Peinture bleue','Peinture verte','Apprêt','Sous-couche','Vernis','Lasure','Peinture extérieure','Peinture sol','Rouleau','Pinceau','Plateau de peinture','Bâche de protection','Scotch de masquage','Dégraissant','Décapant'];
+const NOMS_ELECTRIQUE= ['Câble 1.5mm','Câble 2.5mm','Câble 4mm','Câble 6mm','Gaine','Boîte de dérivation','Disjoncteur','Interrupteur','Prise','Tableau électrique','Domino','Connecteur','Ampoule LED','Spot','Réglette','Minuterie','Détecteur de mouvement'];
 const NOMS_PLOMBERIE = ['Tuyau PVC','Tuyau cuivre','Tuyau multicouche','Raccord coudé','Raccord T','Vanne','Robinet','Mitigeur','Siphon','Joint plomberie','Colle PVC','Ruban téflon','Bonde','Flexible','Robinet équerre'];
-const NOMS_JARDIN = ['Tondeuse','Taille-haie','Tronçonneuse','Débroussailleuse','Souffleur','Arrosoir','Tuyau arrosage','Asperseur','Pelle','Râteau','Bêche','Fourche','Sécateur','Scie égoïne','Brouette','Composteur','Pot','Terreau','Engrais','Produit anti-insectes','Produit anti-limaces','Désherbant','Graines','Bulbes','Tuteur','Bâche','Filet anti-oiseaux','Serre'];
-const NOMS_VOITURE = ['Huile moteur','Filtre à huile','Filtre à air','Filtre à carburant','Filtre habitacle','Bougie','Plaquette de frein','Disque de frein','Amortisseur','Courroie','Batterie','Ampoule','Essuie-glace','Liquide de frein','Liquide refroidissement','Liquide direction','Pneu','Jante','Enjoliveur','Câble batterie','Fusible','Courroie accessoire','Pompe à eau','Alternateur','Démarreur','Thermostat'];
-const NOMS_MENUISERIE = ['Planche pin','Planche chêne','Planche MDF','Planche OSB','Contre-plaqué','Tasseau','Moulure','Parquet','Lame de terrasse','Porte','Fenêtre','Plinthe','Quart de rond','Charnière','Poignée','Serrure','Verrou'];
+const NOMS_JARDIN    = ['Tondeuse','Taille-haie','Tronçonneuse','Débroussailleuse','Souffleur','Arrosoir','Tuyau arrosage','Asperseur','Pelle','Râteau','Bêche','Fourche','Sécateur','Brouette','Composteur','Pot','Terreau','Engrais'];
+const NOMS_VOITURE   = ['Huile moteur','Filtre à huile','Filtre à air','Filtre à carburant','Bougie','Plaquette de frein','Disque de frein','Batterie','Ampoule','Essuie-glace','Liquide de frein','Liquide refroidissement','Pneu','Fusible','Courroie','Pompe à eau'];
+const NOMS_MENUISERIE= ['Planche pin','Planche chêne','Planche MDF','Planche OSB','Contre-plaqué','Tasseau','Moulure','Parquet','Lame de terrasse','Porte','Fenêtre','Plinthe','Quart de rond','Charnière','Poignée','Serrure','Verrou'];
+const ACHATS_CATS    = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture','Jardin'];
+const ACHATS_NOMS    = {'Outillage':NOMS_OUTILLAGE,'Matériel':NOMS_MATERIEL,'Peinture':NOMS_PEINTURE,'Électricité':NOMS_ELECTRIQUE,'Plomberie':NOMS_PLOMBERIE,'Menuiserie':NOMS_MENUISERIE,'Voiture':NOMS_VOITURE,'Jardin':NOMS_JARDIN};
 
 function getNomsByCategory() {
-  const cat = getCat();
-  if(cat==='Outillage') return NOMS_OUTILLAGE;
-  if(cat==='Matériel') return NOMS_MATERIEL;
-  if(cat==='Peinture') return NOMS_PEINTURE;
-  if(cat==='Électricité') return NOMS_ELECTRIQUE;
-  if(cat==='Plomberie') return NOMS_PLOMBERIE;
-  if(cat==='Menuiserie') return NOMS_MENUISERIE;
-  if(cat==='Voiture') return NOMS_VOITURE;
-  if(cat==='Jardin') return NOMS_JARDIN;
-  return [];
+  const cat=getCat();
+  return ACHATS_NOMS[cat] || [];
 }
 
 function filterNameDropdown(q) {
   q=(q||'').toLowerCase();
   const dd=document.getElementById('name-dropdown');
   const noms=getNomsByCategory();
-  const filtered=q ? noms.filter(n=>n.toLowerCase().startsWith(q)||n.toLowerCase().includes(q)) : noms.slice(0,20);
+  const filtered=q?noms.filter(n=>n.toLowerCase().startsWith(q)||n.toLowerCase().includes(q)):noms.slice(0,20);
   if(!filtered.length){ dd.style.display='none'; return; }
-  dd.innerHTML=filtered.map(n=>`<div onclick="selectName('${n.replace(/'/g,"\'")}');" style="padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--d4);color:var(--tx);">${n}</div>`).join('');
+  dd.innerHTML=filtered.map(n=>`<div onclick="selectName('${n.replace(/'/g,"\\'")}');" style="padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--d4);color:var(--tx);">${n}</div>`).join('');
   dd.style.display='block';
 }
 
 function showNameDropdown() {
   const dd=document.getElementById('name-dropdown');
   const noms=getNomsByCategory().slice(0,20);
-  dd.innerHTML=noms.map(n=>`<div onclick="selectName('${n.replace(/'/g,"\'")}');" style="padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--d4);color:var(--tx);">${n}</div>`).join('');
+  dd.innerHTML=noms.map(n=>`<div onclick="selectName('${n.replace(/'/g,"\\'")}');" style="padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--d4);color:var(--tx);">${n}</div>`).join('');
   dd.style.display='block';
 }
 
 function showNameDropdownAndScroll() {
   showNameDropdown();
-  setTimeout(()=>{
-    const inp=document.getElementById('f-name');
-    if(inp) inp.scrollIntoView({behavior:'smooth',block:'center'});
-  }, 350);
+  setTimeout(()=>{ const inp=document.getElementById('f-name'); if(inp) inp.scrollIntoView({behavior:'smooth',block:'center'}); }, 350);
 }
 
 function selectName(name) {
   document.getElementById('name-dropdown').style.display='none';
   document.getElementById('f-name').value=name;
-  // Afficher mesures SEULEMENT si planche/panneau/tasseau/poutre
   const showMes=/planche|panneau|tasseau|poutre/i.test(name);
   document.getElementById('mesures-section').style.display=showMes?'':'none';
 }
 
-// Fermer dropdown si clic ailleurs
 document.addEventListener('click',function(e){
   if(!e.target.closest('#name-dropdown')&&e.target.id!=='f-name'){
-    const dd=document.getElementById('name-dropdown');
-    if(dd) dd.style.display='none';
+    const dd=document.getElementById('name-dropdown'); if(dd) dd.style.display='none';
   }
 });
 
-// ══════════════════════════════════════════════
-// ACHATS
-// ══════════════════════════════════════════════
-const ACHATS_CATS = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture','Jardin'];
-const ACHATS_NOMS = {
-  'Outillage': NOMS_OUTILLAGE,
-  'Matériel': NOMS_MATERIEL,
-  'Peinture': NOMS_PEINTURE,
-  'Électricité': NOMS_ELECTRIQUE,
-  'Plomberie': NOMS_PLOMBERIE,
-  'Menuiserie': NOMS_MENUISERIE,
-  'Voiture': NOMS_VOITURE,
-  'Jardin': NOMS_JARDIN,
-};
 let achatFilter = 'all';
 
 function renderAchats() {
+  document.getElementById('main').style.display='none';
+  document.getElementById('stats-view').classList.remove('open');
   document.getElementById('achats-view').classList.add('open');
   if(!S.achats) S.achats=[];
-  const filtered = achatFilter==='all' ? S.achats : S.achats.filter(a=>a.cat===achatFilter);
+  const filtered=achatFilter==='all'?S.achats:S.achats.filter(a=>a.cat===achatFilter);
   const total=S.achats.length, done=S.achats.filter(a=>a.done).length;
 
   let html=`<div style="padding-bottom:8px;">
@@ -1587,7 +1398,7 @@ function renderAchats() {
   if(filtered.length===0){
     html+=`<div class="empty"><div class="eico">🛒</div><p>Aucun article dans la liste.<br>Ajoutez ce dont vous avez besoin !</p></div>`;
   } else {
-    filtered.forEach((a,i)=>{
+    filtered.forEach((a)=>{
       const idx=S.achats.indexOf(a);
       html+=`<div class="achat-card ${a.done?'done':''}">
         <button class="achat-check ${a.done?'checked':''}" onclick="toggleAchat(${idx})">${a.done?'✅':''}</button>
@@ -1602,7 +1413,6 @@ function renderAchats() {
       html+=`<button onclick="clearDoneAchats()" style="width:100%;padding:10px;background:none;border:1.5px solid rgba(224,48,48,.3);border-radius:10px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:8px;">🗑 Effacer les achetés (${done})</button>`;
     }
   }
-
   document.getElementById('achats-content').innerHTML=html;
 }
 
@@ -1634,7 +1444,7 @@ function selectAchatName(name){
 }
 
 function addAchat(){
-  const name=(document.getElementById('achat-name-hidden').value||document.getElementById('achat-search').value).trim();
+  const name=(document.getElementById('achat-name-hidden').value||document.getElementById('achat-search').value||'').trim();
   const cat=document.getElementById('achat-cat').value;
   if(!name){toast('⚠️ Saisissez un article');return;}
   if(!S.achats) S.achats=[];
@@ -1642,19 +1452,22 @@ function addAchat(){
   persist(); renderAchats(); toast('✅ Ajouté à la liste');
 }
 
-function toggleAchat(idx){
-  if(!S.achats[idx]) return;
-  S.achats[idx].done=!S.achats[idx].done;
-  persist(); renderAchats();
-}
+function toggleAchat(idx){ if(!S.achats[idx]) return; S.achats[idx].done=!S.achats[idx].done; persist(); renderAchats(); }
+function delAchat(idx){ S.achats.splice(idx,1); persist(); renderAchats(); }
+function clearDoneAchats(){ S.achats=S.achats.filter(a=>!a.done); persist(); renderAchats(); toast('🗑 Liste nettoyée'); }
 
-function delAchat(idx){
-  S.achats.splice(idx,1); persist(); renderAchats();
-}
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+let _tt;
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2500); }
 
-function clearDoneAchats(){
-  S.achats=S.achats.filter(a=>!a.done); persist(); renderAchats(); toast('🗑 Liste nettoyée');
-}
+// ══════════════════════════════════════════════
+// STYLES nav-sub-btn manquants
+// ══════════════════════════════════════════════
+const extraCSS = document.createElement('style');
+extraCSS.textContent = `.nav-sub-btn{padding:10px 14px;background:none;border:none;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;border-radius:8px;text-align:left;white-space:nowrap;transition:all .18s;}.nav-sub-btn:active{background:var(--g);color:var(--blk);}.nav-sub-btn.active{color:var(--g);background:rgba(106,176,35,.1);}`;
+document.head.appendChild(extraCSS);
 
 // ══════════════════════════════════════════════
 // INIT
