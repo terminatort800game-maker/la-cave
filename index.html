@@ -621,19 +621,15 @@ let autoSaveTimer = null;
 function persist() {
   // 1. IndexedDB (principal, async)
   dbSet('state', S).catch(() => {});
-
   // 2. localStorage (backup secondaire)
   try {
     const data = JSON.stringify(S);
     localStorage.setItem('cave-v5', data);
     localStorage.setItem('cave-backup', data);
   } catch(e) {}
-
   showSaveIndicator();
-
-  // 3. Auto-sauvegarde JSON 30 secondes après la dernière modification
-  clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(() => autoSaveJSON(), 30 * 1000);
+  // 3. Sauvegarde immédiate sur le téléphone
+  autoSaveJSON();
 }
 
 function autoSaveJSON() {
