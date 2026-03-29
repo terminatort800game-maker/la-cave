@@ -639,7 +639,7 @@ function autoSaveJSON() {
     const dataUrl = 'data:application/json;base64,' + base64;
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = 'la-cave-auto.json';
+    a.download = 'la-cave-data.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
