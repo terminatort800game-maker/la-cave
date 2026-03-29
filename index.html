@@ -551,6 +551,19 @@ let saveTimer=null;
 // CHARGEMENT — avec récupération depuis localStorage si IndexedDB vide
 // ══════════════════════════════════════════════
 async function loadState() {
+  // NOUVEAU — Restauration depuis Android si cache vidé
+  if (window.__androidRestore) {
+    try {
+      S = Object.assign(S, window.__androidRestore);
+      window.__androidRestore = null;
+      await openDB();
+      await dbSet('state', S);
+      toast('✅ Données restaurées depuis Android !');
+      render();
+      return;
+    } catch(e) {}
+  }
+
   // Demande stockage persistant (évite que le navigateur efface les données)
   if (navigator.storage && navigator.storage.persist) {
     navigator.storage.persist().catch(() => {});
