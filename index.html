@@ -635,14 +635,9 @@ function persist() {
 function autoSaveJSON() {
   try {
     const data = JSON.stringify(S, null, 2);
-    const base64 = btoa(unescape(encodeURIComponent(data)));
-    const dataUrl = 'data:application/json;base64,' + base64;
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = 'la-cave-data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    if (window.AndroidBridge) {
+      window.AndroidBridge.saveData(data);
+    }
   } catch(e) {}
 }
 
