@@ -678,9 +678,15 @@ function persist() {
 function autoSaveJSON() {
   try {
     const data = JSON.stringify(S, null, 2);
-    if (window.AndroidBridge) {
-      window.AndroidBridge.saveData(data);
-    }
+    const blob = new Blob([data], {type: 'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'la-cave-data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   } catch(e) {}
 }
 
