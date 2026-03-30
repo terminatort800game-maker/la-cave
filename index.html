@@ -1252,15 +1252,13 @@ function exportData() {
   try {
     const data = JSON.stringify(S, null, 2);
     const date = new Date().toISOString().slice(0,10);
-    const blob = new Blob([data], {type:'application/json'});
-    const url  = URL.createObjectURL(blob);
+    const b64  = btoa(unescape(encodeURIComponent(data)));
     const a    = document.createElement('a');
-    a.href     = url;
+    a.href     = 'data:application/json;base64,' + b64;
     a.download = `la-cave-${date}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast('💾 Fichier de sauvegarde téléchargé !');
   } catch(e) {
     toast('❌ Erreur export : ' + e.message);
