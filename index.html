@@ -456,14 +456,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <button id="tab-photo" onclick="switchCtrTab('photo')" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">📷 Photo</button>
         </div>
         <div id="ctr-icon-section"><div class="icon-grid" id="icon-grid"></div></div>
-        <div id="ctr-photo-section" style="display:none;">
-          <input type="file" id="ctr-photo-input" accept="image/*" style="display:none" onchange="handleCtrPhoto(event)">
-          <label for="ctr-photo-input" style="display:flex;align-items:center;gap:12px;background:var(--d3);border:2px dashed var(--d4);border-radius:10px;padding:14px;cursor:pointer;">
-            <div id="ctr-photo-preview" style="width:52px;height:52px;border-radius:8px;background:var(--d4);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;flex-shrink:0;">📷</div>
-            <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;color:var(--tx);">📁 Choisir une photo</div></div>
-          </label>
-          <button onclick="clearCtrPhoto()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer la photo</button>
-        </div>
+       <div id="ctr-photo-section" style="display:none;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;" id="ctr-slots-grid"></div>
+  <button onclick="clearAllCtrPhotos()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer toutes les photos</button>
+</div>
       </div>
       <button class="btn-add-ctr" id="ctr-save-btn" onclick="saveCtr()">＋ Ajouter</button>
     </div>
@@ -745,7 +741,7 @@ function render() {
     let cHtml = `<div class="sec-block" style="${indentStyle}">
       <div class="sec-hdr">
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
-          ${c.photo ? `<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">` : c.icon}
+         ${(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
         </div>
         <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
           <div class="sec-info">
@@ -1245,11 +1241,16 @@ function setPhotoUI(photos){
 
 function viewCtrPhoto(id) {
   const c = S.containers.find(x=>x.id===id);
-  if(!c||!c.photo) return;
-  document.getElementById('im-img').src=c.photo;
-  document.getElementById('im-img').style.display='';
-  document.getElementById('im-name').textContent=c.name;
-  document.getElementById('img-modal').classList.add('open');
+  if(!c) return;
+  if(c.photos&&c.photos.length){
+    document.getElementById('im-img').src=c.photos[0];
+    document.getElementById('im-name').textContent=c.name;
+    document.getElementById('img-modal').classList.add('open');
+  } else if(c.photo){
+    document.getElementById('im-img').src=c.photo;
+    document.getElementById('im-name').textContent=c.name;
+    document.getElementById('img-modal').classList.add('open');
+  }
 }
 
 function viewPhoto(id) {
@@ -1311,16 +1312,21 @@ document.getElementById('import-input').addEventListener('change', function(e){
 // CONTENEURS
 // ══════════════════════════════════════════════
 function openCtrModal(editCid) {
-  ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰'; ctrCurrentPhoto=null;
+  ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰';
+  ctrPhotos=new Array(14).fill(null);
   switchCtrTab('icon');
   if(editCid){
     const ct=S.containers.find(x=>x.id===editCid);
     if(ct){
       document.getElementById('ctr-name').value=ct.name;
-      selIcon=ct.icon;
+      selIcon=ct.icon||'🧰';
       document.getElementById('ctr-form-title').textContent='Modifier';
       document.getElementById('ctr-save-btn').textContent='💾 Enregistrer';
-      if(ct.photo){ ctrCurrentPhoto=ct.photo; switchCtrTab('photo'); const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML=`<img src="${ct.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`; }
+      if(ct.photos&&ct.photos.length){
+        ct.photos.forEach((p,i)=>{ if(p&&i<14) ctrPhotos[i]=p; });
+        switchCtrTab('photo');
+        renderCtrSlots();
+      }
     }
   } else {
     document.getElementById('ctr-name').value='';
@@ -1362,35 +1368,74 @@ function switchCtrTab(tab) {
     iconSec.style.display='none'; photoSec.style.display='';
     tabPhoto.style.cssText='flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
     tabIcon.style.cssText='flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
+    renderCtrSlots();
   }
 }
 
-function handleCtrPhoto(e) {
-  const f=e.target.files&&e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{ compressPhoto(ev.target.result, compressed => { ctrCurrentPhoto=compressed; const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML=`<img src="${compressed}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`; }); };
-  r.readAsDataURL(f);
-  e.target.value='';
+let ctrPhotos = new Array(14).fill(null);
+
+function renderCtrSlots() {
+  const letters = 'ABCDEFGHIJKLMN';
+  const grid = document.getElementById('ctr-slots-grid');
+  if(!grid) return;
+  grid.innerHTML = letters.split('').map((l, i) => {
+    const photo = ctrPhotos[i];
+    return `<div style="position:relative;">
+      <input type="file" id="ctr-slot-${i}" accept="image/*" style="display:none" onchange="handleCtrSlot(event,${i})">
+      <label for="ctr-slot-${i}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--d3);border:2px dashed ${photo?'var(--g)':'var(--d4)'};border-radius:10px;height:80px;cursor:pointer;overflow:hidden;position:relative;">
+        ${photo
+          ? `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onclick="event.preventDefault();viewCtrSlot(${i})">`
+          : `<span style="font-size:20px;">📷</span><span style="font-size:10px;color:var(--tdim);margin-top:2px;">Photo ${l}</span>`
+        }
+        <div style="position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--blk);">${l}</div>
+      </label>
+      ${photo ? `<button onclick="clearCtrSlot(${i})" style="width:100%;margin-top:3px;padding:4px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:6px;color:var(--red);font-size:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;">✕ Supprimer</button>` : ''}
+    </div>`;
+  }).join('');
 }
 
-function clearCtrPhoto() { ctrCurrentPhoto=null; const prev=document.getElementById('ctr-photo-preview'); if(prev) prev.innerHTML='📷'; }
+function handleCtrSlot(e, slot) {
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    compressPhoto(ev.target.result, compressed => {
+      ctrPhotos[slot] = compressed;
+      renderCtrSlots();
+    });
+  };
+  r.readAsDataURL(f);
+  e.target.value = '';
+}
+
+function clearCtrSlot(slot) { ctrPhotos[slot] = null; renderCtrSlots(); }
+function clearAllCtrPhotos() { ctrPhotos = new Array(14).fill(null); renderCtrSlots(); }
+function handleCtrPhoto(e) {}
+function clearCtrPhoto() {}
+
+function viewCtrSlot(slot) {
+  const photo = ctrPhotos[slot]; if(!photo) return;
+  const letters = 'ABCDEFGHIJKLMN';
+  document.getElementById('im-img').src = photo;
+  document.getElementById('im-name').textContent = 'Compartiment ' + letters[slot];
+  document.getElementById('img-modal').classList.add('open');
+}
 
 function saveCtr() {
   const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
   const photoTab=document.getElementById('ctr-photo-section').style.display!=='none';
-  const finalPhoto=photoTab?ctrCurrentPhoto:null;
+  const finalPhoto=photoTab?ctrPhotos.filter(Boolean):null;
   const parentId=document.getElementById('ctr-parent').value||null;
   if(ctrEditId){
     const ct=S.containers.find(x=>x.id===ctrEditId);
-    if(ct){ ct.name=name; ct.icon=selIcon; ct.parentId=parentId; if(finalPhoto) ct.photo=finalPhoto; else if(!photoTab) ct.photo=null; }
+    if(ct){ ct.name=name; ct.icon=selIcon; ct.parentId=parentId; if(finalPhoto) ct.photos=finalPhoto; else if(!photoTab) ct.photos=null; }
     toast(`✅ ${name} modifié`);
   } else {
     const id='c'+Date.now();
-    S.containers.push({id,name,icon:selIcon,photo:finalPhoto,parentId});
+    S.containers.push({id,name,icon:selIcon,photos:finalPhoto,parentId});
     S.open[id]=true;
     toast(`✅ ${name} ajouté`);
   }
-  persist(); ctrEditId=null; ctrCurrentPhoto=null;
+  persist(); ctrEditId=null; ctrPhotos=new Array(14).fill(null);
   document.getElementById('ctr-name').value='';
   document.getElementById('ctr-form-title').textContent='Ajouter';
   document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
