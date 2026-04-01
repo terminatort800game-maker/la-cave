@@ -376,11 +376,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <textarea class="ftxt" id="f-desc" placeholder="Marque, référence, état..."></textarea>
     </div>
     <div class="fg">
-      <label class="flbl">Quantité · Seuil d'alerte</label>
+      <label class="flbl" id="stock-label">Quantité</label>
       <div class="stock-row">
         <input class="finput" id="f-stock" type="number" min="0" value="1">
-        <span class="stock-lbl">Alerte si ≤</span>
-        <input class="finput" id="f-min" type="number" min="0" value="1">
+        <span class="stock-lbl" id="alert-lbl" style="display:none">Alerte si ≤</span>
+        <input class="finput" id="f-min" type="number" min="0" value="1" style="display:none">
       </div>
     </div>
     <div class="fg">
@@ -1004,8 +1004,14 @@ function selCat(cat) {
   });
   const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin','Placo':'btn-placo','Papier peint':'btn-papier'};
   const btn=document.getElementById(map[cat]); if(btn) btn.classList.add('active');
-  const acc=document.getElementById('acc-section-modal');
+ const acc=document.getElementById('acc-section-modal');
   if(acc) acc.style.display=cat==='Outillage'?'':'none';
+  const alertLbl=document.getElementById('alert-lbl');
+  const alertMin=document.getElementById('f-min');
+  const stockLabel=document.getElementById('stock-label');
+  if(alertLbl) alertLbl.style.display=cat==='Outillage'?'none':'';
+  if(alertMin) alertMin.style.display=cat==='Outillage'?'none':'';
+  if(stockLabel) stockLabel.textContent=cat==='Outillage'?'Quantité':'Quantité · Seuil d\'alerte';
 }
 
 function getCat(){
