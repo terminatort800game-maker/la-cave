@@ -845,13 +845,13 @@ function cardHTML(it) {
         ${it.desc?`<div class="item-desc">${it.desc}</div>`:''}
         ${it.longueur?`<div class="item-desc">📏 ${it.longueur}×${it.largeur}×${it.epaisseur} cm</div>`:''}
       </div>
-      <div class="ctr-wrap">
+     <div class="ctr-wrap">
         <div class="ctr-row">
-          <button class="cbtn m" onclick="chgStock('${it.id}',-1)">−</button>
+          ${it.cat !== 'Outillage' ? `<button class="cbtn m" onclick="chgStock('${it.id}',-1)">−</button>` : ''}
           <span class="cval ${sc}" id="cv-${it.id}">${it.stock}</span>
-          <button class="cbtn p" onclick="chgStock('${it.id}',1)">+</button>
+          ${it.cat !== 'Outillage' ? `<button class="cbtn p" onclick="chgStock('${it.id}',1)">+</button>` : ''}
         </div>
-        <div class="clbl">en stock</div>
+        <div class="clbl">${it.cat === 'Outillage' ? 'en cave' : 'en stock'}</div>
       </div>
     </div>
     ${photos.length>1?`<div class="card-photos">${photos.slice(1).map((p,i)=>`<img class="card-photo-mini" src="${p}" onclick="viewPhotoFull('${it.id}',${i+1})">`).join('')}</div>`:''}
