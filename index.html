@@ -1004,7 +1004,7 @@ function selCat(cat) {
   });
   const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin','Placo':'btn-placo','Papier peint':'btn-papier'};
   const btn=document.getElementById(map[cat]); if(btn) btn.classList.add('active');
- const acc=document.getElementById('acc-section-modal');
+  const acc=document.getElementById('acc-section-modal');
   if(acc) acc.style.display=cat==='Outillage'?'':'none';
   const alertLbl=document.getElementById('alert-lbl');
   const alertMin=document.getElementById('f-min');
@@ -1012,6 +1012,21 @@ function selCat(cat) {
   if(alertLbl) alertLbl.style.display=cat==='Outillage'?'none':'';
   if(alertMin) alertMin.style.display=cat==='Outillage'?'none':'';
   if(stockLabel) stockLabel.textContent=cat==='Outillage'?'Quantité':'Quantité · Seuil d\'alerte';
+
+  // Seuil intelligent par catégorie
+  const seuilDefaut={
+    'Matériel':5,
+    'Peinture':1,
+    'Électricité':3,
+    'Plomberie':2,
+    'Menuiserie':2,
+    'Voiture':1,
+    'Jardin':2,
+    'Placo':3,
+    'Papier peint':1
+  };
+  const fmin=document.getElementById('f-min');
+  if(fmin && cat !== 'Outillage') fmin.value = seuilDefaut[cat] || 1;
 }
 
 function getCat(){
