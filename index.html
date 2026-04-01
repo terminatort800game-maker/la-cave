@@ -1028,9 +1028,8 @@ function selCat(cat) {
   };
   const fmin=document.getElementById('f-min');
   if(fmin && cat !== 'Outillage') fmin.value = seuilDefaut[cat] || 1;
-  // Cache les mesures si on change de catégorie
-  if(cat !== 'Menuiserie') {
-    document.getElementById('mesures-section').style.display='none';
+ // Affiche les mesures automatiquement pour Menuiserie, cache pour les autres
+  document.getElementById('mesures-section').style.display=cat==='Menuiserie'?'':'none';
   }
 }
 
