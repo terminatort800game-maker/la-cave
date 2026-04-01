@@ -1012,6 +1012,7 @@ function selCat(cat) {
   if(alertLbl) alertLbl.style.display=cat==='Outillage'?'none':'';
   if(alertMin) alertMin.style.display=cat==='Outillage'?'none':'';
   if(stockLabel) stockLabel.textContent=cat==='Outillage'?'Quantité':'Quantité · Seuil d\'alerte';
+  
 
   // Seuil intelligent par catégorie
   const seuilDefaut={
@@ -1027,6 +1028,10 @@ function selCat(cat) {
   };
   const fmin=document.getElementById('f-min');
   if(fmin && cat !== 'Outillage') fmin.value = seuilDefaut[cat] || 1;
+  // Cache les mesures si on change de catégorie
+  if(cat !== 'Menuiserie') {
+    document.getElementById('mesures-section').style.display='none';
+  }
 }
 
 function getCat(){
@@ -1579,6 +1584,9 @@ function filterNameDropdown(q) {
   const dd=document.getElementById('name-dropdown');
   const noms=getNomsByCategory();
   const filtered=q?noms.filter(n=>n.toLowerCase().startsWith(q)||n.toLowerCase().includes(q)):noms.slice(0,20);
+  // Affiche les mesures si le nom tapé correspond
+  const showMes=/planche|panneau|tasseau|poutre/i.test(q);
+  document.getElementById('mesures-section').style.display=showMes?'':'none';
   if(!filtered.length){ dd.style.display='none'; return; }
   dd.innerHTML=filtered.map(n=>`<div onclick="selectName('${n.replace(/'/g,"\\'")}');" style="padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--d4);color:var(--tx);">${n}</div>`).join('');
   dd.style.display='block';
