@@ -741,7 +741,7 @@ function render() {
     let cHtml = `<div class="sec-block" style="${indentStyle}">
       <div class="sec-hdr">
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
-         ${(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
+         ${(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
         </div>
         <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
           <div class="sec-info">
