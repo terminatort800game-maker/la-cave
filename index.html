@@ -456,11 +456,27 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <button id="tab-photo" onclick="switchCtrTab('photo')" style="flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">📷 Photo</button>
         </div>
         <div id="ctr-icon-section"><div class="icon-grid" id="icon-grid"></div></div>
-       <div id="ctr-photo-section" style="display:none;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;" id="ctr-slots-grid"></div>
-  <button onclick="clearAllCtrPhotos()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer toutes les photos</button>
+     <div id="ctr-photo-section" style="display:none;">
+  <!-- Photo principale -->
+  <div style="margin-bottom:10px;">
+    <label class="flbl">Photo principale</label>
+    <input type="file" id="ctr-main-input" accept="image/*" style="display:none" onchange="handleCtrMainPhoto(event)">
+    <input type="file" id="ctr-main-cam" accept="image/*" capture="environment" style="display:none" onchange="handleCtrMainPhoto(event)">
+    <div id="ctr-main-preview" style="background:var(--d3);border:2px dashed var(--d4);border-radius:10px;height:80px;display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;">
+      <label for="ctr-main-input" style="padding:8px 14px;background:var(--d4);border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-weight:600;">📁 Galerie</label>
+      <label for="ctr-main-cam" style="padding:8px 14px;background:var(--d4);border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-weight:600;">📸 Photo</label>
+    </div>
+    <button onclick="clearCtrMainPhoto()" style="width:100%;margin-top:4px;padding:5px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:6px;color:var(--red);font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;">🗑 Supprimer photo principale</button>
+  </div>
+  <!-- Slots compartiments (caisse uniquement) -->
+  <div id="ctr-slots-section" style="display:none;">
+    <label class="flbl">Photos compartiments (A → N)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;" id="ctr-slots-grid"></div>
+    <button onclick="clearAllCtrPhotos()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer tous les compartiments</button>
+  </div>
+
+
 </div>
-      </div>
       <button class="btn-add-ctr" id="ctr-save-btn" onclick="saveCtr()">＋ Ajouter</button>
     </div>
     <div class="mbtns" style="margin-top:14px;">
@@ -741,7 +757,7 @@ function render() {
     let cHtml = `<div class="sec-block" style="${indentStyle}">
       <div class="sec-hdr">
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
-         ${(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
+        ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
         </div>
         <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
           <div class="sec-info">
@@ -1314,22 +1330,22 @@ document.getElementById('import-input').addEventListener('change', function(e){
 function openCtrModal(editCid) {
   ctrEditId=editCid||null; selTypeKey='caisse'; selIcon='🧰';
   ctrPhotos=new Array(14).fill(null);
+  ctrMainPhoto=null;
   switchCtrTab('icon');
-  // Cache ou affiche l'onglet photo selon le type
-const tabPhoto=document.getElementById('tab-photo');
-if(tabPhoto) tabPhoto.style.display=selTypeKey==='caisse'?'':'none';
+  updatePhotoTabVisibility();
   if(editCid){
     const ct=S.containers.find(x=>x.id===editCid);
     if(ct){
       document.getElementById('ctr-name').value=ct.name;
       selIcon=ct.icon||'🧰';
+      selTypeKey=ct.type||'caisse';
       document.getElementById('ctr-form-title').textContent='Modifier';
       document.getElementById('ctr-save-btn').textContent='💾 Enregistrer';
+      if(ct.mainPhoto){ ctrMainPhoto=ct.mainPhoto; updateMainPhotoUI(); }
       if(ct.photos&&ct.photos.length){
         ct.photos.forEach((p,i)=>{ if(p&&i<14) ctrPhotos[i]=p; });
-        switchCtrTab('photo');
-        renderCtrSlots();
       }
+      updatePhotoTabVisibility();
     }
   } else {
     document.getElementById('ctr-name').value='';
@@ -1359,6 +1375,7 @@ function selType(btn,type) {
   if(tabPhoto) tabPhoto.style.display=type==='caisse'?'':'none';
   // Si on change vers un type sans photos, repasse sur icône
   if(type!=='caisse') switchCtrTab('icon');
+  updatePhotoTabVisibility();
 }
 function pickIcon(ic){ selIcon=ic; document.querySelectorAll('.ico-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===ic)); }
 let ctrCurrentPhoto = null;
@@ -1376,11 +1393,48 @@ function switchCtrTab(tab) {
     iconSec.style.display='none'; photoSec.style.display='';
     tabPhoto.style.cssText='flex:1;padding:8px;background:var(--g);border:none;border-radius:8px;color:var(--blk);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
     tabIcon.style.cssText='flex:1;padding:8px;background:var(--d3);border:1px solid var(--d4);border-radius:8px;color:var(--tm);font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';
-    renderCtrSlots();
+    renderMainPhotoUI();
+    if(selTypeKey==='caisse') renderCtrSlots();
+  }
+}
+let ctrPhotos = new Array(14).fill(null);
+let ctrMainPhoto = null;
+function updatePhotoTabVisibility() {
+  const tabPhoto=document.getElementById('tab-photo');
+  if(tabPhoto) tabPhoto.style.display='';
+  const slotsSec=document.getElementById('ctr-slots-section');
+  if(slotsSec) slotsSec.style.display=selTypeKey==='caisse'?'':'none';
+}
+
+function handleCtrMainPhoto(e) {
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ compressPhoto(ev.target.result, compressed=>{ ctrMainPhoto=compressed; updateMainPhotoUI(); }); };
+  r.readAsDataURL(f);
+  e.target.value='';
+}
+
+function updateMainPhotoUI() {
+  const prev=document.getElementById('ctr-main-preview'); if(!prev) return;
+  if(ctrMainPhoto){
+    prev.innerHTML=`<img src="${ctrMainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onclick="viewMainPhoto()">`;
+  } else {
+    prev.innerHTML=`
+      <label for="ctr-main-input" style="padding:8px 14px;background:var(--d4);border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-weight:600;">📁 Galerie</label>
+      <label for="ctr-main-cam" style="padding:8px 14px;background:var(--d4);border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-weight:600;">📸 Photo</label>`;
   }
 }
 
-let ctrPhotos = new Array(14).fill(null);
+function renderMainPhotoUI() { updateMainPhotoUI(); }
+
+function clearCtrMainPhoto() { ctrMainPhoto=null; updateMainPhotoUI(); }
+
+function viewMainPhoto() {
+  if(!ctrMainPhoto) return;
+  document.getElementById('im-img').src=ctrMainPhoto;
+  document.getElementById('im-name').textContent='Photo principale';
+  document.getElementById('img-modal').classList.add('open');
+}
 
 function renderCtrSlots() {
   const letters = 'ABCDEFGHIJKLMN';
@@ -1437,19 +1491,19 @@ function viewCtrSlot(slot) {
 function saveCtr() {
   const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
   const photoTab=document.getElementById('ctr-photo-section').style.display!=='none';
-  const finalPhoto=photoTab?ctrPhotos.filter(Boolean):null;
+  const finalPhotos=photoTab&&selTypeKey==='caisse'?ctrPhotos.filter(Boolean):null;
   const parentId=document.getElementById('ctr-parent').value||null;
   if(ctrEditId){
     const ct=S.containers.find(x=>x.id===ctrEditId);
-    if(ct){ ct.name=name; ct.icon=selIcon; ct.parentId=parentId; if(finalPhoto) ct.photos=finalPhoto; else if(!photoTab) ct.photos=null; }
+    if(ct){ ct.name=name; ct.icon=selIcon; ct.type=selTypeKey; ct.parentId=parentId; ct.mainPhoto=ctrMainPhoto||null; if(finalPhotos) ct.photos=finalPhotos; else if(!photoTab) ct.photos=null; }
     toast(`✅ ${name} modifié`);
   } else {
     const id='c'+Date.now();
-    S.containers.push({id,name,icon:selIcon,photos:finalPhoto,parentId});
+    S.containers.push({id,name,icon:selIcon,type:selTypeKey,mainPhoto:ctrMainPhoto||null,photos:finalPhotos,parentId});
     S.open[id]=true;
     toast(`✅ ${name} ajouté`);
   }
-  persist(); ctrEditId=null; ctrPhotos=new Array(14).fill(null);
+  persist(); ctrEditId=null; ctrPhotos=new Array(14).fill(null); ctrMainPhoto=null;
   document.getElementById('ctr-name').value='';
   document.getElementById('ctr-form-title').textContent='Ajouter';
   document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
