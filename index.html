@@ -1302,11 +1302,9 @@ function viewPhotoFull(id,idx){
   const it=S.items.find(i=>i.id===id);
   const photos=(it?.photos&&it.photos.length)?it.photos:(it?.photo?[it.photo]:[]);
   if(!photos[idx]) return;
-  galleryPhotos=photos.map((p,i)=>({src:p,label:it.name+(photos.length>1?` (${i+1}/${photos.length})`:'')}));
-  galleryIdx=idx;
-  showGalleryPhoto();
+  document.getElementById('im-img').src=photos[idx];
+  document.getElementById('im-name').textContent=it.name+(photos.length>1?` (${idx+1}/${photos.length})`:'');
   document.getElementById('img-modal').classList.add('open');
-}
 }
 function closeImgModal(){ document.getElementById('img-modal').classList.remove('open'); }
 
