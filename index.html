@@ -302,7 +302,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
   </div>
   <div class="hdr-search">
-    <input class="srch" id="srch" type="text" placeholder="🔍  Rechercher..." oninput="render()">
+    <input class="srch" id="srch" type="text" placeholder="Rechercher..." oninput="render()">
   </div>
 </div>
 
@@ -488,11 +488,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="imovl" id="img-modal" onclick="closeImgModal()">
   <img id="im-img" src="" alt="">
   <div class="im-name" id="im-name"></div>
-  <div style="display:flex;gap:12px;align-items:center;" onclick="event.stopPropagation()">
-    <button id="gal-prev" class="im-close" onclick="galleryIdx=Math.max(0,galleryIdx-1);showGalleryPhoto();">◀</button>
-    <button class="im-close" onclick="closeImgModal()">Fermer</button>
-    <button id="gal-next" class="im-close" onclick="galleryIdx=Math.min(galleryPhotos.length-1,galleryIdx+1);showGalleryPhoto();">▶</button>
-  </div>
+ <div style="display:flex;gap:12px;align-items:center;" onclick="event.stopPropagation()">
+  <button id="gal-prev" class="im-close" onclick="if(galleryIdx>0){galleryIdx--;showGalleryPhoto();}">◀</button>
+  <button class="im-close" onclick="closeImgModal()">Fermer</button>
+  <button id="gal-next" class="im-close" onclick="if(galleryIdx<galleryPhotos.length-1){galleryIdx++;showGalleryPhoto();}">▶</button>
+</div>
 </div>
 
 <!-- MODAL ROGNER -->
@@ -1260,16 +1260,22 @@ function setPhotoUI(photos){
 }
 
 function viewCtrPhoto(id) {
-  const c = S.containers.find(x=>x.id===id);
-  if(!c) return;
+  const c = S.containers.find(x => x.id === id);
+  if (!c) return;
   const photos = [];
-  if(c.mainPhoto) photos.push({src:c.mainPhoto, label:'Photo principale'});
-  if(c.photos&&c.photos.length){
-    const letters='ABCDEFGHIJKLMN';
-    c.photos.forEach((p,i)=>{ if(p) photos.push({src:p, label:'Compartiment '+letters[i]}); });
-  } else if(c.photo) photos.push({src:c.photo, label:c.name});
-  if(!photos.length) return;
-  openCtrGallery(photos, c.name);
+  if (c.mainPhoto) photos.push({ src: c.mainPhoto, label: 'Photo principale — ' + c.name });
+  else if (c.photo) photos.push({ src: c.photo, label: c.name });
+  if (c.photos && c.photos.length) {
+    const letters = 'ABCDEFGHIJKLMN';
+    c.photos.forEach((p, i) => {
+      if (p) photos.push({ src: p, label: 'Compartiment ' + letters[i] + ' — ' + c.name });
+    });
+  }
+  if (!photos.length) return;
+  galleryPhotos = photos;
+  galleryIdx = 0;
+  showGalleryPhoto();
+  document.getElementById('img-modal').classList.add('open');
 }
 
 let galleryPhotos=[], galleryIdx=0;
@@ -1281,32 +1287,39 @@ function openCtrGallery(photos, name) {
 }
 
 function showGalleryPhoto() {
-  const p=galleryPhotos[galleryIdx];
-  if(!p) return;
-  document.getElementById('im-img').src=p.src;
-  document.getElementById('im-name').textContent=p.label+' ('+( galleryIdx+1)+'/'+galleryPhotos.length+')';
-  const prev=document.getElementById('gal-prev');
-  const next=document.getElementById('gal-next');
-  if(prev) prev.style.display=galleryPhotos.length>1?'':'none';
-  if(next) next.style.display=galleryPhotos.length>1?'':'none';
+  const p = galleryPhotos[galleryIdx];
+  if (!p) return;
+  document.getElementById('im-img').src = p.src;
+  document.getElementById('im-name').textContent = p.label;
+  const prev = document.getElementById('gal-prev');
+  const next = document.getElementById('gal-next');
+  if (prev) prev.style.display = galleryPhotos.length > 1 ? '' : 'none';
+  if (next) next.style.display = galleryPhotos.length > 1 ? '' : 'none';
+  if (prev) prev.style.opacity = galleryIdx === 0 ? '0.3' : '1';
+  if (next) next.style.opacity = galleryIdx === galleryPhotos.length - 1 ? '0.3' : '1';
 }
 
 function viewPhoto(id) {
-  const it=S.items.find(i=>i.id===id);
-  const photos=(it?.photos&&it.photos.length)?it.photos:(it?.photo?[it.photo]:[]);
-  if(!photos.length){ toast('Aucune photo'); return; }
-  galleryPhotos=photos.map((p,i)=>({src:p, label:it.name+(photos.length>1?` (${i+1}/${photos.length})`:'') }));
-  galleryIdx=0;
+  const it = S.items.find(i => i.id === id);
+  const photos = (it?.photos && it.photos.length) ? it.photos : (it?.photo ? [it.photo] : []);
+  if (!photos.length) { toast('Aucune photo'); return; }
+  galleryPhotos = photos.map((p, i) => ({
+    src: p,
+    label: it.name + (photos.length > 1 ? ` (${i+1}/${photos.length})` : '')
+  }));
+  galleryIdx = 0;
   showGalleryPhoto();
   document.getElementById('img-modal').classList.add('open');
 }
-
-function viewPhotoFull(id,idx){
-  const it=S.items.find(i=>i.id===id);
-  const photos=(it?.photos&&it.photos.length)?it.photos:(it?.photo?[it.photo]:[]);
-  if(!photos[idx]) return;
-  galleryPhotos=photos.map((p,i)=>({src:p, label:it.name+(photos.length>1?` (${i+1}/${photos.length})`:'') }));
-  galleryIdx=idx;
+function viewPhotoFull(id, idx) {
+  const it = S.items.find(i => i.id === id);
+  const photos = (it?.photos && it.photos.length) ? it.photos : (it?.photo ? [it.photo] : []);
+  if (!photos[idx]) return;
+  galleryPhotos = photos.map((p, i) => ({
+    src: p,
+    label: it.name + (photos.length > 1 ? ` (${i+1}/${photos.length})` : '')
+  }));
+  galleryIdx = idx;
   showGalleryPhoto();
   document.getElementById('img-modal').classList.add('open');
 }
