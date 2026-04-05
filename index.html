@@ -71,7 +71,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .item-card{background:var(--card);border:1px solid var(--d4);border-radius:12px;overflow:hidden;margin-bottom:8px;}
 .item-card.low-stock{border-color:rgba(224,48,48,.4);}
 .item-top{display:flex;align-items:center;padding:10px 12px;gap:10px;}
-.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(106,176,35,0.3);user-select:none;-webkit-user-select:none;pointer-events:auto;z-index:10;}
+.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(106,176,35,0.3);user-select:none;-webkit-user-select:none;}
 .item-photo img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
 .item-photo .povl{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;font-size:16px;}
 .item-photo:active .povl{opacity:1;}
@@ -763,7 +763,7 @@ function render() {
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
         ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
         </div>
-        <div class="sec-hdr-tap" ontouchend="event.stopPropagation();toggleSec('${c.id}')" onclick="event.stopPropagation();toggleSec('${c.id}')">
+        <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
           <div class="sec-info">
             <div class="sec-name">${c.name}</div>
             <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
