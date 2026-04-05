@@ -854,7 +854,7 @@ function cardHTML(it) {
 
   return `<div class="item-card ${cc}" id="card-${it.id}">
     <div class="item-top">
-      <div class="item-photo" onclick="viewPhoto('${it.id}')">${ph}</div>
+      <button class="item-photo" onclick="viewPhoto('${it.id}')">${ph}</button>
       <div class="item-info">
         <div class="item-name">${it.name}</div>
         <span class="ib ${cls}">${it.cat}</span>
