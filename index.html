@@ -811,7 +811,7 @@ function render() {
     html += renderContainer(c, false);
   });
 
- html+=`<button class="manage-btn" onclick="event.stopPropagation();openCtrModal(null)">🗂️ &nbsp;Gérer les caisses &amp; meubles</button>`;
+html+=`<button class="manage-btn" onclick="event.stopPropagation();openCtrModal(null)">🗂️ &nbsp;Gérer les caisses &amp; meubles</button>`;
   html+=`<div class="backup-section">
     <button class="backup-btn export" onclick="exportData()">💾 Sauvegarder</button>
     <button class="backup-btn import" onclick="document.getElementById('import-input').click()">📂 Restaurer</button>
@@ -854,7 +854,7 @@ function cardHTML(it) {
 
   return `<div class="item-card ${cc}" id="card-${it.id}">
     <div class="item-top">
-      <div class="item-photo" onclick="viewPhoto('${it.id}')">${ph}</div>
+      <div class="item-photo" onclick="event.stopPropagation();viewPhoto('${it.id}')">${ph}</div>
       <div class="item-info">
         <div class="item-name">${it.name}</div>
         <span class="ib ${cls}">${it.cat}</span>
