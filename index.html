@@ -71,7 +71,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .item-card{background:var(--card);border:1px solid var(--d4);border-radius:12px;overflow:hidden;margin-bottom:8px;}
 .item-card.low-stock{border-color:rgba(224,48,48,.4);}
 .item-top{display:flex;align-items:center;padding:10px 12px;gap:10px;}
-.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(106,176,35,0.3);user-select:none;-webkit-user-select:none;}
+.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:rgba(106,176,35,0.3);user-select:none;-webkit-user-select:none;pointer-events:auto;z-index:10;}
 .item-photo img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
 .item-photo .povl{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;font-size:16px;}
 .item-photo:active .povl{opacity:1;}
@@ -775,7 +775,7 @@ function render() {
         </div>
         <button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button>
       </div>
-     <div class="sec-body ${isOpen?'open':''}" ontouchend="event.stopPropagation()" onclick="event.stopPropagation()">
+     <div class="sec-body ${isOpen?'open':''}">
         <div class="sec-body-in">
           <div class="cat-row">
             <button class="cat-pill active" onclick="localFilter(event,'all','${c.id}')">Tout</button>
@@ -854,7 +854,7 @@ function cardHTML(it) {
 
   return `<div class="item-card ${cc}" id="card-${it.id}">
     <div class="item-top">
-     <div class="item-photo" ontouchend="event.stopPropagation();event.preventDefault();viewPhoto('${it.id}')" onclick="event.stopPropagation();viewPhoto('${it.id}')">${ph}</div>
+    <div class="item-photo" onclick="viewPhoto('${it.id}')">${ph}</div>
       <div class="item-info">
         <div class="item-name">${it.name}</div>
         <span class="ib ${cls}">${it.cat}</span>
