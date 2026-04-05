@@ -1515,25 +1515,48 @@ function viewCtrSlot(slot) {
 }
 
 function saveCtr() {
-  const name=document.getElementById('ctr-name').value.trim(); if(!name){ toast('⚠️ Saisissez un nom'); return; }
-  const photoTab=document.getElementById('ctr-photo-section').style.display!=='none';
-  const finalPhotos=photoTab&&selTypeKey==='caisse'?ctrPhotos.filter(Boolean):null;
-  const parentId=document.getElementById('ctr-parent').value||null;
+  const name = document.getElementById('ctr-name').value.trim(); 
+  if(!name){ toast('⚠️ Saisissez un nom'); return; }
+  const photoTab = document.getElementById('ctr-photo-section').style.display !== 'none';
+  const finalPhotos = photoTab && selTypeKey === 'caisse' ? ctrPhotos.filter(Boolean) : null;
+  const parentId = document.getElementById('ctr-parent').value || null;
+  
   if(ctrEditId){
-    const ct=S.containers.find(x=>x.id===ctrEditId);
-    if(ct){ ct.name=name; ct.icon=selIcon; ct.type=selTypeKey; ct.parentId=parentId; ct.mainPhoto=ctrMainPhoto||null; if(finalPhotos) ct.photos=finalPhotos; else if(!photoTab) ct.photos=null; }
+    const ct = S.containers.find(x => x.id === ctrEditId);
+    if(ct){ 
+      ct.name = name; 
+      ct.icon = selIcon; 
+      ct.type = selTypeKey; 
+      ct.parentId = parentId;
+      // Ne touche aux photos QUE si l'onglet Photo est actif
+      if(photoTab){
+        ct.mainPhoto = ctrMainPhoto || null;
+        if(finalPhotos) ct.photos = finalPhotos;
+        else ct.photos = null;
+      }
+    }
     toast(`✅ ${name} modifié`);
   } else {
-    const id='c'+Date.now();
-    S.containers.push({id,name,icon:selIcon,type:selTypeKey,mainPhoto:ctrMainPhoto||null,photos:finalPhotos,parentId});
-    S.open[id]=true;
+    const id = 'c' + Date.now();
+    S.containers.push({
+      id, name, icon: selIcon, type: selTypeKey,
+      mainPhoto: ctrMainPhoto || null,
+      photos: finalPhotos,
+      parentId
+    });
+    S.open[id] = true;
     toast(`✅ ${name} ajouté`);
   }
-  persist(); ctrEditId=null; ctrPhotos=new Array(14).fill(null); ctrMainPhoto=null;
-  document.getElementById('ctr-name').value='';
-  document.getElementById('ctr-form-title').textContent='Ajouter';
-  document.getElementById('ctr-save-btn').textContent='＋ Ajouter';
-  switchCtrTab('icon'); renderCtrList(); render();
+  persist(); 
+  ctrEditId = null; 
+  ctrPhotos = new Array(14).fill(null); 
+  ctrMainPhoto = null;
+  document.getElementById('ctr-name').value = '';
+  document.getElementById('ctr-form-title').textContent = 'Ajouter';
+  document.getElementById('ctr-save-btn').textContent = '＋ Ajouter';
+  switchCtrTab('icon'); 
+  renderCtrList(); 
+  render();
 }
 
 function fillCtrParentSelect(editId) {
