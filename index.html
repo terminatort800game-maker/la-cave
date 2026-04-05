@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -763,7 +763,7 @@ function render() {
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
         ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
         </div>
-        <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
+        <div class="sec-hdr-tap" ontouchend="event.stopPropagation();toggleSec('${c.id}')" onclick="event.stopPropagation();toggleSec('${c.id}')">
           <div class="sec-info">
             <div class="sec-name">${c.name}</div>
             <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
@@ -775,7 +775,7 @@ function render() {
         </div>
         <button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button>
       </div>
-      <div class="sec-body ${isOpen?'open':''}">
+     <div class="sec-body ${isOpen?'open':''}" ontouchend="event.stopPropagation()" onclick="event.stopPropagation()">
         <div class="sec-body-in">
           <div class="cat-row">
             <button class="cat-pill active" onclick="localFilter(event,'all','${c.id}')">Tout</button>
