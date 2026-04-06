@@ -149,6 +149,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .csbtn.cs-jardin.active{background:rgba(50,200,100,.15);border-color:#32C864;color:#64E896;}
 .csbtn.cs-placo.active{background:rgba(200,180,140,.15);border-color:#C8B48C;color:#E0CC9A;}
 .csbtn.cs-papier.active{background:rgba(220,150,220,.15);border-color:#DC96DC;color:#F0B4F0;}
+.csbtn.cs-quinc.active{background:rgba(255,140,0,.15);border-color:#FF8C00;color:#FF8C00;}
 .ib-placo{background:rgba(200,180,140,.12);color:#E0CC9A;border:1px solid rgba(200,180,140,.3);}
 .ib-papier{background:rgba(220,150,220,.12);color:#F0B4F0;border:1px solid rgba(220,150,220,.3);}
 .ib-paint{background:rgba(255,100,100,.12);color:#FF9090;border:1px solid rgba(255,100,100,.3);}
@@ -157,6 +158,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ib-menu{background:rgba(180,120,60,.15);color:#D4A060;border:1px solid rgba(180,120,60,.3);}
 .ib-voiture{background:rgba(150,150,255,.12);color:#AAAAFF;border:1px solid rgba(150,150,255,.3);}
 .ib-jardin{background:rgba(50,200,100,.12);color:#64E896;border:1px solid rgba(50,200,100,.3);}
+.ib-quinc{background:rgba(255,140,0,.12);color:#FF8C00;border:1px solid rgba(255,140,0,.3);}
+
 
 .achats-view{display:none;padding:10px 10px 100px;position:relative;z-index:1;}
 .achats-view.open{display:block;}
@@ -322,6 +325,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <button class="nav-sub-btn" id="sub-jardin" onclick="setNavSub('Jardin')">🪴 Jardin</button>
     <button class="nav-sub-btn" id="sub-placo" onclick="setNavSub('Placo')">🧱 Placo</button>
     <button class="nav-sub-btn" id="sub-papier" onclick="setNavSub('Papier peint')">🖼️ Papier peint</button>
+    <button class="nav-sub-btn" id="sub-quinc" onclick="setNavSub('Quincaillerie')">🔩 Quincaillerie</button>
   </div>
 </div>
 
@@ -355,6 +359,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <button class="csbtn cs-jardin" id="btn-jardin" onclick="selCat('Jardin')">🪴 Jardin</button>
         <button class="csbtn cs-placo" id="btn-placo" onclick="selCat('Placo')">🧱 Placo</button>
         <button class="csbtn cs-papier" id="btn-papier" onclick="selCat('Papier peint')">🖼️ Papier peint</button>
+        <button class="csbtn cs-quinc" id="btn-quinc" onclick="selCat('Quincaillerie')">🔩 Quincaillerie</button>
       </div>
     </div>
     <div class="fg">
@@ -787,6 +792,7 @@ ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fi
             <button class="cat-pill" onclick="localFilter(event,'Jardin','${c.id}')">🪴 Jardin</button>
             <button class="cat-pill" onclick="localFilter(event,'Placo','${c.id}')">🧱 Placo</button>
             <button class="cat-pill" onclick="localFilter(event,'Papier peint','${c.id}')">🖼️ Papier peint</button>
+            <button class="cat-pill" onclick="localFilter(event,'Quincaillerie','${c.id}')">🔩 Quincaillerie</button>
           </div>
           <button class="add-btn" onclick="openModal('${c.id}')">＋ &nbsp;Ajouter dans ${c.name}</button>
           <div id="list-${c.id}">`;
@@ -823,7 +829,7 @@ ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fi
 function cardHTML(it) {
   const sc=it.stock===0?'c-zero':(it.stock<=(it.minS||1)?'c-low':'c-ok');
   const cc=it.stock<=(it.minS||1)?'low-stock':'';
-  const catClsMap={'Outillage':'ib-out','Matériel':'ib-mat','Peinture':'ib-paint','Électricité':'ib-elec','Plomberie':'ib-plomb','Menuiserie':'ib-menu','Voiture':'ib-voiture','Jardin':'ib-jardin','Placo':'ib-placo','Papier peint':'ib-papier'};
+  const catClsMap={'Outillage':'ib-out','Matériel':'ib-mat','Peinture':'ib-paint','Électricité':'ib-elec','Plomberie':'ib-plomb','Menuiserie':'ib-menu','Voiture':'ib-voiture','Jardin':'ib-jardin','Placo':'ib-placo','Papier peint':'ib-papier','Quincaillerie':'ib-quinc'};
   const cls=catClsMap[it.cat]||'ib-mat';
   const photos=(it.photos&&it.photos.length)?it.photos:(it.photo?[it.photo]:[]);
   const ph=photos.length?`<img src="${photos[0]}" alt=""><div class="povl">🔍</div>`:(it.cat==='Outillage'?'🔨':'📦');
@@ -1013,10 +1019,10 @@ function fillCtrSelect(sel) {
 }
 
 function selCat(cat) {
-  ['btn-out','btn-mat','btn-paint','btn-elec','btn-plomb','btn-menu','btn-voiture','btn-jardin','btn-placo','btn-papier'].forEach(id=>{
+  ['btn-out','btn-mat','btn-paint','btn-elec','btn-plomb','btn-menu','btn-voiture','btn-jardin','btn-placo','btn-papier','btn-quinc'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
-  const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin','Placo':'btn-placo','Papier peint':'btn-papier'};
+  const map={'Outillage':'btn-out','Matériel':'btn-mat','Peinture':'btn-paint','Électricité':'btn-elec','Plomberie':'btn-plomb','Menuiserie':'btn-menu','Voiture':'btn-voiture','Jardin':'btn-jardin','Placo':'btn-placo','Papier peint':'btn-papier','Quincaillerie':'btn-quinc'};
   const btn=document.getElementById(map[cat]); if(btn) btn.classList.add('active');
   const acc=document.getElementById('acc-section-modal');
   if(acc) acc.style.display=cat==='Outillage'?'':'none';
@@ -1038,7 +1044,8 @@ function selCat(cat) {
     'Voiture':1,
     'Jardin':2,
     'Placo':3,
-    'Papier peint':1
+    'Papier peint':1,
+    'Quincaillerie':10
   };
   const fmin=document.getElementById('f-min');
   if(fmin && cat !== 'Outillage') fmin.value = seuilDefaut[cat] || 1;
@@ -1047,7 +1054,7 @@ function selCat(cat) {
   }
 
 function getCat(){
-  const map={'btn-out':'Outillage','btn-mat':'Matériel','btn-paint':'Peinture','btn-elec':'Électricité','btn-plomb':'Plomberie','btn-menu':'Menuiserie','btn-voiture':'Voiture','btn-jardin':'Jardin','btn-placo':'Placo','btn-papier':'Papier peint'};
+  const map={'btn-out':'Outillage','btn-mat':'Matériel','btn-paint':'Peinture','btn-elec':'Électricité','btn-plomb':'Plomberie','btn-menu':'Menuiserie','btn-voiture':'Voiture','btn-jardin':'Jardin','btn-placo':'Placo','btn-papier':'Papier peint','btn-quinc':'Quincaillerie'};
   for(const [id,cat] of Object.entries(map)){
     const el=document.getElementById(id);
     if(el&&el.classList.contains('active')) return cat;
@@ -1704,10 +1711,11 @@ const NOMS_PEINTURE  = ['Peinture blanche','Peinture grise','Peinture beige','Pe
 const NOMS_ELECTRIQUE= ['Câble 1.5mm','Câble 2.5mm','Câble 4mm','Câble 6mm','Gaine','Boîte de dérivation','Disjoncteur','Interrupteur','Prise','Tableau électrique','Domino','Connecteur','Ampoule LED','Spot','Réglette','Minuterie','Détecteur de mouvement'];
 const NOMS_PLOMBERIE = ['Tuyau PVC','Tuyau cuivre','Tuyau multicouche','Raccord coudé','Raccord T','Vanne','Robinet','Mitigeur','Siphon','Joint plomberie','Colle PVC','Ruban téflon','Bonde','Flexible','Robinet équerre'];
 const NOMS_JARDIN    = ['Tondeuse','Taille-haie','Tronçonneuse','Débroussailleuse','Souffleur','Arrosoir','Tuyau arrosage','Asperseur','Pelle','Râteau','Bêche','Fourche','Sécateur','Brouette','Composteur','Pot','Terreau','Engrais'];
+const NOMS_QUINCAILLERIE = ['Vis','Boulon','Écrou','Rondelle','Cheville','Clou','Tire-fond','Goujon','Rivet','Gond','Équerre','Cornière','Piton','Crochet','Agrafe','Serre-câble','Collier','Attache','Fermoir','Cadenas','Serrure','Verrou','Loquet','Paumelle','Charnière','Poignée','Bouton','Rail','Glissière','Ressort'];
 const NOMS_VOITURE   = ['Huile moteur','Filtre à huile','Filtre à air','Filtre à carburant','Bougie','Plaquette de frein','Disque de frein','Batterie','Ampoule','Essuie-glace','Liquide de frein','Liquide refroidissement','Pneu','Fusible','Courroie','Pompe à eau'];
 const NOMS_MENUISERIE= ['Planche pin','Planche chêne','Planche MDF','Planche OSB','Contre-plaqué','Tasseau','Moulure','Parquet','Lame de terrasse','Porte','Fenêtre','Plinthe','Quart de rond','Charnière','Poignée','Serrure','Verrou'];
-const ACHATS_CATS    = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture','Jardin','Placo','Papier peint'];
-const ACHATS_NOMS    = {'Outillage':NOMS_OUTILLAGE,'Matériel':NOMS_MATERIEL,'Peinture':NOMS_PEINTURE,'Électricité':NOMS_ELECTRIQUE,'Plomberie':NOMS_PLOMBERIE,'Menuiserie':NOMS_MENUISERIE,'Voiture':NOMS_VOITURE,'Jardin':NOMS_JARDIN};
+const ACHATS_CATS    = ['Outillage','Matériel','Peinture','Électricité','Plomberie','Menuiserie','Voiture','Jardin','Placo','Papier peint','Quincaillerie'];
+const ACHATS_NOMS    = {'Outillage':NOMS_OUTILLAGE,'Matériel':NOMS_MATERIEL,'Peinture':NOMS_PEINTURE,'Électricité':NOMS_ELECTRIQUE,'Plomberie':NOMS_PLOMBERIE,'Menuiserie':NOMS_MENUISERIE,'Voiture':NOMS_VOITURE,'Jardin':NOMS_JARDIN,'Quincaillerie':NOMS_QUINCAILLERIE};
 
 function getNomsByCategory() {
   const cat=getCat();
