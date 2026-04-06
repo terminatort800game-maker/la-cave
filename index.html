@@ -289,7 +289,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 </head>
 <body>
 
-<div class="save-indicator" id="save-ind">💾 Sauvegarde...</div>
+<div class="save-indicator" id="save-ind">💾 Sauvegarde<div class="save-indicator" id="save-ind" style="opacity:0;pointer-events:none;">💾 Sauvegarde...</div>...</div>
 
 <div class="hdr">
   <div class="hdr-top">
@@ -1727,7 +1727,7 @@ function localFilter(e,cat,cid) {
   e.target.closest('.cat-row').querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active')); e.target.classList.add('active');
   S.items.filter(i=>i.cid===cid).forEach(it=>{ const el=document.getElementById(`card-${it.id}`); if(el) el.style.display=(cat==='all'||it.cat===cat)?'':'none'; });
 }
-function toggleSec(id){ S.open[id]=!(S.open[id]!==false); persist(); render(); }
+function toggleSec(id){ S.open[id]=!(S.open[id]!==false); render(); }
 
 // ══════════════════════════════════════════════
 // STATS
