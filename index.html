@@ -71,7 +71,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .item-card{background:var(--card);border:1px solid var(--d4);border-radius:12px;overflow:hidden;margin-bottom:8px;}
 .item-card.low-stock{border-color:rgba(224,48,48,.4);}
 .item-top{display:flex;align-items:center;padding:10px 12px;gap:10px;}
-.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;}
+.item-photo{width:56px;height:56px;border-radius:9px;background:var(--d3);border:1.5px solid var(--d4);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;flex-shrink:0;overflow:hidden;position:relative;z-index:2;};
 .item-photo img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
 .item-photo .povl{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;font-size:16px;}
 .item-photo:active .povl{opacity:1;}
@@ -230,7 +230,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .save-indicator{position:fixed;top:0;left:0;right:0;z-index:999;background:var(--g);color:var(--blk);text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:6px;transform:translateY(-100%);transition:transform .3s;}
 .save-indicator.show{transform:translateY(0);}
 
-.imovl{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.95);align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.imovl{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:600;background:rgba(0,0,0,.95);align-items:center;justify-content:center;flex-direction:column;gap:16px;}
 .imovl.open{display:flex;}
 .imovl img{max-width:90vw;max-height:68vh;border-radius:14px;border:2px solid var(--g);}
 .im-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--gl);}
@@ -475,7 +475,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <button onclick="clearAllCtrPhotos()" style="width:100%;margin-top:6px;padding:8px;background:none;border:1px solid rgba(224,48,48,.3);border-radius:8px;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">🗑 Supprimer tous les compartiments</button>
   </div>
 
-
+</div>
 </div>
       <button class="btn-add-ctr" id="ctr-save-btn" onclick="saveCtr()">＋ Ajouter</button>
     </div>
@@ -761,8 +761,7 @@ function render() {
     let cHtml = `<div class="sec-block" style="${indentStyle}">
       <div class="sec-hdr">
         <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
-        ${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`:c.icon}
-        </div>
+${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:c.icon}        </div>
         <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
           <div class="sec-info">
             <div class="sec-name">${c.name}</div>
@@ -1268,7 +1267,7 @@ function viewCtrPhoto(id) {
     const letters='ABCDEFGHIJKLMN';
     c.photos.forEach((p,i)=>{ if(p) photos.push({src:p, label:'Compartiment '+letters[i]}); });
   } else if(c.photo) photos.push({src:c.photo, label:c.name});
-  if(!photos.length) return;
+  if(!photos.length) { openCtrModal(id); return; }
   openCtrGallery(photos, c.name);
 }
 
