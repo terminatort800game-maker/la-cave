@@ -1122,12 +1122,26 @@ function saveItem() {
     largeur:  document.getElementById('f-largeur')?.value||null,
     epaisseur:document.getElementById('f-epaisseur')?.value||null,
   };
+
+  // ── ALERTE DOUBLON — AVANT le push ──
+  if (!editId) {
+    const doublon = S.items.find(i =>
+      i.name.toLowerCase() === item.name.toLowerCase()
+    );
+    if (doublon) {
+      const ctr = S.containers.find(c => c.id === doublon.cid);
+      S.items.push(item);
+      persist(); render(); closeModal();
+      toast(`✅ Ajouté · 💡 "${item.name}" existe aussi dans ${ctr ? ctr.name : 'une autre caisse'}`);
+      return;
+    }
+  }
+
   if(editId){ const i=S.items.findIndex(x=>x.id===editId); if(i>=0) S.items[i]=item; }
   else { S.items.push(item); }
   persist(); render(); closeModal();
   toast(editId?'✅ Article modifié':'✅ Article ajouté');
 }
-
 function delItem(id) {
   if(!confirm('Supprimer cet article ?')) return;
   S.items=S.items.filter(i=>i.id!==id); persist(); render(); toast('🗑️ Supprimé');
