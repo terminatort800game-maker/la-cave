@@ -933,21 +933,54 @@ function removeModalAcc(i) { modalAccs.splice(i,1); renderModalAccs(); }
 // ══════════════════════════════════════════════
 // STOCK
 // ══════════════════════════════════════════════
-function chgStock(id,d) {
-  const it=S.items.find(i=>i.id===id); if(!it) return;
-  it.stock=Math.max(0,(it.stock||0)+d); persist();
-  const el=document.getElementById(`cv-${id}`);
-  if(el){ el.className='cval '+(it.stock===0?'c-zero':it.stock<=(it.minS||1)?'c-low':'c-ok'); el.textContent=it.stock; }
-  const card=document.getElementById(`card-${id}`);
-  if(card) card.classList.toggle('low-stock',it.stock<=(it.minS||1));
-  document.getElementById('total-stock').textContent=S.items.reduce((a,i)=>a+(i.stock||0),0);
-  if(it.stock===0){
-    toast(`⚠️ ${it.name} — Stock épuisé !`);
-    sendNotification(`⚠️ Stock épuisé`, `${it.name} n'est plus en stock !`);
-  } else if(it.stock<=(it.minS||1)){
-    toast(`🟡 ${it.name} — Stock bas`);
-    sendNotification(`🟡 Stock bas`, `${it.name} — il en reste seulement ${it.stock}`);
+function chgStock(id, d) {
+  const it = S.items.find(i => i.id === id);
+  if (!it) return;
+  it.stock = Math.max(0, (it.stock || 0) + d);
+  persist();
+
+  const el = document.getElementById(`cv-${id}`);
+  if (el) {
+    el.className = 'cval ' + (it.stock === 0 ? 'c-zero' : it.stock <= (it.minS || 1) ? 'c-low' : 'c-ok');
+    el.textContent = it.stock;
   }
+  const card = document.getElementById(`card-${id}`);
+  if (card) card.classList.toggle('low-stock', it.stock <= (it.minS || 1));
+  document.getElementById('total-stock').textContent = S.items.reduce((a, i) => a + (i.stock || 0), 0);
+
+  // ── AUTO-AJOUT LISTE COURSES dès seuil atteint ──
+  if (it.stock <= (it.minS || 1)) {
+    const ajoute = autoAddToAchats(it);
+    if (it.stock === 0) {
+      toast(`⚠️ ${it.name} — Stock épuisé !${ajoute ? ' 🛒 Ajouté aux courses' : ''}`);
+      sendNotification(`⚠️ Stock épuisé`, `${it.name} n'est plus en stock !`);
+    } else {
+      toast(`🟡 ${it.name} — Stock bas !${ajoute ? ' 🛒 Ajouté aux courses' : ''}`);
+      sendNotification(`🟡 Stock bas`, `${it.name} — il en reste ${it.stock}`);
+    }
+  }
+}
+
+function autoAddToAchats(it) {
+  if (!S.achats) S.achats = [];
+
+  // Déjà présent et non coché → on ne fait rien
+  const dejaPresent = S.achats.some(a =>
+    a.name.toLowerCase() === it.name.toLowerCase() && !a.done
+  );
+  if (dejaPresent) return false;
+
+  S.achats.push({
+    id:   'a' + Date.now(),
+    name: it.name,
+    cat:  it.cat || 'Matériel',
+    done: false,
+    qte:  1,
+    auto: true
+  });
+
+  persist();
+  return true; // indique qu'il a bien été ajouté
 }
 
 async function sendNotification(title, body) {
@@ -971,7 +1004,15 @@ async function sendNotification(title, body) {
   } catch(e) { console.log('Notification error:', e); }
 }
 
-function useIt(id){ chgStock(id,-1); toast('✅ Article utilisé'); }
+function useIt(id){
+  const it = S.items.find(i => i.id === id);
+  if (!it) return;
+  const stockAvant = it.stock;
+  chgStock(id, -1);
+  if (stockAvant > (it.minS || 1)) {
+    toast('✅ Article utilisé');
+  }
+}
 
 // ══════════════════════════════════════════════
 // MODAL ARTICLE
