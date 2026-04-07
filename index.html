@@ -640,6 +640,7 @@ async function loadState() {
 
   if (saved && saved.items && saved.items.length > 0) {
     S = Object.assign(S, saved);
+    S.open = {};
   } else {
     // 2. Fallback : essaie localStorage (migration depuis ancienne version)
     const keys = ['cave-v5','cave-backup','cave-v4','cave-v3'];
@@ -667,7 +668,7 @@ async function loadState() {
       {id:'c2',name:'Caisse 2',icon:'📦'},
       {id:'m1',name:'Meuble 1',icon:'🗄️'}
     ];
-    S.open = {c1:true, c2:true, m1:true};
+    S.open = {};
   }
   if (!S.items)  S.items  = [];
   if (!S.open)   S.open   = {};
@@ -752,7 +753,7 @@ function render() {
     });
     const filterActive = S.navFilter!=='all';
     const searchActive = q.length > 0;
-    const isOpen = (filterActive||searchActive) ? true : S.open[c.id]!==false;
+    const isOpen = (filterActive||searchActive) ? true : S.open[c.id]===true;
     if ((filterActive||searchActive) && visible.length===0) return '';
     const tot=allInC.length;
     const stk=allInC.reduce((a,i)=>a+(i.stock||0),0);
