@@ -527,6 +527,68 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="toast" id="toast"></div>
 <input type="file" id="import-input" accept=".json" style="display:none">
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDImj72-wjIybtnQDYq1BnyshcXCmgoYl0",
+  authDomain: "la-cave-d6ffc.firebaseapp.com",
+  projectId: "la-cave-d6ffc",
+  storageBucket: "la-cave-d6ffc.firebasestorage.app",
+  messagingSenderId: "652007983251",
+  appId: "1:652007983251:web:92539cf99c5e21ed52e566"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ══════════════════════════════════════════════
+// SYNC FIREBASE — envoi vers le cloud
+// ══════════════════════════════════════════════
+async function syncToFirebase() {
+  try {
+    // On ne sauvegarde pas les photos (trop lourd) — juste les données texte
+    const dataToSync = {
+      containers: S.containers.map(c => ({...c, photos: null, mainPhoto: null, photo: null})),
+      items: S.items.map(i => ({...i, photos: null, photo: null})),
+      achats: S.achats || [],
+      lastSync: new Date().toISOString(),
+      device: 'android'
+    };
+    await db.collection('cave').doc('data').set(dataToSync);
+    toast('☁️ Sync Firebase OK');
+  } catch(e) {
+    console.log('Firebase sync error:', e);
+  }
+}
+
+// ══════════════════════════════════════════════
+// SYNC FIREBASE — écoute les changements depuis PC
+// ══════════════════════════════════════════════
+function listenFirebase() {
+  db.collection('cave').doc('data').onSnapshot(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    if (!data) return;
+    // Si la dernière modif vient du PC, on met à jour le téléphone
+    if (data.device === 'pc') {
+      S.containers = data.containers || S.containers;
+      S.items = data.items || S.items;
+      S.achats = data.achats || S.achats;
+      persist();
+      render();
+      toast('☁️ Mis à jour depuis le PC !');
+    }
+  });
+}
+
+// Lance l'écoute au démarrage
+window.addEventListener('load', () => {
+  setTimeout(listenFirebase, 2000);
+});
+</script>
 
 <!-- ENREGISTREMENT SW -->
 <script>
@@ -695,6 +757,7 @@ function persist() {
   showSaveIndicator();
   // 3. Sauvegarde immédiate sur le téléphone
   autoSaveJSON();
+  syncToFirebase();
 }
 
 function autoSaveJSON() {
