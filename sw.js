@@ -1,4 +1,4 @@
-const CACHE = 'la-cave-v21';
+const CACHE = 'la-cave-v22';
 const FILES = [
   '/la-cave/',
   '/la-cave/index.html',
