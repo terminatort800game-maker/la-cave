@@ -38,18 +38,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .main{padding:10px 10px 100px;position:relative;z-index:1;}
 
 .sec-block{margin-bottom:10px;border-radius:14px;overflow:hidden;border:1.5px solid var(--bdr);box-shadow:0 4px 18px rgba(0,0,0,.5);}
-.sec-hdr{display:flex;align-items:center;gap:14px;padding:16px 14px;background:linear-gradient(135deg,var(--d2) 0%,var(--d1) 100%);user-select:none;border-left:4px solid var(--g);}
-.sec-hdr-tap{display:flex;align-items:center;gap:12px;flex:1;cursor:pointer;min-width:0;}
-.sec-hdr-tap:active{opacity:.8;}
-.sec-ico{width:72px;height:72px;background:var(--gd);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;box-shadow:0 0 10px var(--gg);}
+.sec-hdr{display:flex;flex-direction:column;background:linear-gradient(135deg,var(--d2) 0%,var(--d1) 100%);border-left:4px solid var(--g);}
+.sec-hdr-img{width:100%;height:130px;background:var(--d3);display:flex;align-items:center;justify-content:center;font-size:56px;overflow:hidden;position:relative;cursor:pointer;}
+.sec-hdr-img img{width:100%;height:100%;object-fit:cover;}
+.sec-hdr-bottom{display:flex;align-items:center;gap:12px;padding:12px 14px;}
+.sec-ico{display:none;}
 .sec-info{flex:1;min-width:0;}
-.sec-name{font-family:'Barlow Condensed',sans-serif;font-size:23px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sec-meta{font-size:15px;color:var(--tm);margin-top:2px;}
+.sec-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--tx);}
+.sec-meta{font-size:14px;color:var(--tm);margin-top:2px;}
 .sec-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.sbadge{background:var(--gd);color:var(--gl);font-family:'Bebas Neue',sans-serif;font-size:17px;padding:5px 13px;border-radius:20px;border:1px solid var(--g);letter-spacing:1px;}
-.chev{color:var(--g);font-size:20px;transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.sbadge{background:var(--gd);color:var(--gl);font-family:'Bebas Neue',sans-serif;font-size:15px;padding:3px 10px;border-radius:20px;border:1px solid var(--g);letter-spacing:1px;}
+.chev{color:var(--g);font-size:17px;transition:transform .3s cubic-bezier(.4,0,.2,1);}
 .chev.open{transform:rotate(180deg);}
-.sec-edit-btn{background:none;border:none;color:var(--tm);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:all .18s;flex-shrink:0;}
+.sec-edit-btn{background:none;border:none;color:var(--tm);font-size:18px;cursor:pointer;padding:4px 6px;border-radius:6px;flex-shrink:0;}
 .sec-edit-btn:active{color:var(--g);}
 
 .sec-body{max-height:0;overflow:hidden;background:var(--d1);transition:max-height .38s cubic-bezier(.4,0,.2,1);}
@@ -763,24 +764,33 @@ function render() {
 
     const indentStyle = isChild ? `margin-left:18px;border-left:3px solid var(--g);padding-left:0;` : '';
 
-    let cHtml = `<div class="sec-block" style="${indentStyle}">
-      <div class="sec-hdr">
-        <div class="sec-ico" style="overflow:hidden;position:relative;cursor:pointer;" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
-${c.mainPhoto?`<img src="${c.mainPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:(c.photos&&c.photos.length)?`<img src="${c.photos[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:c.photo?`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;">`:c.icon}        </div>
-        <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')">
-          <div class="sec-info">
-            <div class="sec-name">${c.name}</div>
-            <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
-          </div>
-          <div class="sec-right">
-            <span class="sbadge">${tot}</span>
-            <span class="chev ${isOpen?'open':''}">▼</span>
-          </div>
+  let cHtml = `<div class="sec-block" style="${indentStyle}">
+  <div class="sec-hdr">
+    <div class="sec-hdr-img" onclick="(function(e){e.stopPropagation();viewCtrPhoto('${c.id}');})(event)">
+      ${c.mainPhoto
+        ? `<img src="${c.mainPhoto}">`
+        : (c.photos && c.photos.length)
+          ? `<img src="${c.photos[0]}">`
+          : c.photo
+            ? `<img src="${c.photo}">`
+            : c.icon}
+    </div>
+    <div class="sec-hdr-bottom">
+      <div class="sec-hdr-tap" onclick="toggleSec('${c.id}')" style="display:flex;align-items:center;gap:12px;flex:1;cursor:pointer;min-width:0;">
+        <div class="sec-info">
+          <div class="sec-name">${c.name}</div>
+          <div class="sec-meta">${tot} article${tot!==1?'s':''} · stock : ${stk}</div>
         </div>
-        <button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button>
+        <div class="sec-right">
+          <span class="sbadge">${tot}</span>
+          <span class="chev ${isOpen?'open':''}">▼</span>
+        </div>
       </div>
-      <div class="sec-body ${isOpen?'open':''}">
-        <div class="sec-body-in">
+      <button class="sec-edit-btn" onclick="openCtrModal('${c.id}')">✏️</button>
+    </div>
+  </div>
+  <div class="sec-body ${isOpen?'open':''}">
+    <div class="sec-body-in">
           <div class="cat-row">
             <button class="cat-pill active" onclick="localFilter(event,'all','${c.id}')">Tout</button>
             <button class="cat-pill" onclick="localFilter(event,'Outillage','${c.id}')">🔨 Outillage</button>
